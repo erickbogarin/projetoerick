@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/template.xhtml">
+	<ui:define name="pageTitle">Sistema de TCCs - Selecionar perfil</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<h:link value="#{usuarioLogin.user.nome}"
+					outcome="conta/consultarDados.xhtml" />
+				|
+
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+	<ui:define name="menuLateral">
+		<div class="menu-destaque">
+			<ul class="nav nav-list">
+				<li class="nav-header">Navegação</li>
+				<li><a href="#">Propostas em Andamento</a></li>
+				<li><a href="#">Upload de Arquivos</a></li>
+				<li><a href="#">Revisões das Propostas</a></li>
+				<li class="nav-header">Administrar</li>
+				<li><a href="#">Cadastro de Propostas</a></li>
+				<li class="active"><a href="#">Pessoas</a></li>
+				<li><a href="#">Notas</a></li>
+				<li class="nav-header">Perfil</li>
+				<li><h:link value="Minha conta"
+						outcome="conta/consultarDados.xhtml" /></li>
+				<li><a href="#">Sair</a></li>
+			</ul>
+		</div>
+	</ui:define>
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+		<ul class="breadcrumb">
+			<li><h:link outcome="paginaInicial.xhtml" value="Página Inicial" /><span
+				class="divider">/</span></li>
+			<li class="active">Selecionar Perfil</li>
+		</ul>
+		<h:form>
+			<h:outputText value="Selecione um Perfil de Usuário:" />
+
+			<br />
+			<br />
+
+			<a href="crud/manterAluno.xhtml" class="btn btn-info btn-lg active">Aluno</a>
+			<a href="crud/manterOrientador.xhtml"
+				class="btn btn-info btn-lg active">Orientador</a>
+			<a href="crud/manterCoordenador.xhtml"
+				class="btn btn-info btn-lg active">Coordenador</a>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+
+</html>

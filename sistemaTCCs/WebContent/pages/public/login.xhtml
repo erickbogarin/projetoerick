@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:b="http://bootsfaces.net/ui" xmlns:p="http://primefaces.org/ui">
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/template.xhtml">
+	<ui:define name="pageTitle">Página Inicial</ui:define>
+	<ui:define name="pageHeader"></ui:define>
+	<ui:insert name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+
+				<a href="#">visitante</a> |
+				<h:commandLink action="#{usuarioLogin.doLogin}" value="Entrar" />
+			</p>
+		</h:form>
+
+	</ui:insert>
+	<ui:define name="body">
+
+		<h:messages />
+
+		<legend>Efetuar Login</legend>
+
+
+		<h:form styleClass="form-horizontal">
+
+			<h:outputLabel styleClass="control-label" value="Email: " />
+			<div class="controls">
+				<h:inputText value="#{usuarioLogin.usuarioSelecionado.email}" />
+			</div>
+			<br />
+
+			<h:outputText styleClass="control-label" value="Senha: " />
+			<div class="controls">
+				<p:password id="inputPassword"
+					value="#{usuarioLogin.usuarioSelecionado.senha}" />
+			</div>
+
+			<div class="control-group">
+				<div class="controls">
+					<label class="checkbox"> <input type="checkbox" />
+						Lembre-se de mim
+					</label>
+					<h:commandButton action="#{usuarioLogin.doLogin}" value="Entrar"
+						styleClass="btn" type="submit">
+					</h:commandButton>
+				</div>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</html>

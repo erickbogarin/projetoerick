@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PROCESS model-entity="JSFProcess">
+ <PROCESS-ITEM NAME="rules:#pages#public#login.xhtml"
+  PATH="/pages/public/login.xhtml" SHAPE="32,17,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#pages#public#login.xhtml:0" NAME="item"
+   PATH="/pages/public/login.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="primeiroAcesso::#pages#protected#coordenador#primeiroAcesso.xhtml"
+    NAME="output"
+    PATH="/pages/protected/coordenador/primeiroAcesso.xhtml"
+    TARGET="rules:#pages#protected#coordenador#primeiroAcesso.xhtml"
+    TITLE="primeiroAcesso" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#coordenador#primeiroAcesso.xhtml"
+  PATH="/pages/protected/coordenador/primeiroAcesso.xhtml"
+  SHAPE="240,33,0,0" model-entity="JSFProcessGroup"/>
+</PROCESS>

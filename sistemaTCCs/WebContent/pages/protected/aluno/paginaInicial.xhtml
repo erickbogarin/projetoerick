@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/template.xhtml">
+	<ui:define name="pageTitle">Manter Orientador</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<a href="#">#{usuarioLogin.user.nome}</a> |
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+	<ui:define name="menuLateral">
+		<div class="menu-destaque">
+			<h:form>
+				<ul class="nav nav-list">
+					<li class="nav-header">Navegação</li>
+					<li><a href="#">Propostas em Andamento</a></li>
+					<li><a href="#">Upload de Arquivos</a></li>
+					<li><a href="#">Revisões das Propostas</a></li>
+					<li class="nav-header">Administrar</li>
+					<li><a href="#">Envio de Propostas</a></li>
+					<li><h:link value="Pessoas" outcome="paginaInicial.xhtml" /></li>
+					<li><a href="#">Notas</a></li>
+					<li class="nav-header">Perfil</li>
+					<li><h:link value="Alterar dados" /></li>
+					<li><h:commandLink action="#{usuarioLogin.doLogout}"
+							value="Sair" /></li>
+				</ul>
+			</h:form>
+		</div>
+	</ui:define>
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+		<h:form>
+			<ul class="breadcrumb">
+				<li class="active"><a href="#">Página Inicial</a></li>
+
+			</ul>
+
+			<h:outputText value="Bem-vindo Aluno!"></h:outputText>
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/template.xhtml">
+	<ui:define name="pageTitle">Consultar Orientador</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<h:link value="#{usuarioLogin.user.nome}"
+					outcome="../conta/consultarDados.xhtml" />
+				|
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+	<ui:define name="menuLateral">
+		<div class="menu-destaque">
+			<ul class="nav nav-list">
+				<li class="nav-header">Navegação</li>
+				<li><a href="#">Propostas em Andamento</a></li>
+				<li><a href="#">Upload de Arquivos</a></li>
+				<li><a href="#">Revisões das Propostas</a></li>
+				<li class="nav-header">Administrar</li>
+				<li><a href="#">Cadastro de Propostas</a></li>
+				<li class="active"><a href="../pessoas.xhtml">Pessoas</a></li>
+				<li><a href="#">Notas</a></li>
+				<li class="nav-header">Perfil</li>
+				<li><h:link value="Minha conta"
+						outcome="../conta/consultarDados.xhtml" /></li>
+				<li><a href="#">Logoff</a></li>
+			</ul>
+		</div>
+	</ui:define>
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+		<ul class="breadcrumb">
+			<li><a href="../paginaInicial.xhtml">Página Inicial</a> <span
+				class="divider">/</span></li>
+			<li><a href="../pessoas.xhtml">Alterar Perfil</a> <span
+				class="divider">/</span></li>
+			<li class="active">Orientador</li>
+		</ul>
+
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="#">Consultar Orientador</a></li>
+			<li><a href="listagem/listarOrientador.xhtml">Listar
+					Orientadores</a></li>
+			<li><a href="cadastro/cadastrarOrientador.xhtml">Novo
+					Cadastro</a></li>
+
+			<h:form styleClass="form-horizontal">
+				<br />
+				<br />
+				<br />
+				<p:growl id="growl" showDetail="true" sticky="true" />
+				<h:messages />
+				<legend>Pesquisar</legend>
+
+				<h:outputText value="Nome do orientador: " />
+				
+				<div class="input-append">
+					<h:inputText styleClass="span2"
+						value="#{usuarioBean.usuarioSelecionado.nome}" />
+
+					<h:commandButton action="#{orientadorBean.prepararConsulta()}"
+						value="Buscar " styleClass="btn" type="button" 
+						update="growl">
+						<f:ajax event="change" rendered="listar" />
+					</h:commandButton>
+
+				</div>
+
+			</h:form>
+
+
+			<h:form styleClass="accordion-inner">
+				<h:dataTable var="usuario"
+					value="#{usuarioBean.consultarOrientador}" style="width:960px"
+					styleClass="table table-striped"
+					rendered="#{not empty usuarioBean.consultarOrientador}">
+
+					<h:column headerText="Nome">
+						<f:facet name="header">Nome</f:facet>
+						<h:outputText value="#{usuario.nome}" />
+					</h:column>
+
+					<h:column headerText="E-mail">
+						<f:facet name="header">E-mail</f:facet>
+						<h:outputText value="#{usuario.email}" />
+					</h:column>
+
+					<h:column headerText="Titulo">
+						<f:facet name="header">Titulo</f:facet>
+						<h:outputText value="#{usuario.titulo}" />
+					</h:column>
+
+				</h:dataTable>
+			</h:form>
+
+		</ul>
+	</ui:define>
+</ui:composition>
+
+</html>

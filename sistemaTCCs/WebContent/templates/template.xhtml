@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title><ui:insert name="pageTitle">Page Header</ui:insert></title>
+	<h:outputStylesheet library="css" name="estilo.css"></h:outputStylesheet>
+	<h:outputStylesheet library="css" name="reset.css"></h:outputStylesheet>
+	<h:outputStylesheet library="css" name="bootstrap.css"></h:outputStylesheet>
+</h:head>
+
+<h:body>
+
+
+	<div id="header">
+
+		<h:graphicImage value="/resources/imagens/logo.png" />
+
+		<h1>Sistema de Gerenciamento e Controle de TCCs</h1>
+
+		<nav class="menu-opcoes">
+		<ul>
+			
+			<li><a href="#">notícias</a></li>
+			<li><a href="#">tccs</a></li>
+			<!--	<ul>
+						<li><a href="#">Trabalhos Apresentados</a></li>
+						<li><a href="#">Trabalhos em Andamento</a></li>		
+					</ul> -->
+			<li><a href="#">propostas</a></li>
+			<li><a href="#">manuais</a></li>
+			<li><a href="#">sobre</a></li>
+		</ul>
+		</nav>
+		<ui:insert name="perfilUsuario">
+			<div class="perfil">
+				<a href="#">Visitante</a> |
+				<a href="#">Entrar</a>
+			</div>
+	
+		</ui:insert>
+	</div>
+
+	<section class="principal"> 
+	<ui:insert name="menuLateral"></ui:insert>
+
+	<div id="conteudo">
+		<h1>
+			<ui:insert name="pageHeader"></ui:insert>
+		</h1>
+		<ui:insert name="body"></ui:insert>
+	</div>
+
+	</section>
+
+
+	<div id="footer"></div>
+
+</h:body>
+
+</html>
