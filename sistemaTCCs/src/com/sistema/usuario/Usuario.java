@@ -16,6 +16,12 @@ import com.sistema.role.Role;
 import com.sistema.status.Status;
 
 
+// primeira alteracao genilson 
+
+
+
+
+
 @Entity
 @Table(name="usuario")
 @Inheritance(strategy=InheritanceType.JOINED)
