@@ -6,7 +6,7 @@ import javax.persistence.Table;
 import com.sistema.role.Role;
 import com.sistema.usuario.Usuario;
 
-//primeira versao
+//segunda versao
 
 
 @Entity
