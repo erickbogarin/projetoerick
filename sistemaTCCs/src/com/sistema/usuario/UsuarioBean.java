@@ -15,6 +15,10 @@ import com.sistema.usuario.coordenador.CoordenadorRN;
 import com.sistema.usuario.orientador.Orientador;
 import com.sistema.usuario.orientador.OrientadorRN;
 
+
+
+// fiz a funcao que roda a sessao do usuario 
+
 @ManagedBean(name = "usuarioBean")
 @RequestScoped
 public class UsuarioBean {
