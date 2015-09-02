@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
@@ -10,7 +10,7 @@
 		Replace path to template, title, header and body
 		with actual data.
 	 -->
-<ui:composition template="/templates/template.xhtml">
+<ui:composition template="/templates/_templateCoordenador.xhtml">
 	<ui:define name="pageTitle">Sistema de TCCs - Selecionar perfil</ui:define>
 	<ui:define name="perfilUsuario">
 		<h:form>
@@ -23,42 +23,38 @@
 			</p>
 		</h:form>
 	</ui:define>
-	<ui:define name="menuLateral">
-		<div class="menu-destaque">
-			<ul class="nav nav-list">
-				<li class="nav-header">Navegação</li>
-				<li><a href="#">Propostas em Andamento</a></li>
-				<li><a href="#">Upload de Arquivos</a></li>
-				<li><a href="#">Revisões das Propostas</a></li>
-				<li class="nav-header">Administrar</li>
-				<li><a href="#">Cadastro de Propostas</a></li>
-				<li class="active"><a href="#">Pessoas</a></li>
-				<li><a href="#">Notas</a></li>
-				<li class="nav-header">Perfil</li>
-				<li><h:link value="Minha conta"
-						outcome="conta/consultarDados.xhtml" /></li>
-				<li><a href="#">Sair</a></li>
-			</ul>
-		</div>
-	</ui:define>
+
 	<ui:define name="pageHeader"></ui:define>
 	<ui:define name="body">
-		<ul class="breadcrumb">
-			<li><h:link outcome="paginaInicial.xhtml" value="Página Inicial" /><span
-				class="divider">/</span></li>
-			<li class="active">Selecionar Perfil</li>
-		</ul>
 		<h:form>
-			<h:outputText value="Selecione um Perfil de Usuário:" />
 
-			<br />
-			<br />
+			<div class="page-header">
+				<h1>
+					<small>Pessoas</small>
+				</h1>
+			</div>
+			<ul class="breadcrumb">
+				<li><h:link outcome="paginaInicial.xhtml"
+						value="Página Inicial" /></li>
+				<li class="active">Selecionar Perfil</li>
+			</ul>
 
-			<a href="crud/manterAluno.xhtml" class="btn btn-info btn-lg active">Aluno</a>
-			<a href="crud/manterOrientador.xhtml"
-				class="btn btn-info btn-lg active">Orientador</a>
-			<a href="crud/manterCoordenador.xhtml"
-				class="btn btn-info btn-lg active">Coordenador</a>
+			<nav class="navbar navbar-default ">
+				<ul class="nav navbar-nav">
+					<li><h:commandLink action="#{alunoPageNavigation.alunosTCC}"
+							value="Aluno" /></li>
+					<li><p:commandLink
+							action="/pages/protected/coordenador/crud/listagem/listarOrientador?faces-redirect=true"
+							value="Orientador">
+							<f:setPropertyActionListener
+								value="#{orientadorBean.coordenacaoUsuario(usuarioLogin.user)}"
+								target="#{orientadorBean.coordenacao}" />
+						</p:commandLink></li>
+					<li><h:link
+							outcome="crud/listagem/listarCoordenador.xhtml" value="Coordenador" /></li>
+					
+				</ul>
+			</nav>
 		</h:form>
 
 	</ui:define>

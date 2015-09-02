@@ -1,8 +1,9 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:b="http://bootsfaces.net/ui" xmlns:p="http://primefaces.org/ui">
 
 <!-- 
@@ -10,13 +11,12 @@
 		with actual data.
 	 -->
 <ui:composition template="/templates/template.xhtml">
-	<ui:define name="pageTitle">Página Inicial</ui:define>
+	<ui:define name="pageTitle">Bem-vindo | TCCs Fucapi</ui:define>
 	<ui:define name="pageHeader"></ui:define>
 	<ui:insert name="perfilUsuario">
 		<h:form>
 			<p class="perfil">
-
-				<a href="#">visitante</a> |
+				<a href="#">Cria Conta</a> |
 				<h:commandLink action="#{usuarioLogin.doLogin}" value="Entrar" />
 			</p>
 		</h:form>
@@ -24,36 +24,108 @@
 	</ui:insert>
 	<ui:define name="body">
 
-		<h:messages />
+		<div class="row">
+			<div
+				class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3  
+				panel panel-default"
+				style="background: linear-gradient(to bottom, #ffffff 0%, #f1f1f1 50%, #e1e1e1 51%, #f6f6f6 100%); margin-top: 6%">
 
-		<legend>Efetuar Login</legend>
+				<p:messages id="messages" showDetail="false" closable="true" />
+
+				<h3 class="text-muted page-header pager"
+					style="font-family: Verdana, Geneva, sans-serif">
+					<strong>Acesso as disciplinas de TCC | ITCC</strong>
+				</h3>
+
+				<h:form styleClass="panel-body">
+					<div class="form-group">
+						<p:inputText id="email" pt:type="email"
+							value="#{usuarioLogin.usuarioSelecionado.email}"
+							styleClass="form-control">
+						</p:inputText>
+						<p:watermark for="email" value="E-Mail" id="watermark" />
+					</div>
+
+					<div class="form-group">
+						<p:password id="senha" styleClass="form-control" type="password"
+							value="#{usuarioLogin.usuarioSelecionado.senha}">
+						</p:password>
+						<p:watermark for="senha" value="Senha" id="watermar" />
+					</div>
+
+					<div class="checkbox">
+						<label> <input type="checkbox" />Lembre-se de mim
+						</label>
+					</div>
+
+					<div class="form-group">
+						<h:commandButton action="#{usuarioLogin.doLogin}"
+							update="@form :messages" value="Fazer login"
+							styleClass="btn btn-primary form-control" type="submit" />
+
+					</div>
+
+					<div class="pager">
+						<p:commandLink update=":recuperacaoSenha:senhaDetail"
+							process="@this" oncomplete="PF('senhaDialog').show()"
+							title="Recuperar senha">
+							<h:outputText value="Esqueci minha
+							senha"
+								style="font-family: Georgia, serif" styleClass="text-info" />
+						</p:commandLink>
+					</div>
+				</h:form>
+
+				<p:dialog header="Recuperação de senha" widgetVar="senhaDialog"
+					showEffect="fade" hideEffect="fade" resizable="false">
+
+					<p:messages id="messagesDialog" showDetail="false" closable="true" />
+					<h:form id="recuperacaoSenha">
+
+						<div class="pagination-centered">
+							<p:outputPanel id="senhaDetail">
+								<div class="form-horizontal panel panel-body">
+
+									<div class="form-group">
+										<h:outputText value="E-Mail:" />
+										<p:inputText required="true" type="email"
+											requiredMessage="E-Mail obrigatório"
+											value="#{usuarioBean.usuarioSelecionado.email}"
+											styleClass="form-control">
+											<f:ajax event="blur" render=":messagesDialog" />
+										</p:inputText>
+									</div>
+
+									<div class="form-group">
+										<h:outputText value="Matrícula:" />
+										<p:inputText required="true"
+											requiredMessage="Matrícula obrigatório"
+											value="#{usuarioBean.usuarioSelecionado.matricula}"
+											styleClass="form-control">
+											<f:ajax event="blur" render=":messagesDialog" />
+										</p:inputText>
+									</div>
+
+								</div>
+
+								<div class="pager">
+									<p:commandButton value="Enviar e-mail" process="@this"
+										actionListener="#{usuarioBean.recuperarSenha}"
+										update=":recuperacaoSenha :messagesDialog" />
+
+									<h:link value="Cancelar" title="Fechar janela"
+										styleClass="btn btn-default" style="margin-left:5px"
+										update=":@form :recuperacaoSenha" process="@this" />
+								</div>
+							</p:outputPanel>
+						</div>
+					</h:form>
+				</p:dialog>
 
 
-		<h:form styleClass="form-horizontal">
-
-			<h:outputLabel styleClass="control-label" value="Email: " />
-			<div class="controls">
-				<h:inputText value="#{usuarioLogin.usuarioSelecionado.email}" />
 			</div>
-			<br />
+		</div>
 
-			<h:outputText styleClass="control-label" value="Senha: " />
-			<div class="controls">
-				<p:password id="inputPassword"
-					value="#{usuarioLogin.usuarioSelecionado.senha}" />
-			</div>
-
-			<div class="control-group">
-				<div class="controls">
-					<label class="checkbox"> <input type="checkbox" />
-						Lembre-se de mim
-					</label>
-					<h:commandButton action="#{usuarioLogin.doLogin}" value="Entrar"
-						styleClass="btn" type="submit">
-					</h:commandButton>
-				</div>
-			</div>
-		</h:form>
 	</ui:define>
 </ui:composition>
 

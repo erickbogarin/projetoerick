@@ -2,62 +2,80 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:p="http://primefaces.org/ui">
 
 <h:head>
 	<title><ui:insert name="pageTitle">Page Header</ui:insert></title>
+
 	<h:outputStylesheet library="css" name="estilo.css"></h:outputStylesheet>
 	<h:outputStylesheet library="css" name="reset.css"></h:outputStylesheet>
-	<h:outputStylesheet library="css" name="bootstrap.css"></h:outputStylesheet>
+	<h:outputStylesheet library="css" name="bootstrap.css" rel="stylesheet"></h:outputStylesheet>
+	<h:outputStylesheet library="css" name="bootstrap-theme.css"
+		rel="stylesheet"></h:outputStylesheet>
+	<h:outputStylesheet library="css" name="bootstrap-timepicker.css"
+		rel="stylesheet"></h:outputStylesheet>
+
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 </h:head>
 
 <h:body>
 
+	<div class="container-fluid" id="wrapper">
+		<div id="header">
 
-	<div id="header">
+			<div class="visible-lg">
 
-		<h:graphicImage value="/resources/imagens/logo.png" />
+				<h:graphicImage value="/resources/imagens/logo.png" />
 
-		<h1>Sistema de Gerenciamento e Controle de TCCs</h1>
+				<h1>Sistema de Gerenciamento e Controle de TCCs</h1>
 
-		<nav class="menu-opcoes">
-		<ul>
-			
-			<li><a href="#">notícias</a></li>
-			<li><a href="#">tccs</a></li>
-			<!--	<ul>
-						<li><a href="#">Trabalhos Apresentados</a></li>
-						<li><a href="#">Trabalhos em Andamento</a></li>		
-					</ul> -->
-			<li><a href="#">propostas</a></li>
-			<li><a href="#">manuais</a></li>
-			<li><a href="#">sobre</a></li>
-		</ul>
-		</nav>
-		<ui:insert name="perfilUsuario">
-			<div class="perfil">
-				<a href="#">Visitante</a> |
-				<a href="#">Entrar</a>
 			</div>
-	
-		</ui:insert>
-	</div>
 
-	<section class="principal"> 
-	<ui:insert name="menuLateral"></ui:insert>
+			<div class="menu-opcoes">
+				<h:form>
+					<ul>
+						<li><h:commandLink value="notícias"
+								action="#{navigationBean.noticias}" /></li>
+						<li><h:commandLink value="tccs"
+								action="#{navigationBean.tccs}"
+								actionListener="#{propostaPageNavigation.preparaTCCs}" /></li>
+						<li><h:commandLink value="projetos em andamento"
+								action="#{navigationBean.sugestoes}" /></li>
+						<li><h:link value="banca"
+								outcome="/pages/public/banca.xhtml?faces-redirect=true" /></li>
+						<li><h:link value="sobre" outcome="/pages/public/sobre.xhtml"/></li>
+					</ul>
+				</h:form>
+			</div>
 
-	<div id="conteudo">
-		<h1>
+			<ui:insert name="perfilUsuario">
+				<div class="perfil">
+					<h:link value="Visitante" disabled="true" />
+					| <a href="#">Entrar</a>
+				</div>
+
+			</ui:insert>
+		</div>
+
+		<div class="row" id="content">
 			<ui:insert name="pageHeader"></ui:insert>
-		</h1>
-		<ui:insert name="body"></ui:insert>
+			<ui:insert name="body"></ui:insert>
+		</div>
+
+		<div id="rodape">
+			© 2015 FUCAPI Todos os direitos reservados.
+			<ui:insert name="texto">
+			</ui:insert>
+		</div>
 	</div>
 
-	</section>
-
-
-	<div id="footer"></div>
+	<script src="js/jquery-ui.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
 
 </h:body>
 

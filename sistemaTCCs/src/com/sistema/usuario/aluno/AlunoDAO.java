@@ -2,17 +2,18 @@ package com.sistema.usuario.aluno;
 
 import java.util.List;
 
-import com.sistema.usuario.aluno.Aluno;
-
 public interface AlunoDAO {
 	
 	public void salvar(Aluno aluno);
 
-	public List<Aluno> listar();
+	public List<Aluno> listar(Integer periodo, Integer disciplinaId, Integer coordenacaoId);
 
 	public void excluir(Aluno aluno);
 
-	public List<Aluno> findByName(String string);
+	public List<Aluno> findByName(String nome);
+	
+	public Aluno findById(Integer id);
 
 	public void alterarDados(Aluno aluno);
+	
 }

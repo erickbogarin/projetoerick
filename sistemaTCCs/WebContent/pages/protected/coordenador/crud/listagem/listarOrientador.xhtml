@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
@@ -10,113 +10,198 @@
 		Replace path to template, title, header and body
 		with actual data.
 	 -->
-<ui:composition template="/templates/template.xhtml">
-	<ui:define name="pageTitle">Manter orientador</ui:define>
+<ui:composition template="/templates/_templateCoordenador.xhtml">
+	<ui:define name="pageTitle">Manter orientador | TCCs Fucapi</ui:define>
 	<ui:define name="perfilUsuario">
 		<h:form>
 			<p class="perfil">
-				<h:link value="#{usuarioLogin.user.nome}"
-					outcome="../../conta/consultarDados.xhtml" />
+				<h:commandLink value="#{usuarioLogin.user.nome}"
+					action="#{coordenadorBean.prepararConta(usuarioLogin.user)}" />
 				|
 				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
 			</p>
 		</h:form>
 	</ui:define>
-	<ui:define name="menuLateral">
-		<div class="menu-destaque">
-			<ul class="nav nav-list">
-				<li class="nav-header">Navegação</li>
-				<li><a href="#">Propostas em Andamento</a></li>
-				<li><a href="#">Upload de Arquivos</a></li>
-				<li><a href="#">Revisões das Propostas</a></li>
-				<li class="nav-header">Administrar</li>
-				<li><a href="#">Cadastro de Propostas</a></li>
-				<li class="active"><a href="../../pessoas.xhtml">Pessoas</a></li>
-				<li><a href="#">Notas</a></li>
-				<li class="nav-header">Perfil</li>
-				<li><h:link value="Minha conta"
-						outcome="../../conta/consultarDados.xhtml" /></li>
-				<li><a href="#">Sair</a></li>
-			</ul>
-		</div>
-	</ui:define>
+
 	<ui:define name="body">
+
+		<div class="page-header">
+			<h1>
+				<small>Pessoas</small>
+			</h1>
+		</div>
+
 		<ul class="breadcrumb">
-			<li><a href="../../paginaInicial.xhtml">Página Inicial</a> <span
-				class="divider">/</span></li>
-			<li><a href="../../pessoas.xhtml">Alterar Perfil</a> <span
-				class="divider">/</span></li>
+			<li><a href="../../paginaInicial.xhtml">Página Inicial</a></li>
+			<li><a href="../../pessoas.xhtml">Alterar Perfil</a></li>
 			<li class="active">Orientador</li>
 		</ul>
 
-		<ul class="nav nav-tabs">
-			<li><a href="../manterOrientador.xhtml">Consultar Orientador</a></li>
-			<li class="active"><a href="#">Listar Orientadores</a></li>
-			<li><a href="../cadastro/cadastrarOrientador.xhtml">Novo
-					Cadastro</a></li>
+		<h:form id="form">
 
-			<h:form styleClass="accordion-inner">
-				<p:growl id="growl" showDetail="true" sticky="true" />
-				<h:messages />
-				<h:inputHidden value="#{orientadorBean.orientadorSelecionado.id}" />
-				<br />
-				<br />
-				<legend>Listagem de Orientadores</legend>
+			<h4 class="text-right">
+				<p:commandLink update=":form:listaDetail"
+					oncomplete="PF('listaDialog').show()"
+					title="Lista completa de orientadores cadastrados" process="@this"
+					value="Orientadores cadastrados" styleClass="label label-primary">
+					<f:setPropertyActionListener value="#{orientador}"
+						target="#{orientadorBean.orientadorSelecionado}" />
+				</p:commandLink>
+			</h4>
 
-				<h:dataTable var="orientador"
-					value="#{usuarioBean.listarOrientador}" style="width:960px"
-					styleClass="table table-striped"
-					rendered="#{not empty usuarioBean.listarOrientador}">
-					<p:column headerText="Id">
-						<f:facet name="header">#</f:facet>
-						<h:outputText value="#{orientador.id}" />
-					</p:column>
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#">Orientadores</a></li>
+				<li><a href="../cadastro/cadastrarOrientador.xhtml">Novo
+						Cadastro</a></li>
+			</ul>
 
-					<p:column headerText="Nome">
-						<f:facet name="header">Nome</f:facet>
-						<h:outputText value="#{orientador.nome}" />
-					</p:column>
+			<p:messages id="messages" showDetail="true" autoUpdate="true"
+				closable="true" />
 
-					<p:column headerText="E-mail">
-						<f:facet name="header">E-mail</f:facet>
-						<h:outputText value="#{orientador.email}" />
-					</p:column>
+			<p:dataTable id="form" var="orientador"
+				value="#{orientadorBean.orientadoresCoordenacao}"
+				style="margin-bottom:20px;" editable="true"
+				emptyMessage="Nenhum orientador foi cadastrado na sua coordenação.">
 
-					<h:column headerText="Telefone">
-						<f:facet name="header">Telefone</f:facet>
-						<h:outputText value="#{orientador.telefone}" />
-					</h:column>
+				<p:column style="text-align: center;font-weight:bold">
+					<f:facet name="header">⌕ Consultar orientador</f:facet>
+					<p:commandLink update=":form:orientadorDetail"
+						oncomplete="PF('orientadorDialog').show()"
+						actionListener="#{orientadorBean.prepararOrientador(orientador)}"
+						title="Mais informações" process="@this">
+						<f:setPropertyActionListener value="#{orientador}"
+							target="#{orientadorBean.orientadorSelecionado}" />
+						<h:outputText value="#{orientador.nome}" styleClass="text-info" />
+					</p:commandLink>
+				</p:column>
 
-					<p:column headerText="Titulo">
-						<f:facet name="header">Titulo</f:facet>
-						<h:outputText value="#{orientador.titulo}" />
-					</p:column>
+				<p:column headerText="E-mail" style="text-align: center">
+					<f:facet name="header">E-mail</f:facet>
+					<h:outputText value="#{orientador.email}" styleClass="text-muted" />
+				</p:column>
 
-					<p:column headerText="Status">
-						<f:facet name="header">Status</f:facet>
-						<h:outputText value="#{orientador.status}" />
-					</p:column>
+				<p:column style="text-align: center">
+					<f:facet name="header">Linha de pesquisa</f:facet>
+					<h:outputText value="#{orientador.linhaPesquisa}"
+						styleClass="text-muted" />
+				</p:column>
 
-					<p:column>
-						<f:facet name="header">Ações</f:facet>
-						<h:commandLink action="#{orientadorBean.excluir}"
-							onclick="if (!confirm('Deseja realmente excluir o cliente #{orientador.nome}?')) return false;">
-							<h:graphicImage library="imagens" name="remove-icon.png" />
-							<f:setPropertyActionListener
-								target="#{orientadorBean.orientadorSelecionado}"
-								value="#{orientador}" />
-						</h:commandLink>
+				<p:column style="text-align: center">
+					<f:facet name="header">Título</f:facet>
+					<h:outputText value="#{orientador.titulo}" styleClass="text-muted" />
+				</p:column>
 
-						<h:commandLink
-							action="#{orientadorBean.prepararEdicao(orientador)}">
-							<h:graphicImage library="imagens" name="wrench-icon.png" />
-						</h:commandLink>
-					</p:column>
+				<p:column headerText="Status" style="text-align: center">
+					<f:facet name="header">Status</f:facet>
+					<h:outputText value="#{orientador.status}" styleClass="text-info" />
+				</p:column>
 
-				</h:dataTable>
-			</h:form>
+			</p:dataTable>
 
-		</ul>
+			<p:dialog header="Informações do orientador"
+				widgetVar="orientadorDialog" showEffect="fade" hideEffect="fade"
+				resizable="false">
+
+				<p:outputPanel id="orientadorDetail" styleClass="text-muted">
+
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h:outputText
+								value="#{orientadorBean.orientadorSelecionado.nome}"
+								style="font-weight:bold" />
+						</div>
+
+						<div class="panel-body">
+							<p:dataTable var="orientador"
+								value="#{orientadorBean.orientadorSelecionado}">
+
+								<p:column headerText="E-mail" style="text-align: center">
+									<f:facet name="header">E-mail</f:facet>
+									<h:outputText value="#{orientador.email}"
+										styleClass="text-muted" />
+								</p:column>
+
+								<p:column headerText="Celular" style="text-align: center">
+									<h:outputText value="#{orientador.celular}"
+										styleClass="text-muted" />
+								</p:column>
+
+								<p:column headerText="Telefone" style="text-align: center">
+									<h:outputText value="#{orientador.telefone}"
+										styleClass="text-muted" />
+								</p:column>
+
+								<p:column headerText="Comercial" style="text-align: center">
+									<h:outputText value="#{orientador.comercial}"
+										styleClass="text-muted" />
+								</p:column>
+
+								<p:column headerText="Qtd. Orientados"
+									style="text-align: center">
+									<h:outputText value="#{orientador.propostas.size()}"
+										style="font-weight:bold" />
+								</p:column>
+
+
+							</p:dataTable>
+
+						</div>
+					</div>
+
+				</p:outputPanel>
+
+
+			</p:dialog>
+
+			<p:dialog header="Orientadores cadastrados" widgetVar="listaDialog"
+				showEffect="fade" hideEffect="fade" resizable="false">
+
+				<div class="pagination-centered">
+					<p:outputPanel id="listaDetail" styleClass="text-muted">
+
+						<p:dataTable var="orientador" value="#{orientadorBean.lista}"
+							style="margin-bottom:20px;" editable="true"
+							emptyMessage="Nenhum orientador foi cadastrado na sua coordenação.">
+
+							<p:column headerText="Nome" style="text-align: center">
+								<h:outputText value="#{orientador.nome}"
+									style="font-weight:bold" />
+							</p:column>
+
+							<p:column headerText="Linha de Pesquisa"
+								style="text-align: center">
+								<h:outputText value="#{orientador.linhaPesquisa}"
+									styleClass="text-muted" />
+							</p:column>
+
+							<p:column headerText="Título" style="text-align: center">
+								<h:outputText value="#{orientador.titulo}"
+									styleClass="text-muted" />
+							</p:column>
+
+							<p:column headerText="Orientados" style="text-align: center">
+								<h:outputText value="#{orientador.propostas.size()}"
+									styleClass="text-muted" />
+							</p:column>
+
+							<p:column headerText="Incluir na coordenação"
+								style="text-align:center;font-weight:bold">
+								<p:commandLink value="✔ " process="@this" update=":form"
+									action="#{orientadorBean.adicionaOrientador}"
+									styleClass="text-info" title="Confirmar inclusão do orientador"
+									onclick="if (!confirm('Deseja realmente incluir o orientador #{orientador.nome}?')) return false;">
+									<f:setPropertyActionListener value="#{orientador}"
+										target="#{orientadorBean.orientadorSelecionado}" />
+								</p:commandLink>
+							</p:column>
+
+						</p:dataTable>
+
+					</p:outputPanel>
+				</div>
+			</p:dialog>
+
+		</h:form>
 
 	</ui:define>
 </ui:composition>

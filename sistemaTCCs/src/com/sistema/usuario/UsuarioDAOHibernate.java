@@ -47,7 +47,54 @@ public class UsuarioDAOHibernate implements UsuarioDAO {
 
 	@Override
 	public void alterarDados(Usuario usuario) {
-		this.sessao.update(usuario);
+		this.sessao.merge(usuario);
+	}
+
+	@Override
+	public void salvar(Usuario usuario) {
+		this.sessao.saveOrUpdate(usuario);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Usuario> bibliotecarios() {
+		String role = "BIBLIOTECARIO";
+		Query select = sessao.createQuery("from Usuario u where u.role =:role");
+		select.setString("role", role);
+		
+		return ((List<Usuario>) select.list());
+	}
+
+	@Override
+	public Usuario findByEmail(String email) {
+		Query query = this.sessao.createQuery("from Usuario u where u.email = :email");
+		query.setParameter("email", email);
+		
+		return (Usuario) query.uniqueResult();
+	}
+
+	@Override
+	public boolean validateSenha(String senha, Usuario usuario) {
+		
+		Query select  = this.sessao.createQuery("SELECT u FROM Usuario u WHERE u = :usuario and u.senha = :senha");
+		select.setParameter("senha", senha);
+		select.setParameter("usuario", usuario);
+		
+		Usuario user = (Usuario) select.uniqueResult();
+		
+		if(user == null)
+			return false;
+		
+		return true;
+	}
+
+	@Override
+	public Usuario validadeEmailMatricula(String email, Integer matricula) {
+		Query select  = this.sessao.createQuery("FROM Aluno a WHERE a.email = :email and a.matricula =:matricula");
+		select.setParameter("email", email);
+		select.setParameter("matricula", matricula);
+		
+		return (Usuario) select.uniqueResult();
 	}
 	
 }

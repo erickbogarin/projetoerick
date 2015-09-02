@@ -2,6 +2,8 @@ package com.sistema.usuario.orientador;
 
 import java.util.List;
 
+import com.sistema.coordenacao.Coordenacao;
+import com.sistema.proposta.Proposta;
 import com.sistema.util.DAOFactory;
 
 public class OrientadorRN {
@@ -35,4 +37,13 @@ public class OrientadorRN {
 	public Orientador findById(Integer id) {
 		return this.professorDAO.findById(id);
 	}
+	
+	public List<Proposta> orientados(Integer id) {
+		return this.professorDAO.orientados(id);
+	}
+
+	public List<Orientador> orientadoresDaCoordenacao(Coordenacao coordenacao) {
+		return this.professorDAO.orientadoresDaCoordenacao(coordenacao);
+	}
+	
 }

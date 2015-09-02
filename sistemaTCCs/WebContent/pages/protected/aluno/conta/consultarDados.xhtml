@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
@@ -10,59 +10,112 @@
 		Replace path to template, title, header and body
 		with actual data.
 	 -->
-<ui:composition template="/templates/template.xhtml">
+<ui:composition template="/templates/_templateAluno.xhtml">
 	<ui:define name="pageTitle">Consultar dados</ui:define>
 	<ui:define name="perfilUsuario">
 		<h:form>
 			<p class="perfil">
-				<a href="consultarDados.xhtml">#{usuarioLogin.user.nome}</a> |
+				<h:commandLink value="#{usuarioLogin.user.nome}"
+					action="#{alunoBean.prepararConta(usuarioLogin.user)}" />
+				|
 				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
 			</p>
 		</h:form>
 	</ui:define>
-	<ui:define name="menuLateral">
-	<div class="menu-destaque">
-		<ul class="nav nav-list">
-			<li class="nav-header">Navegação</li>
-			<li><a href="#">Propostas em Andamento</a></li>
-			<li><a href="#">Upload de Arquivos</a></li>
-			<li><a href="#">Revisões das Propostas</a></li>
-			<li class="nav-header">Administrar</li>
-			<li><a href="#">Cadastro de Propostas</a></li>
-			<li><a href="../pessoas.xhtml">Pessoas</a></li>
-			<li><a href="#">Notas</a></li>
-			<li class="nav-header">Perfil</li>
-			<li class="active"><a href="#">Minha conta</a></li>
-			<li><a href="#">Logoff</a></li>
-		</ul>
-		</div>
-	</ui:define>
-
 	<ui:define name="pageHeader"></ui:define>
 	<ui:define name="body">
 
+		<div class="page-header">
+			<h1>
+				<small>Minha conta</small>
+			</h1>
+		</div>
 
-		<ul class="breadcrumb">
-			<li><a href="../paginaInicial.xhtml">Página Inicial</a> <span
-				class="divider">/</span></li>
-			<li class="active">Meus dados</li>
+		<ul class="nav nav-pills">
+			<li><h:link value="Página Inicial"
+					outcome="/pages/protected/aluno/paginaInicial.xhtml" /></li>
+			<li class="active"><a href="#">Meus dados</a></li>
+			<li><h:link value="Alterar senha" outcome="alterarSenha.xhtml" /></li>
 		</ul>
 
-		<legend>Informações da Conta</legend>
+		<p:messages id="messages" showDetail="true" autoUpdate="true"
+			closable="true" />
 
-		<h:form styleClass="info">
-			<strong><h:outputText value="Nome: " /> </strong>
-			<h:outputText value="#{usuarioLogin.user.nome}"></h:outputText>
-			<br />
+		<div class="panel-body">
+			<div class="panel panel-default">
 
-			<strong><h:outputText value="E-mail: " /> </strong>
-			<h:outputText value="#{usuarioLogin.user.email}"></h:outputText> <br/><br/>
+				<h:form styleClass="text-muted panel-body">
 
-			<h:commandLink value="Alterar dados"
-				action="#{usuarioBean.prepararEdicaoConta(usuarioLogin.user)}" 
-				styleClass="btn btn-primary"/>
-		</h:form>
-		
+					<div class="form-group">
+						<h6>Nome:</h6>
+						<h:inputText value="#{alunoBean.alunoSelecionado.nome}"
+							disabled="true" styleClass="form-control" />
+					</div>
+
+					<div class="form-inline" style="text-align: center">
+						<div class="form-group">
+							<h6>Período Letivo</h6>
+							<h:inputText value="#{alunoBean.periodoAtual.nome}"
+								required="true" label="text" styleClass="form-control"
+								disabled="true" style="font-weight:bold;text-align:center" />
+							<div class="form-group"></div>
+						</div>
+
+						<div class="form-group">
+							<h6>Curso</h6>
+							<h:inputText value="#{alunoBean.alunoSelecionado.curso.nome}"
+								required="true" label="text" styleClass="form-control"
+								disabled="true"
+								style="text-align:center;font-weight:bold;width: 596px" />
+							<div class="form-group"></div>
+						</div>
+
+						<div class="form-group">
+							<h6>Matrícula</h6>
+							<h:inputText value="#{alunoBean.alunoSelecionado.matricula}"
+								required="true" label="text" styleClass="form-control"
+								disabled="true" style="font-weight:bold;text-align:center;" />
+						</div>
+
+					</div>
+
+					<div class="form-group">
+						<h6>Disciplina:</h6>
+						<h:inputText value="#{alunoBean.disciplinaAtual.nome}"
+							required="true" label="text" styleClass="form-control"
+							disabled="true" style="font-weight:bold" />
+						<div class="form-group"></div>
+					</div>
+
+
+					<div class="form-group">
+						<h6>E-mail | Usuario:</h6>
+						<p:inputText value="#{alunoBean.alunoSelecionado.email}" type="email"
+							required="true" requiredMessage="E-Mail obrigatório" styleClass="form-control">
+							<f:ajax event="keypress" render=":messages"/>
+						</p:inputText>
+					</div>
+
+					<div class="form-group">
+						<h6>Celular:</h6>
+						<p:inputMask id="telefone"
+							value="#{alunoBean.alunoSelecionado.telefone}"
+							mask="(99) 99999-9999" required="true" styleClass="form-control" />
+					</div>
+
+					<div class="pager">
+						<h:commandButton value="Alterar dados"
+							action="#{alunoBean.alterar()}" styleClass="btn btn-primary">
+						</h:commandButton>
+
+						<h:link value="Cancelar" outcome="../paginaInicial.xhtml"
+							styleClass="btn btn-default" style="margin-left:5px;"/>
+					</div>
+				</h:form>
+			</div>
+
+		</div>
+
 	</ui:define>
 </ui:composition>
 

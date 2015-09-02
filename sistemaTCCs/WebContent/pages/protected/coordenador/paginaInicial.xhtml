@@ -1,58 +1,71 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
 
-
-<!-- 
-		Replace path to template, title, header and body
-		with actual data.
-	 -->
-<ui:composition template="/templates/template.xhtml">
-	<ui:define name="pageTitle">Sistema de TCCs - Página Inicial</ui:define>
+<ui:composition template="/templates/_templateCoordenador.xhtml">
+	<ui:define name="pageTitle">Página Inicial | TCCs Fucapi</ui:define>
 	<ui:define name="perfilUsuario">
 		<h:form>
 			<p class="perfil">
 				<h:commandLink value="#{usuarioLogin.user.nome}"
-					action="#{orientadorBean.prepararConta(usuarioLogin.user)}" />
+					action="#{coordenadorBean.prepararConta(usuarioLogin.user)}" />
 				|
 				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
 			</p>
 		</h:form>
 	</ui:define>
-	<ui:define name="menuLateral">
-		<div class="menu-destaque">
-			<h:form>
-				<ul class="nav nav-list">
-					<li class="nav-header">Navegação</li>
-					<li><a href="#">Propostas em Andamento</a></li>
-					<li><a href="#">Upload de Arquivos</a></li>
-					<li><a href="#">Revisões das Propostas</a></li>
-					<li class="nav-header">Administrar</li>
-					<li><a href="#">Cadastro de Propostas</a></li>
-					<li><h:link value="Pessoas" outcome="pessoas.xhtml" /></li>
-					<li><a href="#">Notas</a></li>
-					<li class="nav-header">Perfil</li>
-					<h:commandLink value="Minha conta"
-						action="#{orientadorBean.prepararConta(usuarioLogin.user)}" />
-					<li><h:commandLink action="#{usuarioLogin.doLogout}"
-							value="Sair" /></li>
-				</ul>
-			</h:form>
-		</div>
-	</ui:define>
+	
 	<ui:define name="pageHeader"></ui:define>
 	<ui:define name="body">
 		<h:form>
+
+			<div class="page-header">
+				<h1>
+					<small>Mensagens</small>
+				</h1>
+
+			</div>
+
 			<ul class="breadcrumb">
-				<li class="active"><a href="#">Página Inicial</a></li>
+				<li class="active">Página Inicial</li>
 
 			</ul>
 
-			<h:outputText value="Bem-vindo Coordenador!"></h:outputText>
+			<div class="page-body">
+
+				<p:dataTable var="mensagem" value="#{mensagemBean.lista}" rows="10"
+					paginator="true" paginatorTemplate="{PageLinks}"
+					rowsPerPageTemplate="5,10,15" styleClass="table table-bordered"
+					emptyMessage="Sem mensagens enviadas">
+					
+					<p:column headerText="#"
+						style="width:5px;text-align:center;buttom:0">
+
+						<h:outputText value="#{mensagem.data}" styleClass="text-muted">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Assunto"
+						style="width:inheri;text-align:left;">
+						<h:outputText value="#{mensagem.mensagem}" styleClass="text-muted" />
+						<span class="text-muted" style="font-size: 10px"> <small>
+								<h:outputText value="#{mensagem.data}" styleClass="text-justify">
+									<f:convertDateTime pattern="HH:mm"
+										timeZone="#{initParam.timezone}" />
+								</h:outputText>h
+						</small>
+						</span>
+					</p:column>
+
+				</p:dataTable>
+
+			</div>
 		</h:form>
+
+
 	</ui:define>
 </ui:composition>
 

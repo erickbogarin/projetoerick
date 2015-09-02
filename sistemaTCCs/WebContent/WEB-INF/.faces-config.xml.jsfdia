@@ -1,19 +1,620 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PROCESS model-entity="JSFProcess">
- <PROCESS-ITEM NAME="rules:#pages#public#login.xhtml"
-  PATH="/pages/public/login.xhtml" SHAPE="32,17,0,0" model-entity="JSFProcessGroup">
-  <PROCESS-ITEM ID="rules:#pages#public#login.xhtml:0" NAME="item"
-   PATH="/pages/public/login.xhtml" model-entity="JSFProcessItem">
+ <PROCESS-ITEM NAME="rules:#pages#protected#aluno#*"
+  PATH="/pages/protected/aluno/*" SHAPE="32,17,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#pages#protected#aluno#*:0" NAME="item"
+   PATH="/pages/protected/aluno/*" model-entity="JSFProcessItem">
    <PROCESS-ITEM-OUTPUT
-    ID="primeiroAcesso::#pages#protected#coordenador#primeiroAcesso.xhtml"
+    ID="solicitarOrientação:#{propostaBean.controleProposta}:#pages#protected#aluno#proposta#selecionarOrientador.xhtml"
     NAME="output"
-    PATH="/pages/protected/coordenador/primeiroAcesso.xhtml"
-    TARGET="rules:#pages#protected#coordenador#primeiroAcesso.xhtml"
-    TITLE="primeiroAcesso" model-entity="JSFProcessItemOutput"/>
+    PATH="/pages/protected/aluno/proposta/selecionarOrientador.xhtml"
+    TARGET="rules:#pages#protected#aluno#proposta#selecionarOrientador.xhtml"
+    TITLE="#{propostaBean.controleProposta}:solicitarOrientação" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="cadastrarProposta:#{propostaBean.controleProposta}:#pages#protected#aluno#proposta#cadastrarProposta.xhtml"
+    NAME="output1"
+    PATH="/pages/protected/aluno/proposta/cadastrarProposta.xhtml"
+    TARGET="rules:#pages#protected#aluno#proposta#cadastrarProposta.xhtml"
+    TITLE="#{propostaBean.controleProposta}:cadastrarProposta" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="orientacao:#{propostaBean.preparaOrientacao}:#pages#protected#aluno#orientacao#orientacoes.xhtml"
+    NAME="output2"
+    PATH="/pages/protected/aluno/orientacao/orientacoes.xhtml"
+    TARGET="rules:#pages#protected#aluno#orientacao#orientacoes.xhtml"
+    TITLE="#{propostaBean.preparaOrientacao}:orientacao" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="emAndamento:#{propostaBean.controleProposta}:#pages#protected#aluno#proposta#andamento.xhtml"
+    NAME="output3"
+    PATH="/pages/protected/aluno/proposta/andamento.xhtml"
+    TARGET="rules:#pages#protected#aluno#proposta#andamento.xhtml"
+    TITLE="#{propostaBean.controleProposta}:emAndamento" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="emAndamento:#{propostaBean.salvarProposta}:#pages#protected#aluno#proposta#andamento.xhtml"
+    NAME="output4"
+    PATH="/pages/protected/aluno/proposta/andamento.xhtml"
+    TARGET="rules:#pages#protected#aluno#proposta#andamento.xhtml"
+    TITLE="#{propostaBean.salvarProposta}:emAndamento" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="redirecionaConta:#{alunoBean.prepararConta(usuarioLogin.user)}:#pages#protected#aluno#conta#consultarDados.xhtml"
+    NAME="output5"
+    PATH="/pages/protected/aluno/conta/consultarDados.xhtml"
+    TARGET="rules:#pages#protected#aluno#conta#consultarDados.xhtml"
+    TITLE="#{alunoBean.prepararConta(usuarioLogin.user)}:redirecionaConta" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="emAndamento:#{reuniaoBean.controleProposta(usuarioLogin.user)}:#pages#protected#aluno#proposta#andamento.xhtml"
+    NAME="output6"
+    PATH="/pages/protected/aluno/proposta/andamento.xhtml"
+    TARGET="rules:#pages#protected#aluno#proposta#andamento.xhtml"
+    TITLE="#{reuniaoBean.controleProposta(usuarioLogin.user)}:emAndamento" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="quadroAcompanhamento:#{reuniaoBean.controleProposta(usuarioLogin.user)}:#pages#protected#aluno#reuniao#listagemReuniao.xhtml"
+    NAME="output7"
+    PATH="/pages/protected/aluno/reuniao/listagemReuniao.xhtml"
+    TARGET="rules:#pages#protected#aluno#reuniao#listagemReuniao.xhtml"
+    TITLE="#{reuniaoBean.controleProposta(usuarioLogin.user)}:quadroAcompanhamento" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="andamentoQuadro:#{quadroBean.prepararQuadro(usuarioLogin.user)}:#pages#protected#aluno#quadro#listagemQuadro.xhtml"
+    NAME="output8"
+    PATH="/pages/protected/aluno/quadro/listagemQuadro.xhtml"
+    TARGET="rules:#pages#protected#aluno#quadro#listagemQuadro.xhtml"
+    TITLE="#{quadroBean.prepararQuadro(usuarioLogin.user)}:andamentoQuadro" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="solicitarProposta:#{navigationBean.solicitarProposta}:#pages#protected#aluno#proposta#solicitarProposta.xhtml"
+    NAME="output9"
+    PATH="/pages/protected/aluno/proposta/solicitarProposta.xhtml"
+    TARGET="rules:#pages#protected#aluno#proposta#solicitarProposta.xhtml"
+    TITLE="#{navigationBean.solicitarProposta}:solicitarProposta" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="Cronograma:#{atividadeBean.prepararCronograma(usuarioLogin.user)}:#pages#protected#aluno#cronograma#cronograma.xhtml"
+    NAME="output10"
+    PATH="/pages/protected/aluno/cronograma/cronograma.xhtml"
+    TARGET="rules:#pages#protected#aluno#cronograma#cronograma.xhtml"
+    TITLE="#{atividadeBean.prepararCronograma(usuarioLogin.user)}:Cronograma" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="banca:#{bancaBean.banca}:#pages#protected#aluno#banca#banca.xhtml"
+    NAME="output11" PATH="/pages/protected/aluno/banca/banca.xhtml"
+    TARGET="rules:#pages#protected#aluno#banca#banca.xhtml"
+    TITLE="#{bancaBean.banca}:banca" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#pages#protected#coordenador#*"
+  PATH="/pages/protected/coordenador/*" SHAPE="32,2081,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#pages#protected#coordenador#*:0" NAME="item"
+   PATH="/pages/protected/coordenador/*" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="noticias:#{mensagemBean.enviarNoticias}:#pages#public#noticias.xhtml"
+    NAME="output" PATH="/pages/public/noticias.xhtml"
+    TARGET="rules:#pages#public#noticias.xhtml"
+    TITLE="#{mensagemBean.enviarNoticias}:noticias" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="cadastrarAluno:#{usuarioBean.preparaCadastro}:#pages#protected#coordenador#crud#cadastro#cadastro-aluno.xhtml"
+    NAME="output1"
+    PATH="/pages/protected/coordenador/crud/cadastro/cadastro-aluno.xhtml"
+    TARGET="rules:#pages#protected#coordenador#crud#cadastro#cadastro-aluno.xhtml"
+    TITLE="#{usuarioBean.preparaCadastro}:cadastrarAluno" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="alunosTCC:#{alunoPageNavigation.alunosTCC}:#pages#protected#coordenador#crud#listagem#alunos.xhtml"
+    NAME="output2"
+    PATH="/pages/protected/coordenador/crud/listagem/alunos.xhtml"
+    TARGET="rules:#pages#protected#coordenador#crud#listagem#alunos.xhtml"
+    TITLE="#{alunoPageNavigation.alunosTCC}:alunosTCC" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="alunosTCC:#{propostaPageNavigation.quadroTCC}:#pages#protected#coordenador#quadro#selecionar-aluno.xhtml"
+    NAME="output3"
+    PATH="/pages/protected/coordenador/quadro/selecionar-aluno.xhtml"
+    TARGET="rules:#pages#protected#coordenador#quadro#selecionar-aluno.xhtml"
+    TITLE="#{propostaPageNavigation.quadroTCC}:alunosTCC" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="alunosTCC:#{propostaPageNavigation.alunosTCC}:#pages#protected#coordenador#proposta#lista-alunos.xhtml"
+    NAME="output4"
+    PATH="/pages/protected/coordenador/proposta/lista-alunos.xhtml"
+    TARGET="rules:#pages#protected#coordenador#proposta#lista-alunos.xhtml"
+    TITLE="#{propostaPageNavigation.alunosTCC}:alunosTCC" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="alunosTCC:#{propostaPageNavigation.onListaChangeTCCs}:#pages#protected#coordenador#proposta#lista-alunos.xhtml"
+    NAME="output5"
+    PATH="/pages/protected/coordenador/proposta/lista-alunos.xhtml"
+    TARGET="rules:#pages#protected#coordenador#proposta#lista-alunos.xhtml"
+    TITLE="#{propostaPageNavigation.onListaChangeTCCs}:alunosTCC" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="alunosTCC:#{propostaPageNavigation.apresentacoesTCC}:#pages#protected#coordenador#banca#listaCoordenados.xhtml"
+    NAME="output6"
+    PATH="/pages/protected/coordenador/banca/listaCoordenados.xhtml"
+    TARGET="rules:#pages#protected#coordenador#banca#listaCoordenados.xhtml"
+    TITLE="#{propostaPageNavigation.apresentacoesTCC}:alunosTCC" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="redirecionaConta:#{coordenadorBean.prepararConta(usuarioLogin.user)}:#pages#protected#coordenador#conta#consultarDados.xhtml"
+    NAME="output7"
+    PATH="/pages/protected/coordenador/conta/consultarDados.xhtml"
+    TARGET="rules:#pages#protected#coordenador#conta#consultarDados.xhtml"
+    TITLE="#{coordenadorBean.prepararConta(usuarioLogin.user)}:redirecionaConta" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="cadastrarBanca:#{navigationBean.cadastrarBanca}:#pages#protected#coordenador#banca#cadastrarBanca.xhtml"
+    NAME="output8"
+    PATH="/pages/protected/coordenador/banca/cadastrarBanca.xhtml"
+    TARGET="rules:#pages#protected#coordenador#banca#cadastrarBanca.xhtml"
+    TITLE="#{navigationBean.cadastrarBanca}:cadastrarBanca" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="editarDados:#{propostaBean.prepararAlteracoes(proposta)}:#pages#protected#coordenador#proposta#editar.xhtml"
+    NAME="output9"
+    PATH="/pages/protected/coordenador/proposta/editar.xhtml"
+    TARGET="rules:#pages#protected#coordenador#proposta#editar.xhtml"
+    TITLE="#{propostaBean.prepararAlteracoes(proposta)}:editarDados" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="documentos:#{navigationBean.arquivos}:#pages#protected#coordenador#documentos#arquivos.xhtml"
+    NAME="output10"
+    PATH="/pages/protected/coordenador/documentos/arquivos.xhtml"
+    TARGET="rules:#pages#protected#coordenador#documentos#arquivos.xhtml"
+    TITLE="#{navigationBean.arquivos}:documentos" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="documentos:#{bancaPageNavigation.documentos}:#pages#protected#coordenador#documentos#alunos.xhtml"
+    NAME="output11"
+    PATH="/pages/protected/coordenador/documentos/alunos.xhtml"
+    TARGET="rules:#pages#protected#coordenador#documentos#alunos.xhtml"
+    TITLE="#{bancaPageNavigation.documentos}:documentos" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="apresentacoes:#{bancaPageNavigation.apresentacoes}:#pages#protected#coordenador#banca#banca.xhtml"
+    NAME="output12"
+    PATH="/pages/protected/coordenador/banca/banca.xhtml"
+    TARGET="rules:#pages#protected#coordenador#banca#banca.xhtml"
+    TITLE="#{bancaPageNavigation.apresentacoes}:apresentacoes" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#pages#protected#orientador#*"
+  PATH="/pages/protected/orientador/*" SHAPE="32,3809,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#pages#protected#orientador#*:0" NAME="item"
+   PATH="/pages/protected/orientador/*" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="alunosTCC:#{propostaPageNavigation.alunosTCC}:#pages#protected#orientador#proposta#alunosTCC.xhtml"
+    NAME="output"
+    PATH="/pages/protected/orientador/proposta/alunosTCC.xhtml"
+    TARGET="rules:#pages#protected#orientador#proposta#alunosTCC.xhtml"
+    TITLE="#{propostaPageNavigation.alunosTCC}:alunosTCC" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="alunosITCC:#{propostaPageNavigation.alunosITCC}:#pages#protected#orientador#proposta#alunosITCC.xhtml"
+    NAME="output1"
+    PATH="/pages/protected/orientador/proposta/alunosITCC.xhtml"
+    TARGET="rules:#pages#protected#orientador#proposta#alunosITCC.xhtml"
+    TITLE="#{propostaPageNavigation.alunosITCC}:alunosITCC" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="alunosTCC:#{propostaPageNavigation.orientacoesTCC}:#pages#protected#orientador#orientacao#alunosTCC.xhtml"
+    NAME="output2"
+    PATH="/pages/protected/orientador/orientacao/alunosTCC.xhtml"
+    TARGET="rules:#pages#protected#orientador#orientacao#alunosTCC.xhtml"
+    TITLE="#{propostaPageNavigation.orientacoesTCC}:alunosTCC" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="alunosITCC:#{propostaPageNavigation.orientacoesITCC}:#pages#protected#orientador#orientacao#alunosITCC.xhtml"
+    NAME="output3"
+    PATH="/pages/protected/orientador/orientacao/alunosITCC.xhtml"
+    TARGET="rules:#pages#protected#orientador#orientacao#alunosITCC.xhtml"
+    TITLE="#{propostaPageNavigation.orientacoesITCC}:alunosITCC" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="alunosTCC:#{propostaPageNavigation.reunioesTCC}:#pages#protected#orientador#reuniao#alunosTCC.xhtml"
+    NAME="output4"
+    PATH="/pages/protected/orientador/reuniao/alunosTCC.xhtml"
+    TARGET="rules:#pages#protected#orientador#reuniao#alunosTCC.xhtml"
+    TITLE="#{propostaPageNavigation.reunioesTCC}:alunosTCC" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="alunosITCC:#{propostaPageNavigation.reunioesITCC}:#pages#protected#orientador#reuniao#alunosITCC.xhtml"
+    NAME="output5"
+    PATH="/pages/protected/orientador/reuniao/alunosITCC.xhtml"
+    TARGET="rules:#pages#protected#orientador#reuniao#alunosITCC.xhtml"
+    TITLE="#{propostaPageNavigation.reunioesITCC}:alunosITCC" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="alunosTCC:#{propostaPageNavigation.quadroTCC}:#pages#protected#orientador#quadro#alunosTCC.xhtml"
+    NAME="output6"
+    PATH="/pages/protected/orientador/quadro/alunosTCC.xhtml"
+    TARGET="rules:#pages#protected#orientador#quadro#alunosTCC.xhtml"
+    TITLE="#{propostaPageNavigation.quadroTCC}:alunosTCC" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="alunosITCC:#{propostaPageNavigation.quadroITCC}:#pages#protected#orientador#quadro#alunosITCC.xhtml"
+    NAME="output7"
+    PATH="/pages/protected/orientador/quadro/alunosITCC.xhtml"
+    TARGET="rules:#pages#protected#orientador#quadro#alunosITCC.xhtml"
+    TITLE="#{propostaPageNavigation.quadroITCC}:alunosITCC" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="orientacoes:#{propostaBean.preparaOrientacoes}:#pages#protected#orientador#orientacao#alunosTCC.xhtml"
+    NAME="output8"
+    PATH="/pages/protected/orientador/orientacao/alunosTCC.xhtml"
+    TARGET="rules:#pages#protected#orientador#orientacao#alunosTCC.xhtml"
+    TITLE="#{propostaBean.preparaOrientacoes}:orientacoes" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="orientacoes:#{orientacaoBean.preparaOrientacoes}:#pages#protected#orientador#orientacao#orientacoes.xhtml"
+    NAME="output9"
+    PATH="/pages/protected/orientador/orientacao/orientacoes.xhtml"
+    TARGET="rules:#pages#protected#orientador#orientacao#orientacoes.xhtml"
+    TITLE="#{orientacaoBean.preparaOrientacoes}:orientacoes" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="listagemReuniao:#{reuniaoBean.prepararReunioes}:#pages#protected#orientador#reuniao#listagemReuniao.xhtml"
+    NAME="output10"
+    PATH="/pages/protected/orientador/reuniao/listagemReuniao.xhtml"
+    TARGET="rules:#pages#protected#orientador#reuniao#listagemReuniao.xhtml"
+    TITLE="#{reuniaoBean.prepararReunioes}:listagemReuniao" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="redirecionaConta:#{orientadorBean.prepararConta(usuarioLogin.user)}:#pages#protected#orientador#conta#consultarDados.xhtml"
+    NAME="output11"
+    PATH="/pages/protected/orientador/conta/consultarDados.xhtml"
+    TARGET="rules:#pages#protected#orientador#conta#consultarDados.xhtml"
+    TITLE="#{orientadorBean.prepararConta(usuarioLogin.user)}:redirecionaConta" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="Cronograma:#{orientadorBean.prepararCronograma}:#pages#protected#orientador#cronograma#cronograma.xhtml"
+    NAME="output12"
+    PATH="/pages/protected/orientador/cronograma/cronograma.xhtml"
+    TARGET="rules:#pages#protected#orientador#cronograma#cronograma.xhtml"
+    TITLE="#{orientadorBean.prepararCronograma}:Cronograma" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="apresentacoes:#{bancaBean.prepararOrientados}:#pages#protected#orientador#banca#banca.xhtml"
+    NAME="output13" PATH="/pages/protected/orientador/banca/banca.xhtml"
+    TARGET="rules:#pages#protected#orientador#banca#banca.xhtml"
+    TITLE="#{bancaBean.prepararOrientados}:apresentacoes" model-entity="JSFProcessItemOutput"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
  <PROCESS-ITEM
-  NAME="rules:#pages#protected#coordenador#primeiroAcesso.xhtml"
-  PATH="/pages/protected/coordenador/primeiroAcesso.xhtml"
-  SHAPE="240,33,0,0" model-entity="JSFProcessGroup"/>
+  NAME="rules:#pages#protected#coordenador#cronograma#selecionarPeriodo.xhtml"
+  PATH="/pages/protected/coordenador/cronograma/selecionarPeriodo.xhtml"
+  SHAPE="32,1297,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM
+   ID="rules:#pages#protected#coordenador#cronograma#selecionarPeriodo.xhtml:0"
+   NAME="item"
+   PATH="/pages/protected/coordenador/cronograma/selecionarPeriodo.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="editarAtividades:#{atividadeBean.prepararEdicao}:#pages#protected#coordenador#cronograma#manterAtividades.xhtml"
+    NAME="output"
+    PATH="/pages/protected/coordenador/cronograma/manterAtividades.xhtml"
+    TARGET="rules:#pages#protected#coordenador#cronograma#manterAtividades.xhtml"
+    TITLE="#{atividadeBean.prepararEdicao}:editarAtividades" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#pages#protected#admin#*"
+  PATH="/pages/protected/admin/*" SHAPE="32,5681,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#pages#protected#admin#*:0" NAME="item"
+   PATH="/pages/protected/admin/*" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="coordenador:#{adminNavigationRule.coordenador}:#pages#protected#admin#coordenador#listaCoordenadores.xhtml"
+    NAME="output"
+    PATH="/pages/protected/admin/coordenador/listaCoordenadores.xhtml"
+    TARGET="rules:#pages#protected#admin#coordenador#listaCoordenadores.xhtml"
+    TITLE="#{adminNavigationRule.coordenador}:coordenador" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="bibliotecario:#{adminNavigationRule.bibliotecario}:#pages#protected#admin#bibliotecario#listaBibliotecarios.xhtml"
+    NAME="output1"
+    PATH="/pages/protected/admin/bibliotecario/listaBibliotecarios.xhtml"
+    TARGET="rules:#pages#protected#admin#bibliotecario#listaBibliotecarios.xhtml"
+    TITLE="#{adminNavigationRule.bibliotecario}:bibliotecario" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="periodoLetivo:#{adminNavigationRule.periodoLetivo}:#pages#protected#admin#periodo-letivo#selecionarPeriodo.xhtml"
+    NAME="output2"
+    PATH="/pages/protected/admin/periodo-letivo/selecionarPeriodo.xhtml"
+    TARGET="rules:#pages#protected#admin#periodo-letivo#selecionarPeriodo.xhtml"
+    TITLE="#{adminNavigationRule.periodoLetivo}:periodoLetivo" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="coordenacao:#{adminNavigationRule.coordenacao}:#pages#protected#admin#coordenacao#listaCoordenacao.xhtml"
+    NAME="output3"
+    PATH="/pages/protected/admin/coordenacao/listaCoordenacao.xhtml"
+    TARGET="rules:#pages#protected#admin#coordenacao#listaCoordenacao.xhtml"
+    TITLE="#{adminNavigationRule.coordenacao}:coordenacao" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="curso:#{adminNavigationRule.curso}:#pages#protected#admin#cursos#listaCursos.xhtml"
+    NAME="output4"
+    PATH="/pages/protected/admin/cursos/listaCursos.xhtml"
+    TARGET="rules:#pages#protected#admin#cursos#listaCursos.xhtml"
+    TITLE="#{adminNavigationRule.curso}:curso" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="EditarConta:#{usuarioBean.prepararEdicao}:#pages#protected#admin#edicao#alterarBibliotecario.xhtml"
+    NAME="output5"
+    PATH="/pages/protected/admin/edicao/alterarBibliotecario.xhtml"
+    TARGET="rules:#pages#protected#admin#edicao#alterarBibliotecario.xhtml"
+    TITLE="#{usuarioBean.prepararEdicao}:EditarConta" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="Bibliotecarios:#{usuarioBean.alterarBibliotecario}:#pages#protected#admin#bibliotecario#listaBibliotecarios.xhtml"
+    NAME="output6"
+    PATH="/pages/protected/admin/bibliotecario/listaBibliotecarios.xhtml"
+    TARGET="rules:#pages#protected#admin#bibliotecario#listaBibliotecarios.xhtml"
+    TITLE="#{usuarioBean.alterarBibliotecario}:Bibliotecarios" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#pages#protected#bibliotecario#*"
+  PATH="/pages/protected/bibliotecario/*" SHAPE="32,6545,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#pages#protected#bibliotecario#*:0"
+   NAME="item" PATH="/pages/protected/bibliotecario/*" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="Proposta:#{alunoBean.salvarAluno}:#pages#protected#bibliotecario#tcc#cadastrarTCC.xhtml"
+    NAME="output"
+    PATH="/pages/protected/bibliotecario/tcc/cadastrarTCC.xhtml"
+    TARGET="rules:#pages#protected#bibliotecario#tcc#cadastrarTCC.xhtml"
+    TITLE="#{alunoBean.salvarAluno}:Proposta" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#*" PATH="/*" SHAPE="32,705,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#*:0" NAME="item" PATH="/*" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="redirecionaConta:#{usuarioBean.prepararConta(usuarioLogin.user)}:#pages#protected#admin#conta#consultarDados.xhtml"
+    NAME="output"
+    PATH="/pages/protected/admin/conta/consultarDados.xhtml"
+    TARGET="rules:#pages#protected#admin#conta#consultarDados.xhtml"
+    TITLE="#{usuarioBean.prepararConta(usuarioLogin.user)}:redirecionaConta" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="administrador:#{usuarioLogin.doLogin}:#pages#protected#admin#paginaInicial.xhtml"
+    NAME="output1" PATH="/pages/protected/admin/paginaInicial.xhtml"
+    TARGET="rules:#pages#protected#admin#paginaInicial.xhtml"
+    TITLE="#{usuarioLogin.doLogin}:administrador" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="aluno:#{navigationBean.paginaInicial}:#pages#protected#aluno#paginaInicial.xhtml"
+    NAME="output2" PATH="/pages/protected/aluno/paginaInicial.xhtml"
+    TARGET="rules:#pages#protected#aluno#paginaInicial.xhtml"
+    TITLE="#{navigationBean.paginaInicial}:aluno" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="orientador:#{navigationBean.paginaInicial}:#pages#protected#orientador#paginaInicial.xhtml"
+    NAME="output3"
+    PATH="/pages/protected/orientador/paginaInicial.xhtml"
+    TARGET="rules:#pages#protected#orientador#paginaInicial.xhtml"
+    TITLE="#{navigationBean.paginaInicial}:orientador" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="coordenador:#{navigationBean.paginaInicial}:#pages#protected#coordenador#paginaInicial.xhtml"
+    NAME="output4"
+    PATH="/pages/protected/coordenador/paginaInicial.xhtml"
+    TARGET="rules:#pages#protected#coordenador#paginaInicial.xhtml"
+    TITLE="#{navigationBean.paginaInicial}:coordenador" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="admin:#{navigationBean.paginaInicial}:#pages#protected#admin#paginaInicial.xhtml"
+    NAME="output5" PATH="/pages/protected/admin/paginaInicial.xhtml"
+    TARGET="rules:#pages#protected#admin#paginaInicial.xhtml"
+    TITLE="#{navigationBean.paginaInicial}:admin" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="bibliotecario:#{navigationBean.paginaInicial}:#pages#protected#bibliotecario#paginaInicial.xhtml"
+    NAME="output6"
+    PATH="/pages/protected/bibliotecario/paginaInicial.xhtml"
+    TARGET="rules:#pages#protected#bibliotecario#paginaInicial.xhtml"
+    TITLE="#{navigationBean.paginaInicial}:bibliotecario" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="cadastrarNoticias:#{navigationBean.cadastrarNoticias}:#pages#protected#coordenador#noticias#cadastrarNoticias.xhtml"
+    NAME="output7"
+    PATH="/pages/protected/coordenador/noticias/cadastrarNoticias.xhtml"
+    TARGET="rules:#pages#protected#coordenador#noticias#cadastrarNoticias.xhtml"
+    TITLE="#{navigationBean.cadastrarNoticias}:cadastrarNoticias" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="Bibliotecario:#{usuarioLogin.doLogin}:#pages#protected#bibliotecario#paginaInicial.xhtml"
+    NAME="output8"
+    PATH="/pages/protected/bibliotecario/paginaInicial.xhtml"
+    TARGET="rules:#pages#protected#bibliotecario#paginaInicial.xhtml"
+    TITLE="#{usuarioLogin.doLogin}:Bibliotecario" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="noticias:#{navigationBean.noticias}:#pages#public#noticias.xhtml"
+    NAME="output9" PATH="/pages/public/noticias.xhtml"
+    TARGET="rules:#pages#public#noticias.xhtml"
+    TITLE="#{navigationBean.noticias}:noticias" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="tccs:#{navigationBean.tccs}:#pages#public#tccs.xhtml"
+    NAME="output10" PATH="/pages/public/tccs.xhtml"
+    TARGET="rules:#pages#public#tccs.xhtml"
+    TITLE="#{navigationBean.tccs}:tccs" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="sugestoes:#{navigationBean.sugestoes}:#pages#public#sugestoes.xhtml"
+    NAME="output11" PATH="/pages/public/sugestoes.xhtml"
+    TARGET="rules:#pages#public#sugestoes.xhtml"
+    TITLE="#{navigationBean.sugestoes}:sugestoes" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="tccs:#{navigationBean.manuais}:#pages#public#manuais.xhtml"
+    NAME="output12" PATH="/pages/public/manuais.xhtml"
+    TARGET="rules:#pages#public#manuais.xhtml"
+    TITLE="#{navigationBean.manuais}:tccs" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="tccs:#{navigationBean.tccs}:#pages#public#sobre.xhtml"
+    NAME="output13" PATH="/pages/public/sobre.xhtml"
+    TARGET="rules:#pages#public#sobre.xhtml"
+    TITLE="#{navigationBean.tccs}:tccs" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="andamentoProposta:#{navigationBean.andamentoProposta}:#pages#protected#aluno#proposta#andamento.xhtml"
+    NAME="output14"
+    PATH="/pages/protected/aluno/proposta/andamento.xhtml"
+    TARGET="rules:#pages#protected#aluno#proposta#andamento.xhtml"
+    TITLE="#{navigationBean.andamentoProposta}:andamentoProposta" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="atualizaLista:#{navigationBean.atualizaLista}:#pages#protected#coordenador#cronograma#manterAtividades.xhtml"
+    NAME="output15"
+    PATH="/pages/protected/coordenador/cronograma/manterAtividades.xhtml"
+    TARGET="rules:#pages#protected#coordenador#cronograma#manterAtividades.xhtml"
+    TITLE="#{navigationBean.atualizaLista}:atualizaLista" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#admin#bibliotecario#listaBibliotecarios.xhtml"
+  PATH="/pages/protected/admin/bibliotecario/listaBibliotecarios.xhtml"
+  SHAPE="304,6001,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#bibliotecario#tcc#cadastrarTCC.xhtml"
+  PATH="/pages/protected/bibliotecario/tcc/cadastrarTCC.xhtml"
+  SHAPE="240,6561,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#coordenador#banca#listaCoordenados.xhtml"
+  PATH="/pages/protected/coordenador/banca/listaCoordenados.xhtml"
+  SHAPE="304,3041,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#pages#public#sobre.xhtml"
+  PATH="/pages/public/sobre.xhtml" SHAPE="304,721,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#orientador#orientacao#alunosTCC.xhtml"
+  PATH="/pages/protected/orientador/orientacao/alunosTCC.xhtml"
+  SHAPE="304,4465,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#orientador#reuniao#listagemReuniao.xhtml"
+  PATH="/pages/protected/orientador/reuniao/listagemReuniao.xhtml"
+  SHAPE="304,5249,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#aluno#cronograma#cronograma.xhtml"
+  PATH="/pages/protected/aluno/cronograma/cronograma.xhtml"
+  SHAPE="304,33,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#coordenador#conta#consultarDados.xhtml"
+  PATH="/pages/protected/coordenador/conta/consultarDados.xhtml"
+  SHAPE="304,3153,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#pages#protected#aluno#banca#banca.xhtml"
+  PATH="/pages/protected/aluno/banca/banca.xhtml" SHAPE="304,33,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#pages#public#manuais.xhtml"
+  PATH="/pages/public/manuais.xhtml" SHAPE="304,721,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#orientador#reuniao#alunosITCC.xhtml"
+  PATH="/pages/protected/orientador/reuniao/alunosITCC.xhtml"
+  SHAPE="304,4801,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#pages#protected#admin#paginaInicial.xhtml"
+  PATH="/pages/protected/admin/paginaInicial.xhtml" SHAPE="304,1425,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#bibliotecario#paginaInicial.xhtml"
+  PATH="/pages/protected/bibliotecario/paginaInicial.xhtml"
+  SHAPE="304,1873,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#aluno#proposta#cadastrarProposta.xhtml"
+  PATH="/pages/protected/aluno/proposta/cadastrarProposta.xhtml"
+  SHAPE="304,497,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#aluno#conta#consultarDados.xhtml"
+  PATH="/pages/protected/aluno/conta/consultarDados.xhtml"
+  SHAPE="304,33,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#coordenador#documentos#arquivos.xhtml"
+  PATH="/pages/protected/coordenador/documentos/arquivos.xhtml"
+  SHAPE="304,3489,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#orientador#proposta#alunosTCC.xhtml"
+  PATH="/pages/protected/orientador/proposta/alunosTCC.xhtml"
+  SHAPE="304,3825,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#coordenador#crud#cadastro#cadastro-aluno.xhtml"
+  PATH="/pages/protected/coordenador/crud/cadastro/cadastro-aluno.xhtml"
+  SHAPE="304,2593,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#admin#coordenacao#listaCoordenacao.xhtml"
+  PATH="/pages/protected/admin/coordenacao/listaCoordenacao.xhtml"
+  SHAPE="304,6225,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#coordenador#paginaInicial.xhtml"
+  PATH="/pages/protected/coordenador/paginaInicial.xhtml"
+  SHAPE="304,1761,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#admin#periodo-letivo#selecionarPeriodo.xhtml"
+  PATH="/pages/protected/admin/periodo-letivo/selecionarPeriodo.xhtml"
+  SHAPE="304,6113,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#aluno#reuniao#listagemReuniao.xhtml"
+  PATH="/pages/protected/aluno/reuniao/listagemReuniao.xhtml"
+  SHAPE="304,33,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#admin#cursos#listaCursos.xhtml"
+  PATH="/pages/protected/admin/cursos/listaCursos.xhtml"
+  SHAPE="304,6337,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#coordenador#documentos#alunos.xhtml"
+  PATH="/pages/protected/coordenador/documentos/alunos.xhtml"
+  SHAPE="304,3601,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#coordenador#noticias#cadastrarNoticias.xhtml"
+  PATH="/pages/protected/coordenador/noticias/cadastrarNoticias.xhtml"
+  SHAPE="304,1985,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#orientador#quadro#alunosITCC.xhtml"
+  PATH="/pages/protected/orientador/quadro/alunosITCC.xhtml"
+  SHAPE="304,5025,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#aluno#proposta#solicitarProposta.xhtml"
+  PATH="/pages/protected/aluno/proposta/solicitarProposta.xhtml"
+  SHAPE="304,33,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#admin#edicao#alterarBibliotecario.xhtml"
+  PATH="/pages/protected/admin/edicao/alterarBibliotecario.xhtml"
+  SHAPE="304,6449,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#pages#public#sugestoes.xhtml"
+  PATH="/pages/public/sugestoes.xhtml" SHAPE="304,721,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#orientador#conta#consultarDados.xhtml"
+  PATH="/pages/protected/orientador/conta/consultarDados.xhtml"
+  SHAPE="304,5361,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#orientador#orientacao#alunosITCC.xhtml"
+  PATH="/pages/protected/orientador/orientacao/alunosITCC.xhtml"
+  SHAPE="304,4577,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#admin#coordenador#listaCoordenadores.xhtml"
+  PATH="/pages/protected/admin/coordenador/listaCoordenadores.xhtml"
+  SHAPE="304,5697,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#coordenador#banca#cadastrarBanca.xhtml"
+  PATH="/pages/protected/coordenador/banca/cadastrarBanca.xhtml"
+  SHAPE="304,3265,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#admin#conta#consultarDados.xhtml"
+  PATH="/pages/protected/admin/conta/consultarDados.xhtml"
+  SHAPE="304,1313,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#coordenador#banca#banca.xhtml"
+  PATH="/pages/protected/coordenador/banca/banca.xhtml"
+  SHAPE="304,3713,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#coordenador#cronograma#manterAtividades.xhtml"
+  PATH="/pages/protected/coordenador/cronograma/manterAtividades.xhtml"
+  SHAPE="304,721,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#orientador#orientacao#orientacoes.xhtml"
+  PATH="/pages/protected/orientador/orientacao/orientacoes.xhtml"
+  SHAPE="304,5137,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#aluno#orientacao#orientacoes.xhtml"
+  PATH="/pages/protected/aluno/orientacao/orientacoes.xhtml"
+  SHAPE="304,609,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#orientador#reuniao#alunosTCC.xhtml"
+  PATH="/pages/protected/orientador/reuniao/alunosTCC.xhtml"
+  SHAPE="304,4689,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#aluno#proposta#selecionarOrientador.xhtml"
+  PATH="/pages/protected/aluno/proposta/selecionarOrientador.xhtml"
+  SHAPE="304,33,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#coordenador#proposta#lista-alunos.xhtml"
+  PATH="/pages/protected/coordenador/proposta/lista-alunos.xhtml"
+  SHAPE="304,2929,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#orientador#banca#banca.xhtml"
+  PATH="/pages/protected/orientador/banca/banca.xhtml"
+  SHAPE="304,5585,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#coordenador#crud#listagem#alunos.xhtml"
+  PATH="/pages/protected/coordenador/crud/listagem/alunos.xhtml"
+  SHAPE="304,2705,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#aluno#proposta#andamento.xhtml"
+  PATH="/pages/protected/aluno/proposta/andamento.xhtml"
+  SHAPE="304,721,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#orientador#paginaInicial.xhtml"
+  PATH="/pages/protected/orientador/paginaInicial.xhtml"
+  SHAPE="304,1649,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#pages#public#tccs.xhtml"
+  PATH="/pages/public/tccs.xhtml" SHAPE="304,721,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#aluno#quadro#listagemQuadro.xhtml"
+  PATH="/pages/protected/aluno/quadro/listagemQuadro.xhtml"
+  SHAPE="304,33,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#orientador#proposta#alunosITCC.xhtml"
+  PATH="/pages/protected/orientador/proposta/alunosITCC.xhtml"
+  SHAPE="304,4353,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#orientador#quadro#alunosTCC.xhtml"
+  PATH="/pages/protected/orientador/quadro/alunosTCC.xhtml"
+  SHAPE="304,4913,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#coordenador#proposta#editar.xhtml"
+  PATH="/pages/protected/coordenador/proposta/editar.xhtml"
+  SHAPE="304,3377,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#pages#protected#aluno#paginaInicial.xhtml"
+  PATH="/pages/protected/aluno/paginaInicial.xhtml" SHAPE="304,1537,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#coordenador#quadro#selecionar-aluno.xhtml"
+  PATH="/pages/protected/coordenador/quadro/selecionar-aluno.xhtml"
+  SHAPE="304,2817,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#protected#orientador#cronograma#cronograma.xhtml"
+  PATH="/pages/protected/orientador/cronograma/cronograma.xhtml"
+  SHAPE="304,5473,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#pages#public#noticias.xhtml"
+  PATH="/pages/public/noticias.xhtml" SHAPE="304,2097,0,0" model-entity="JSFProcessGroup"/>
 </PROCESS>

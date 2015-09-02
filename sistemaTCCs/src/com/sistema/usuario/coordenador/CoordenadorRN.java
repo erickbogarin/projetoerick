@@ -28,4 +28,16 @@ public class CoordenadorRN {
 		this.coordenadorDAO.alterar(coordenadorSelecionado);
 	}
 
+	public void excluir(Coordenador coordenador) {
+		this.coordenadorDAO.excluir(coordenador);
+	}
+
+	public List<Coordenador> coordenadores(String coordenacao, String disciplina) {
+		return this.coordenadorDAO.coordenadores(coordenacao, disciplina);
+	}
+
+	public void desassociar(Coordenador coordenador) {
+		this.coordenadorDAO.desassociar(coordenador);
+	}
+
 }

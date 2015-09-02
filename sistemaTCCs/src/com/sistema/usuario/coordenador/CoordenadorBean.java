@@ -5,137 +5,202 @@ import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 
+import br.com.sistema.external.ConversorMD5;
 import br.com.sistema.external.PasswordGenerator;
+import br.com.sistema.external.SendMail;
 
-import com.sistema.status.Status;
+import com.sistema.coordenacao.Coordenacao;
+import com.sistema.coordenacao.CoordenacaoRN;
+import com.sistema.disciplina.Disciplina;
+import com.sistema.disciplina.DisciplinaRN;
+import com.sistema.status.UsuarioStatus;
 import com.sistema.usuario.Usuario;
-import com.sistema.usuario.UsuarioBean;
 import com.sistema.usuario.UsuarioRN;
-import com.sistema.usuario.aluno.Aluno;
-import com.sistema.usuario.aluno.AlunoRN;
-import com.sistema.usuario.orientador.Orientador;
-import com.sistema.usuario.orientador.OrientadorRN;
 
-@ManagedBean (name = "coordenadorBean")
-@RequestScoped
+@ManagedBean(name = "coordenadorBean")
+@SessionScoped
 public class CoordenadorBean {
-	private Orientador orientadorSelecionado = new Orientador();
+
 	private Coordenador coordenadorSelecionado = new Coordenador();
-	private Aluno alunoSelecionado = new Aluno();
-	private UsuarioBean usuarioBean = new UsuarioBean();
-	
-	public List<Usuario> validateOrientador() {
-		UsuarioRN usuarioRN = new UsuarioRN();
-		
-		return (List<Usuario>) usuarioRN
-				.validateUsername(orientadorSelecionado.getEmail());
-	}
-	
-	public List<Usuario> validateAluno() {
-		UsuarioRN usuarioRN = new UsuarioRN();
-		
-		return (List<Usuario>) usuarioRN
-				.validateUsername(alunoSelecionado.getEmail());
-	}
-	
-	public void salvarOrientador() {
-		if (validateOrientador().size() == 0) {
-			OrientadorRN orientadorRN = new OrientadorRN();		
-			orientadorSelecionado.setDataCadastro(new Date());
-			orientadorSelecionado.setSenha(PasswordGenerator.geraSenha(6));
-			orientadorSelecionado.setStatus(Status.CADASTRADO);
-			//Email.enviarEmail(orientadorSelecionado);
+	private List<Coordenador> lista = null;
 
-			orientadorRN.salvar(orientadorSelecionado);
-			orientadorSelecionado = new Orientador();
+	private Integer disciplinaId = null;
+	private Integer coordenacaoId = null;
+	
+	public void adicionarCoordenador() {
+		if (new UsuarioRN().findByEmail( this.coordenadorSelecionado.getEmail() ) == null) {
+
+			Disciplina disciplina = new DisciplinaRN()
+					.findById(this.disciplinaId);
+			this.coordenadorSelecionado.setDisciplina(disciplina);
+
+			Coordenacao coordenacao = new CoordenacaoRN()
+					.findById(this.coordenacaoId);
+			this.coordenadorSelecionado.setCoordenacao(coordenacao);
+
+			this.coordenadorSelecionado.setDataCadastro(new Date());
+			this.coordenadorSelecionado.setStatus(UsuarioStatus.Cadastrado);
+			final String senha = PasswordGenerator.geraSenha(6);
+			this.coordenadorSelecionado.setSenha(ConversorMD5.convertStringToMd5(senha));
 			
-			FacesMessage faces = new FacesMessage(
-					"Cliente cadastrado com sucesso!");
-			FacesContext contexto = FacesContext.getCurrentInstance();
-			contexto.addMessage(null, faces);
+			new UsuarioRN().salvar(this.coordenadorSelecionado);
 			
+			final Usuario usuario = this.coordenadorSelecionado;
+			
+			new Thread() {
+				public void run() {
+					String assunto = "Bem vindo ao Sistema de Gerenciamento e Controle do TCC: conta de acesso";
+					String msg = "Olá " + usuario.getNome()  + ",\n\n"
+							+ "Seja bem vindo à nossa plataforma!\n\n"
+							+ "Para acessar a sua conta, entre em nosso site (http://localhost:8080/sistemaTCCs/) "
+							+ "e utilize  as seguintes informações:\n\n" 
+							+ " Usuário: " + usuario.getEmail() + "\n"
+							+ " Senha: " + senha + "\n\n" 
+							+ "Qualquer dúvida, entre em contato conosco!\n\n"
+							+ "Sistema de Gerenciamento e Controle do TCC.";
+					SendMail.sendMail(usuario.getEmail(), assunto, msg);
+				}
+			}.start();
+			
+			this.coordenadorSelecionado = new Coordenador();
+			
+			this.lista = null;
+
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO, "Cadastrado!",
+							"O coordenador foi cadastrado com sucesso."));
 		} else {
-			FacesMessage faces = new FacesMessage("E-mail já cadastrado!");
-			FacesContext contexto = FacesContext.getCurrentInstance();
-			contexto.addMessage(null, faces);
+			FacesContext
+					.getCurrentInstance()
+					.addMessage(
+							null,
+							new FacesMessage(FacesMessage.SEVERITY_ERROR,
+									"Erro!",
+									"O E-Mail deste usuário já está cadastrado."));
 		}
 	}
-	
-	public void salvarAluno() {
-		
-		if (validateAluno().size() == 0) {
-			AlunoRN alunoRN = new AlunoRN();		
-			alunoSelecionado.setDataCadastro(new Date());
-			alunoSelecionado.setSenha(PasswordGenerator.geraSenha(6));
-			alunoSelecionado.setStatus(Status.CADASTRADO);
-			//Email.enviarEmail(orientadorSelecionado);
-			
-			alunoRN.salvar(alunoSelecionado);
-			alunoSelecionado = new Aluno();
-			
-			FacesMessage faces = new FacesMessage(
-					"Aluno cadastrado com sucesso!");
-			FacesContext contexto = FacesContext.getCurrentInstance();
-			contexto.addMessage(null, faces);
-		} else {
-			FacesMessage faces = new FacesMessage("E-mail já cadastrado!");
-			FacesContext contexto = FacesContext.getCurrentInstance();
-			contexto.addMessage(null, faces);
-		}
-		
-	}
-	
-	public String alterar() {
+
+	public List<Coordenador> getLista() {
 		CoordenadorRN coordenadorRN = new CoordenadorRN();
-		this.coordenadorSelecionado.setDataCadastro(new Date());
-		coordenadorRN.alterar(this.coordenadorSelecionado);
-		FacesMessage faces = new FacesMessage("Usuario alterado com sucesso!");
-		FacesContext contexto = FacesContext.getCurrentInstance();
-		contexto.addMessage(null, faces);
 
-		return "../listagem/listarCoordenador.xhtml";
+		if (this.lista == null) {
+			this.lista = coordenadorRN.listar();
+		}
+
+		return this.lista;
+	}
+
+	public void excluir() {
+
+		new CoordenadorRN().excluir(this.coordenadorSelecionado);
+
+		FacesContext.getCurrentInstance().addMessage(
+				null,
+				new FacesMessage(FacesMessage.SEVERITY_INFO,
+						"Coordenador excluido!", ""));
+
+		this.lista = null;
+	}
+
+	public void alterar(ActionEvent event) {
+		Disciplina disciplina = new DisciplinaRN().buscaPorId(disciplinaId);
+		this.coordenadorSelecionado.setDisciplina(disciplina);
+		
+		Coordenacao coordenacao = new CoordenacaoRN().buscaPorId(coordenacaoId);
+		this.coordenadorSelecionado.setCoordenacao(coordenacao);
+		
+		new CoordenadorRN().alterar(this.coordenadorSelecionado);
+		
+		FacesContext.getCurrentInstance().addMessage(
+				null,
+				new FacesMessage(FacesMessage.SEVERITY_INFO,
+						"Dados do coordenador alterado!", null));
+
+	}
+
+	public List<Disciplina> getDisciplinas() {
+		return new DisciplinaRN().disciplinas();
 	}
 	
-	public void preparaConsulta() {
-		usuarioBean.getConsultarCoordenador();
+	public List<Coordenacao> getCoordenacoes() {
+		return new CoordenacaoRN().listar();
 	}
-
+	
 	public String prepararConta(Usuario usuario) {
 		CoordenadorRN coordenadorRN = new CoordenadorRN();
 		this.coordenadorSelecionado = coordenadorRN.findById(usuario.getId());
 
-		return "conta/consultarDados.xhtml";
+		return "redirecionaConta";
 	}
-	
+
 	public String solicitarEditarConta(Usuario coordenador) {
 		CoordenadorRN coordenadorRN = new CoordenadorRN();
-		this.coordenadorSelecionado = coordenadorRN.findById(coordenador.getId());
-		
+		this.coordenadorSelecionado = coordenadorRN.findById(coordenador
+				.getId());
+
 		return "alterarConta.xhtml";
 	}
-	
+
 	public String prepararEdicao(Coordenador coordenador) {
-		this.coordenadorSelecionado =  coordenador;
-		return "../edicao/alterarCoordenador.xhtml";
-	}
-	
-	public Orientador getOrientadorSelecionado() {
-		return orientadorSelecionado;
+		this.coordenadorSelecionado = coordenador;
+		return "edicao/alterarCoordenador.xhtml";
 	}
 
-	public void setOrientadorSelecionado(Orientador orientadorSelecionado) {
-		this.orientadorSelecionado = orientadorSelecionado;
+	public String prepararEdicaoConta(Coordenador coordenador) {
+
+		coordenador.setSenha(ConversorMD5.convertStringToMd5(coordenador
+				.getSenha()));
+
+		new CoordenadorRN().alterar(coordenador);
+
+		FacesContext.getCurrentInstance().addMessage(
+				null,
+				new FacesMessage(FacesMessage.SEVERITY_INFO,
+						"Informações atualizadas!", ""));
+
+		return "consultarDados.xhtml";
 	}
 
-	public Aluno getAlunoSelecionado() {
-		return alunoSelecionado;
+	public Coordenador carregarCoordenador(Usuario usuario) {
+		return new CoordenadorRN().findById(usuario.getId());
 	}
 
-	public void setAlunoSelecionado(Aluno alunoSelecionado) {
-		this.alunoSelecionado = alunoSelecionado;
+	public String controleInicial(Usuario usuario) {
+		this.coordenadorSelecionado = (Coordenador) usuario;
+
+		if (coordenadorSelecionado.getStatus() == UsuarioStatus.Cadastrado)
+			return "/pages/protected/coordenador/primeiroAcesso/passoInicial?faces-redirect=true";
+
+		return "/pages/protected/coordenador/paginaInicial?faces-redirect=true";
+	}
+
+	public String primeiroAcesso(Usuario usuario) {
+		this.coordenadorSelecionado = carregarCoordenador(usuario);
+		return "atualizarDados.xhtml";
+	}
+
+	public String atualizarDados(Coordenador coordenador) {
+		this.coordenadorSelecionado = coordenador;
+
+		new CoordenadorRN().alterar(coordenadorSelecionado);
+
+		return "alterarSenha.xhtml";
+	}
+
+	public String alterarSenha(Coordenador coordenador) {
+		coordenadorSelecionado = coordenador;
+		coordenadorSelecionado.setSenha(ConversorMD5
+				.convertStringToMd5(coordenador.getSenha()));
+		coordenadorSelecionado.setStatus(UsuarioStatus.Ativo);
+
+		new CoordenadorRN().alterar(coordenadorSelecionado);
+
+		return "../paginaInicial.xhtml";
 	}
 
 	public Coordenador getCoordenadorSelecionado() {
@@ -145,5 +210,24 @@ public class CoordenadorBean {
 	public void setCoordenadorSelecionado(Coordenador coordenadorSelecionado) {
 		this.coordenadorSelecionado = coordenadorSelecionado;
 	}
+
+	public Integer getDisciplinaId() {
+		return disciplinaId;
+	}
+
+	public void setDisciplinaId(Integer disciplinaId) {
+		this.disciplinaId = disciplinaId;
+	}
+
+	public Integer getCoordenacaoId() {
+		return coordenacaoId;
+	}
+
+	public void setCoordenacaoId(Integer coordenacaoId) {
+		this.coordenacaoId = coordenacaoId;
+	}
 	
+	public Coordenador limpaCoordenador() {
+		return new Coordenador();
+	}
 }

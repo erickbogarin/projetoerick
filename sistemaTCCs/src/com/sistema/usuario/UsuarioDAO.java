@@ -12,4 +12,14 @@ public interface UsuarioDAO {
 	
 	public List<Usuario> findByEmailSenha(String email, String senha);
 
+	public void salvar(Usuario usuario);
+
+	public List<Usuario> bibliotecarios();
+
+	public Usuario findByEmail(String email);
+
+	public boolean validateSenha(String convertStringToMd5, Usuario usuario);
+
+	public Usuario validadeEmailMatricula(String email, Integer matricula);
+
 }

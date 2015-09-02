@@ -28,7 +28,7 @@ public class AlunoPagesFilter extends LoginFilter implements Filter {
 			accessDenied(request, response, req);
 			return;
 		} 
-		
+			
 		chain.doFilter(request, response);
 	}
 

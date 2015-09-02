@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/_templateCoordenador.xhtml">
+	<ui:define name="pageTitle">Manter aluno | TCCs Fucapi</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<h:commandLink value="#{usuarioLogin.user.nome}"
+					action="#{coordenadorBean.prepararConta(usuarioLogin.user)}" />
+				|
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+	<ui:define name="body">
+
+		<div class="page-header">
+			<h1>
+				<small>Pessoas</small>
+			</h1>
+		</div>
+
+		<h:form>
+			<ul class="breadcrumb">
+				<li><h:commandLink value="Página Incial"
+						action="#{navigationBean.paginaInicial}" /></li>
+				<li><a href="../../pessoas.xhtml">Selecionar Perfil</a></li>
+				<li class="active">Perfil Aluno</li>
+			</ul>
+		</h:form>
+
+		<h:form>
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#">Alunos</a></li>
+				<li><p:commandLink rendered="#{not empty periodoBean.lista}"
+						value="Adicionar Aluno"
+						action="../cadastro/cadastro-aluno.xhtml?faces-redirect=true">
+						<f:setPropertyActionListener value="#{alunoBean.limparAluno()}"
+							target="#{alunoBean.alunoSelecionado}" />
+					</p:commandLink></li>
+			</ul>
+		</h:form>
+
+		<h:form id="form" rendered="#{not empty periodoBean.lista}">
+
+			<h5>
+				<strong>Período Letivo</strong>
+			</h5>
+			<h:selectOneMenu value="#{alunoBean.periodoSelecionado}"
+				styleClass="form-control input-lg">
+				<f:selectItems value="#{periodoBean.periodoSelect}" />
+				<f:ajax execute="@this" render="form"
+					listener="#{alunoBean.onListaChange}" />
+			</h:selectOneMenu>
+
+			<p:messages id="messages" showDetail="true" autoUpdate="true"
+				closable="true" />
+
+			<p:dataTable id="form" var="aluno" value="#{alunoBean.lista}"
+				style="margin-bottom:20px;" editable="true"
+				emptyMessage="Nenhum aluno cadastrado neste período letivo">
+
+				<p:column style="font-weight:bold;text-align:center"
+					headerText="✐ Editar aluno">
+					<p:commandLink update=":form:alunoDetail"
+						actionListener="#{alunoBean.prepararAluno(aluno)}"
+						oncomplete="PF('alunoDialog').show()"
+						title="Alterar dados do aluno">
+						<h:outputText value="#{aluno.nome}" styleClass="text-info" />
+					</p:commandLink>
+				</p:column>
+
+				<p:column headerText="E-mail" style="text-align: center">
+					<f:facet name="header">E-mail</f:facet>
+					<h:outputText value="#{aluno.email}" styleClass="text-muted" />
+				</p:column>
+
+				<p:column headerText="Celular" style="text-align: center">
+					<h:outputText value="#{aluno.celular}" styleClass="text-muted" />
+					<h:outputText value="Não informado" styleClass="text-muted"
+						rendered="#{empty aluno.celular}" />
+				</p:column>
+
+				<p:column headerText="Status" style="text-align: center">
+					<f:facet name="header">Status</f:facet>
+					<h:outputText value="#{aluno.status}" styleClass="text-info" />
+				</p:column>
+
+			</p:dataTable>
+
+			<p:dialog header="Aluno" widgetVar="alunoDialog" showEffect="fade"
+				hideEffect="fade" resizable="false">
+
+				<div class="pagination-centered">
+					<p:outputPanel id="alunoDetail" style="width:500px"
+						styleClass="text-muted">
+
+						<div class="form-group">
+							<label for="periodo"><strong>Período Letivo</strong></label><br />
+							<h:selectOneMenu value="#{alunoBean.periodoId}" id="periodo"
+								styleClass="form-control">
+								<f:selectItems value="#{alunoBean.periodos}" var="periodo"
+									itemLabel="#{periodo.nome}" itemValue="#{periodo.id}" />
+							</h:selectOneMenu>
+						</div>
+
+						<div class="form-group">
+							<h:outputText value="Nome:" />
+							<h:inputText value="#{alunoBean.alunoSelecionado.nome}"
+								id="keyword" styleClass="form-control" />
+							<p:watermark for="keyword" value="Nome" id="nome" />
+						</div>
+
+						<div class="form-group">
+							<h:outputText value="E-Mail:" />
+							<h:inputText value="#{alunoBean.alunoSelecionado.email}"
+								id="email" styleClass="form-control" />
+							<p:watermark for="email" value="Email" id="wateremail" />
+						</div>
+
+						<div class="form-group">
+							<h:outputText value="Matrícula:" />
+							<h:inputText value="#{alunoBean.alunoSelecionado.matricula}"
+								id="matricula" styleClass="form-control" />
+							<p:watermark for="matricula" value="Matrícula"
+								id="watermatricula" />
+						</div>
+
+						<div class="form-group">
+							<h:outputText value="Conta:" />
+							<h:selectOneMenu value="#{alunoBean.alunoSelecionado.status}"
+								styleClass="form-control input-group-sm">
+								<f:selectItem itemLabel="Ativo" itemValue="Ativo" />
+								<f:selectItem itemLabel="Inativo" itemValue="Inativo" />
+								<f:selectItem itemLabel="Concluso" itemValue="Concluso" />
+							</h:selectOneMenu>
+						</div>
+
+						<div class="pager">
+							<h:commandButton value="Salvar"
+								action="#{alunoBean.alterarLista}" styleClass="btn btn-primary" />
+							<h:commandButton value="Cancelar"
+								action="#{navigationBean.cancelar}" styleClass="btn btn-default"
+								style="margin-left:5px" update="@all" />
+						</div>
+
+						<h:commandButton value="Excluir cadastro"
+							action="#{alunoBean.excluir}"
+							styleClass="btn btn-danger btn-large btn-block"
+							onclick="if (!confirm('Deseja realmente excluir o aluno #{alunoBean.alunoSelecionado.nome}?')) return false;" />
+
+					</p:outputPanel>
+
+				</div>
+
+			</p:dialog>
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+
+</html>

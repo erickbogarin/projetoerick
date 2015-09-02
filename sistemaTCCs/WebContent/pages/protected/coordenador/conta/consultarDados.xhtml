@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
@@ -10,7 +10,7 @@
 		Replace path to template, title, header and body
 		with actual data.
 	 -->
-<ui:composition template="/templates/template.xhtml">
+<ui:composition template="/templates/_templateCoordenador.xhtml">
 	<ui:define name="pageTitle">Informações do Perfil</ui:define>
 	<ui:define name="perfilUsuario">
 		<h:form>
@@ -20,58 +20,121 @@
 			</p>
 		</h:form>
 	</ui:define>
-	<ui:define name="menuLateral">
-		<div class="menu-destaque">
-			<ul class="nav nav-list">
-				<li class="nav-header">Navegação</li>
-				<li><a href="#">Propostas em Andamento</a></li>
-				<li><a href="#">Upload de Arquivos</a></li>
-				<li><a href="#">Revisões das Propostas</a></li>
-				<li class="nav-header">Administrar</li>
-				<li><a href="#">Cadastro de Propostas</a></li>
-				<li><h:link value="Pessoas" outcome="../pessoas.xhtml" /></li>
-				<li><a href="#">Notas</a></li>
-				<li class="nav-header">Perfil</li>
-				<li class="active"><a href="#">Minha conta</a></li>
-				<li><a href="#">Logoff</a></li>
-			</ul>
-		</div>
-	</ui:define>
 
 	<ui:define name="pageHeader"></ui:define>
 	<ui:define name="body">
 
 
-		<ul class="breadcrumb">
+		<div class="page-header">
+			<h1>
+				<small>Minha conta</small>
+			</h1>
+		</div>
+
+		<ul class="nav nav-pills">
 			<li><h:link value="Página Inicial"
-					outcome="../paginaInicial.xhtml" /><span class="divider">/</span></li>
-			<li class="active">Meus dados</li>
+					outcome="/pages/protected/coordenador/paginaInicial.xhtml" /></li>
+			<li class="active"><a href="#">Meus dados</a></li>
+			<li><h:link value="Alterar senha" outcome="alterarSenha.xhtml" /></li>
 		</ul>
-		<h:inputHidden value="#{orientadorBean.orientadorSelecionado.id}" />
 
-		<legend>Dados do seu perfil</legend>
+		<p:messages id="messages" showDetail="true" autoUpdate="true"
+			closable="true" />
 
-		<h:form styleClass="form-actions">
+		<div class="panel-body">
+			<div class="panel panel-default">
 
-			<h:outputLabel value="Nome: " />
-			<strong><h:outputText
-					value="#{orientadorBean.orientadorSelecionado.nome}" /></strong>
+				<h:form class="panel-body text-muted">
+					<div class="form-group">
+						<h:outputLabel value="Nome:" />
+						<h:inputText
+							value="#{coordenadorBean.coordenadorSelecionado.nome}"
+							styleClass="form-control" style="font-weight:bold"
+							disabled="true" />
+					</div>
 
-			<h:outputLabel value="E-mail: " />
-			<strong><h:outputText
-					value="#{orientadorBean.orientadorSelecionado.email}"></h:outputText></strong>
+					<div class="form-group">
+						<label>Coordenação:</label><br />
+						<p:inputText
+							value="#{coordenadorBean.coordenadorSelecionado.coordenacao.nome}"
+							required="true" label="text" styleClass="form-control"
+							disabled="true" style="font-weight:bold" />
+						<div class="form-group"></div>
+					</div>
 
-			<h:outputLabel styleClass="active" value="Titulo: " />
-			<strong><h:outputText
-					value="#{orientadorBean.orientadorSelecionado.titulo}" /></strong>
-			<br />
-			<br />
+					<div class="form-inline">
 
-			<h:commandLink value="Alterar dados"
-				action="#{orientadorBean.solicitarEditarConta(usuarioLogin.user)}"
-				styleClass="btn btn-primary" />
-		</h:form>
+						<div class="form-group">
+							<label>Matrícula:</label><br />
+							<p:inputText
+								value="#{coordenadorBean.coordenadorSelecionado.matricula}"
+								required="true" label="text" styleClass="form-control"
+								style="font-weight:bold" />
+						</div>
 
+						<div class="form-group">
+							<label>Perfil:</label><br />
+							<p:inputText
+								value="#{coordenadorBean.coordenadorSelecionado.role}"
+								required="true" label="text" styleClass="form-control"
+								disabled="true" style="font-weight:bold" />
+							<div class="form-group"></div>
+						</div>
+
+						<div class="form-group">
+							<label>Disciplina:</label><br />
+							<p:inputText
+								value="#{coordenadorBean.coordenadorSelecionado.disciplina.nome}"
+								label="text" styleClass="form-control" disabled="true"
+								style="font-weight:bold;width:350px" />
+							<div class="form-group"></div>
+						</div>
+
+					</div>
+
+					<div class="form-group" style="margin-top: 20px">
+						<h:outputLabel value="E-Mail | Usuário: " />
+						<p:inputText id="email" type="email" required="true"
+							value="#{coordenadorBean.coordenadorSelecionado.email}"
+							styleClass="form-control">
+						</p:inputText>
+					</div>
+
+					<div class="form-inline">
+
+						<div class="form-group">
+							<label>Telefone:</label><br />
+							<p:inputMask id="telefone"
+								value="#{coordenadorBean.coordenadorSelecionado.telefone}"
+								mask="(99) 99999-9999" styleClass="form-control" />
+						</div>
+
+						<div class="form-group">
+							<label>Celular:</label><br />
+							<p:inputMask id="celular"
+								value="#{coordenadorBean.coordenadorSelecionado.celular}"
+								mask="(99) 99999-9999" styleClass="form-control" />
+						</div>
+
+						<div class="form-group">
+							<label>Comercial:</label><br />
+							<p:inputMask id="comercial"
+								value="#{coordenadorBean.coordenadorSelecionado.comercial}"
+								mask="(99) 99999-9999" styleClass="form-control" />
+						</div>
+
+					</div>
+					<div class="pager">
+						<h:commandButton value="Alterar dados"
+							action="#{coordenadorBean.prepararEdicaoConta(coordenadorBean.coordenadorSelecionado)}"
+							styleClass="btn btn-primary" type="submit" />
+						<h:link value="Cancelar"
+							outcome="/pages/protected/coordenador/paginaInicial.xhtml"
+							styleClass="btn btn-default" style="margin-left:5px" />
+					</div>
+				</h:form>
+			</div>
+		</div>
 
 	</ui:define>
 </ui:composition>

@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
@@ -10,46 +10,67 @@
 		Replace path to template, title, header and body
 		with actual data.
 	 -->
-<ui:composition template="/templates/template.xhtml">
-	<ui:define name="pageTitle">Manter Orientador</ui:define>
+<ui:composition template="/templates/_templateAluno.xhtml">
+	<ui:define name="pageTitle">Página Inicial | TCCs Fucapi</ui:define>
 	<ui:define name="perfilUsuario">
 		<h:form>
 			<p class="perfil">
-				<a href="#">#{usuarioLogin.user.nome}</a> |
+				<h:commandLink value="#{usuarioLogin.user.nome}"
+					action="#{alunoBean.prepararConta(usuarioLogin.user)}" />
+				|
 				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
 			</p>
 		</h:form>
 	</ui:define>
-	<ui:define name="menuLateral">
-		<div class="menu-destaque">
-			<h:form>
-				<ul class="nav nav-list">
-					<li class="nav-header">Navegação</li>
-					<li><a href="#">Propostas em Andamento</a></li>
-					<li><a href="#">Upload de Arquivos</a></li>
-					<li><a href="#">Revisões das Propostas</a></li>
-					<li class="nav-header">Administrar</li>
-					<li><a href="#">Envio de Propostas</a></li>
-					<li><h:link value="Pessoas" outcome="paginaInicial.xhtml" /></li>
-					<li><a href="#">Notas</a></li>
-					<li class="nav-header">Perfil</li>
-					<li><h:link value="Alterar dados" /></li>
-					<li><h:commandLink action="#{usuarioLogin.doLogout}"
-							value="Sair" /></li>
-				</ul>
-			</h:form>
-		</div>
-	</ui:define>
+
 	<ui:define name="pageHeader"></ui:define>
 	<ui:define name="body">
+		
+		<f:event listener="#{alunoBean.carregaAluno}" type="preRenderView" />
+		
 		<h:form>
+
+			<div class="page-header">
+				<h1>
+					<small>Mensagens</small>
+				</h1>
+
+			</div>
+
 			<ul class="breadcrumb">
-				<li class="active"><a href="#">Página Inicial</a></li>
+				<li class="active">Página Inicial</li>
 
 			</ul>
 
-			<h:outputText value="Bem-vindo Aluno!"></h:outputText>
+			<p:messages id="messages" showDetail="true" autoUpdate="true"
+				closable="true" />
+
+			<div class="panel">
+
+				<p:dataTable var="mensagem" value="#{mensagemBean.lista}" rows="5"
+					paginator="true" paginatorTemplate="{PageLinks}"
+					rowsPerPageTemplate="5,10,15" styleClass="table table-bordered"
+					emptyMessage="Você ainda não possui mensagens">
+
+					<p:column headerText="#"
+						style="width:5px;text-align:center;buttom:0">
+
+						<h:outputText value="#{mensagem.data}" styleClass="text-muted">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Assunto"
+						style="width:inheri;text-align:left;">
+						<h:outputText value="#{mensagem.mensagem}" styleClass="text-muted" />
+					</p:column>
+
+				</p:dataTable>
+			</div>
 		</h:form>
+
+		<script src="http://code.jquery.com/jquery-latest.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+
 	</ui:define>
 </ui:composition>
 

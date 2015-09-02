@@ -1,6 +1,7 @@
 package com.sistema.usuario;
 
 import java.util.List;
+
 import com.sistema.util.DAOFactory;
 
 public class UsuarioRN {
@@ -33,6 +34,26 @@ public class UsuarioRN {
 	
 	public void alterar(Usuario usuario) {
 		this.usuarioDAO.alterarDados(usuario);
+	}
+
+	public void salvar(Usuario usuario) {
+		this.usuarioDAO.salvar(usuario);
+	}
+
+	public List<Usuario> bibliotecarios() {
+		return this.usuarioDAO.bibliotecarios();
+	}
+
+	public Usuario findByEmail(String email) {
+		return this.usuarioDAO.findByEmail(email);
+	}
+
+	public boolean validadePassword(String convertStringToMd5, Usuario usuario) {
+		return this.usuarioDAO.validateSenha(convertStringToMd5, usuario);
+	}
+
+	public Usuario validateEmailMatricula(String email, Integer matricula) {
+		return this.usuarioDAO.validadeEmailMatricula(email, matricula);
 	}
 	
 }

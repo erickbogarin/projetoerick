@@ -54,4 +54,5 @@ public class LoginFilter implements Filter {
 				.getRequestDispatcher("/pages/public/acessoNegado.xhtml");
 		rd.forward(request, response);
 	}
+
 }

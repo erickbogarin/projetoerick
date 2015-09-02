@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
@@ -9,86 +9,77 @@
 		Replace path to template, title, header and body
 		with actual data.
 	 -->
-<ui:composition template="/templates/template.xhtml">
-	<ui:define name="pageTitle">Cadastrar Orientador</ui:define>
+<ui:composition template="/templates/_templateCoordenador.xhtml">
+	<ui:define name="pageTitle">Cadastrar Orientador | TCCs Fucapi</ui:define>
 	<ui:define name="perfilUsuario">
 		<h:form>
 			<p class="perfil">
-				<h:link value="#{usuarioLogin.user.nome}"
-					outcome="../../conta/consultarDados.xhtml" />
+				<h:commandLink value="#{usuarioLogin.user.nome}"
+					action="#{coordenadorBean.prepararConta(usuarioLogin.user)}" />
 				|
 				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
 			</p>
 		</h:form>
 	</ui:define>
-	<ui:define name="menuLateral">
-	<div class="menu-destaque">	
-		<ul class="nav nav-list">
-			<li class="nav-header">Navegação</li>
-			<li><a href="#">Propostas em Andamento</a></li>
-			<li><a href="#">Upload de Arquivos</a></li>
-			<li><a href="#">Revisões das Propostas</a></li>
-			<li class="nav-header">Administrar</li>
-			<li><a href="#">Cadastro de Propostas</a></li>
-			<li class="active"><a
-				href="../../pessoas.xhtml">Pessoas</a></li>
-			<li><a href="#">Notas</a></li>
-			<li class="nav-header">Perfil</li>
-			<li><h:link value="Minha conta"
-					outcome="../../conta/consultarDados.xhtml" /></li>
-			<li><a href="#">Logoff</a></li>
-		</ul>
-		</div>
-	</ui:define>
+
 	<ui:define name="pageHeader"></ui:define>
 	<ui:define name="body">
 
-		<h:form styleClass="form-actions">
-			<p:growl id="growl" showDetail="true" sticky="true" />
-			<h:messages />
+		<div class="page-header">
+			<h1>
+				<small>Pessoas</small>
+			</h1>
+		</div>
 
-			<legend>Cadastro de Orientadores</legend>
+		<ul class="breadcrumb">
+			<li><a href="../../paginaInicial.xhtml">Página Inicial</a></li>
+			<li><a href="../../pessoas.xhtml">Alterar Perfil</a></li>
+			<li class="active">Orientador</li>
+		</ul>
 
-			<fieldset>
-				<div class="controls">
+		<ul class="nav nav-tabs">
+			<li><a
+				href="../listagem/listarOrientador.xhtml">Orientadores</a></li>
+			<li class="active"><a href="#">Adicionar Orientador</a></li>
+		</ul>
 
-					<h:outputLabel value="Nome" />
-					<h:inputText value="#{coordenadorBean.orientadorSelecionado.nome}"
-						styleClass="span4" type="text" />
+		<p:messages id="messages" showDetail="true" autoUpdate="true"
+			closable="true" />
 
-					<h:outputLabel value="E-Mail:" />
-					<h:inputText value="#{coordenadorBean.orientadorSelecionado.email}"
-						styleClass="span3" />
-						
-					<h:outputLabel value="Matricula:" />
-					<h:inputText value="#{coordenadorBean.orientadorSelecionado.matricula}"
-						styleClass="span2" />
-						
-					<h:outputLabel value="Titulo"/>	
-					<h:selectOneMenu value="#{coordenadorBean.orientadorSelecionado.titulo}"
-						styleClass="btn span2">
-						<f:selectItem itemValue="#{null}" itemLabel="Nenhum" />
-						<f:selectItem itemValue="Especialista" itemLabel="Especialista" />
-						<f:selectItem itemValue="Mestre" itemLabel="Mestre" />
-						<f:selectItem itemValue="Doutor" itemLabel="Doutor" />
-					</h:selectOneMenu> 	
+		<div class="panel panel-default" style="margin-top: -1px">
+			<h:form styleClass="text-muted panel-body" acceptcharset="ISO-8859-1">
+
+				<div class="form-group">
+					<h5>
+						<label for="keyword">*Nome:</label>
+					</h5>
+					<h:inputText value="#{usuarioBean.orientadorSelecionado.nome}"
+						required="true" requiredMessage="Nome obrigatório" id="keyword"
+						styleClass="form-control" />
+					<p:watermark for="keyword" value="Nome do orientador" id="nome" />
 				</div>
-				<br/>
-				<div class="control-group">
-					<div class="controls">
-						<h:commandButton value="Salvar"
-							actionListener="#{coordenadorBean.salvarOrientador()}"
-							styleClass="btn btn-large btn-primary" type="submit"
-							update="growl">
-						</h:commandButton>
 
-					</div>
+				<div class="form-group">
+					<h5>
+						<label for="email">*E-Mail:</label>
+					</h5>
+					<h:inputText value="#{usuarioBean.orientadorSelecionado.email}"
+						required="true" requiredMessage="E-Mail obrigatório" id="email"
+						styleClass="form-control" />
+					<p:watermark for="email" value="E-Mail do orientador" id="wateremail" />
 				</div>
-				<h:link value="Encerrar Cadastros" outcome="../manterOrientador.xhtml"
-					styleClass="btn btn-large btn-block disabled" />
-			</fieldset>
 
-		</h:form>
+				<div class="pager">
+					<h:commandButton value="Salvar" title="Confirmar cadastro"
+						action="#{usuarioBean.salvarOrientador}"
+						styleClass="btn btn-primary" />
+					<h:link value="Cancelar" 
+						outcome="../listagem/listarOrientador.xhtml"
+						styleClass="btn btn-default" style="margin-left:5px" />
+				</div>
+
+			</h:form>
+		</div>
 
 	</ui:define>
 </ui:composition>

@@ -2,11 +2,15 @@ package com.sistema.usuario;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
-import org.apache.log4j.Logger;
-import com.sistema.status.Status;
+import br.com.sistema.external.ConversorMD5;
+
+import com.sistema.usuario.aluno.AlunoBean;
+import com.sistema.usuario.coordenador.Coordenador;
+import com.sistema.usuario.coordenador.CoordenadorBean;
 import com.sistema.usuario.orientador.OrientadorBean;
 import com.sistema.util.SessionContext;
 
@@ -14,59 +18,69 @@ import com.sistema.util.SessionContext;
 @SessionScoped
 public class UsuarioLogin {
 
-	private static Logger logger = Logger.getLogger(UsuarioLogin.class);
 	Usuario usuarioSelecionado = new Usuario();
 	OrientadorBean orientadorBean = new OrientadorBean();
+	
+	@ManagedProperty(value = "#{coordenadorBean}")
+	CoordenadorBean coordenadorBean = new CoordenadorBean();
 	
 	public Usuario getUser() {
 		return (Usuario) SessionContext.getInstance().getUsuarioLogado();
 	}
-	
+
 	public String doLogin() {
 		UsuarioRN usuarioRN = new UsuarioRN();
-		
+
 		try {
-			logger.info("Tentando logar com usuário " + usuarioSelecionado.getEmail());
-			Usuario user = usuarioRN.isUsuarioReady(usuarioSelecionado.getEmail(), 
-					usuarioSelecionado.getSenha());
-			
-			if(user == null) {
-				FacesMessage faces = new FacesMessage(
-						"Email ou senha errado, tente novamente!");
-				FacesContext contexto = FacesContext.getCurrentInstance();
-				contexto.addMessage(null, faces);
+
+			Usuario user = usuarioRN.isUsuarioReady(usuarioSelecionado
+					.getEmail(), ConversorMD5
+					.convertStringToMd5(usuarioSelecionado.getSenha()));
+
+			if (user == null) {
+				FacesContext.getCurrentInstance().addMessage(
+						null,
+						new FacesMessage(FacesMessage.SEVERITY_FATAL, "Erro! Usuário ou senha incorreto.",
+								"messages"));
 				return "/pages/public/login.xhtml";
 			} else {
-				logger.info("Login efetuado com sucesso!");
-				SessionContext.getInstance().setAttribute("usuarioLogado", user);
+				SessionContext.getInstance()
+						.setAttribute("usuarioLogado", user);
 				if (user.isCoordenador()) {
-					return "/pages/protected/coordenador/paginaInicial.xhtml";
-				}
-				else if(user.isAluno())
-					return "/pages/protected/aluno/paginaInicial.xhtml";
-	
+					this.coordenadorBean.setCoordenadorSelecionado((Coordenador) user);
+					return this.coordenadorBean.controleInicial(user);
+				} else if (user.isAluno()) {
+					AlunoBean alunoBean = new AlunoBean();
+					return alunoBean.controleInicial(user);
+				} else if (user.isOrientador()) {
+					OrientadorBean orientadorBean = new OrientadorBean();
+					return orientadorBean.controleInicial(user);
+				} else if (user.isAdministrador())
+					return "administrador";
+				else if (user.isBibliotecario())
+					return "Bibliotecario";
+
 				return null;
 			}
-			
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "/pages/public/login.xhtml";
 		}
 	}
-	
+
 	public String doLogout() {
-		 logger.info("Fazendo logout com usuário "
-                 + SessionContext.getInstance().getUsuarioLogado().getEmail());
-		
-		 SessionContext.getInstance().encerrarSessao();
-		 FacesMessage faces = new FacesMessage(
-					"Logout realizado com sucesso!");
-			FacesContext contexto = FacesContext.getCurrentInstance();
-			contexto.addMessage(null, faces);
-			return "/pages/public/login.xhtml";
+
+		SessionContext.getInstance().encerrarSessao();
+
+		FacesContext.getCurrentInstance().addMessage(
+				null,
+				new FacesMessage(FacesMessage.SEVERITY_INFO, "Logout! Sessão encerrada com sucesso.",
+						""));
+
+		return "/pages/public/login?faces-redirect=true";
 	}
-	
+
 	public Usuario getUsuarioSelecionado() {
 		return usuarioSelecionado;
 	}
@@ -74,5 +88,9 @@ public class UsuarioLogin {
 	public void setUsuarioSelecionado(Usuario usuarioSelecionado) {
 		this.usuarioSelecionado = usuarioSelecionado;
 	}
-
+	
+	public void setCoordenadorBean(CoordenadorBean coordenadorBean) {
+		this.coordenadorBean = coordenadorBean;
+	}
+	
 }

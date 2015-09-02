@@ -1,73 +1,80 @@
-body {
-	margin:0;
+html, body {
+	margin: 0;
 	padding: 0;
-	color: #333;
-	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	height: 100%;
+}
+
+#wrapper {
+	min-height: 100%;
+	position: relative;
+}
+
+#content {
+	padding-bottom: 10px; /* Height of the footer element */
+}
+
+.glyphicon {
+	margin-right: 10px;
+}
+
+.panel-body {
+	padding: 0px;
+}
+
+.panel-body table tr td {
+	padding-left: 15px
+}
+
+.panel-body .table {
+	margin-bottom: 0px;
 }
 
 #header {
 	position: relative;
 	height: 140px;
-	background: linear-gradient(to bottom, rgba(96,108,136,1) 35%,rgba(63,76,107,1) 98%); /* W3C */
-	
+	background: linear-gradient(to bottom, rgba(79, 133, 187, 1) 0%,
+		rgba(79, 133, 187, 1) 100%); /* W3C */
 	border: 1px solid #676767;
+	color: #ffffff;
+	font-weight: bold;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	border-color: #0044cc #0044cc #002a80;
+	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+	filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ff0088cc',
+		endColorstr='#ff0044cc', GradientType=0);
+	filter: progid:dximagetransform.microsoft.gradient(enabled=false);
 }
 
-#footer{
-	text-align: center;
-	color: white;
-	background: linear-gradient(to bottom, rgba(96,108,136,1) 35%,rgba(63,76,107,1) 98%); /* W3C */
-	height: 35px;
-	margin-top: 55px;
-}
-#header img{
+#header img {
 	padding-left: 60px;
 	padding-top: 15px;
-	
-	width: 90px;
 	float: left;
 }
 
-#header  h1{
+#header  h1 {
 	position: absolute;
-	
-	float: left;
-	
-	text-align: center;	
-	
+	text-align: center;
 	font-weight: bold;
-	font-size: 18px;
+	font-size: 25px;
 	color: white;
-	
 	padding-top: 25px;
-	padding-left: 180px;	
-	
-	width: 270px;
-}
-
-.container {
-	margin: 0px;
-	width: 1260px;
-
-	border: 1px solid #676767;
+	padding-left: 180px;
+	width: 550px;
 }
 
 .menu-opcoes {
 	position: absolute;
-	
 	bottom: 0;
 	right: 0;
-	
 	padding-bottom: 25px;
 	padding-right: 100px;
-	
 }
 
 .menu-opcoes a {
 	color: white;
 }
 
-.menu-opcoes ul{
+.menu-opcoes ul {
 	font-size: 15px;
 	color: white;
 }
@@ -75,115 +82,63 @@ body {
 .menu-opcoes ul li {
 	display: inline;
 	margin-left: 30px;
+	font-weight: bold;
 }
 
 .perfil {
 	position: absolute;
-	
 	padding-right: 150px;
 	padding-top: 20px;
 	top: 0;
 	right: 0;
-	
 	color: white;
 }
 
-.status{
+.status {
 	position: absolute;
-	
 	padding-right: 115px;
 	padding-top: 20px;
 	top: 0;
 	right: 0;
-	
 	color: white;
 }
-.perfil a ,
-.status a
-{
+
+.role {
+	position: absolute;
+	padding-right: 180px;
+	padding-top: 35px;
+	top: 0;
+	right: 0;
+	color: white;
+}
+
+.perfil a, .status a {
 	color: white;
 }
 
 .perfil a:before {
+	color: white;
 }
 
-.principal {
-	height: 500px;
-}
-
-
-.menu-destaque {
-	float: left;		
-}
-
-.menu-destaque {
-	background: #ededed;
-	border: 3px solid #cdcdcd;
-	width: 290px;
-	height: 550px;
-}
-
-.menu-principal {
-	height: 500px;
-}
-
-.menu-principal ul li{
-	font-size: 20px;
-	padding-bottom: 5px;
-}
-
-.menu-principal ul li{
-	padding-top: 2px;
-}
-.admin {
-	background: #ededed;
-	
-	margin-top: 10px;
-	margin-right: 10px;
-	width: 290px;
-	height: 115px;
-}
-
-.admin p {
-	background: linear-gradient(to right, rgba(248,248,248,1) 100%,rgba(240,235,235,1) 100%); /* W3C */
-	border: 1px solid #cdcdcd;
-
+#rodape {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	background: linear-gradient(to bottom, rgba(79, 133, 187, 1) 0%,
+		rgba(79, 133, 187, 1) 100%); /* W3C */
+	width: 100%;
 	text-align: center;
-	padding-top: 10px;
-	
-	height: 25px;
+	font-weight: bold;
+	color: white;
 }
 
-.admin ul li li {
-	margin: 0;
-	padding: 0;
-	text-align: center;
-	background: #FFF;
-	border: 1px solid #cdcdcd;
-	
-}
-#conteudo {	
-	clear: right;
-	width: 900px;
+#login {
+	position: absolute;
+	top: 50%;
+	margin-top: -95px;
 }
 
-#conteudo {	
-	padding-top: 40px;
-	padding-left: 350px;	
-}
-
-#conteudo h1 {
-	margin-bottom: 20px;
-	font-size: 40px;
-}
-
-#edicao {
-	padding-top: 40px;
-	padding-left: 15px;
-}
-
-#listar {
-	padding-left: 0px;
-	padding-top: 40px;
+#menu-lateral {
+	width: 224px;
 }
 

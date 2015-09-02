@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/_templateCoordenador.xhtml">
+	<ui:define name="pageTitle">Sistema Teste</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<h:commandLink value="#{usuarioLogin.user.nome}"
+					action="#{coordenadorBean.prepararConta(usuarioLogin.user)}" />
+				|
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+
+		<div class="page-header">
+			<h1>
+				<small>Pessoas</small>
+			</h1>
+		</div>
+
+		<h:form>
+			<ul class="breadcrumb">
+				<li><a href="../../paginaInicial.xhtml">Página Inicial</a></li>
+				<li><a href="../../pessoas.xhtml">Selecionar Perfil</a></li>
+				<li>Perfil Aluno</li>
+			</ul>
+
+			<ul class="nav nav-tabs">
+				<li><h:commandLink action="#{alunoPageNavigation.alunosTCC}"
+						value="Alunos" /></li>
+				<li class="active"><a href="#">Adicionar Aluno</a></li>
+			</ul>
+		</h:form>
+
+		<div class="panel-body">
+			<div class="panel panel-default">
+				<h:form styleClass="text-muted panel-body"
+					acceptcharset="ISO-8859-1">
+
+					<p:messages id="message" showDetail="false" autoUpdate="true"
+						closable="true" />
+
+					<div class="form-group">
+						<label for="periodo"><strong>Período Letivo:</strong></label><br />
+						<h:selectOneMenu value="#{alunoBean.periodoId}" id="periodo"
+							styleClass="form-control input-lg">
+							<f:selectItems value="#{alunoBean.periodos}" var="periodo"
+								itemLabel="#{periodo.nome}" itemValue="#{periodo.id}" />
+						</h:selectOneMenu>
+					</div>
+
+					<div class="form-group">
+						<label for="keyword"><strong>*Nome:</strong></label><br />
+						<h:inputText value="#{alunoBean.alunoSelecionado.nome}"
+							id="keyword" styleClass="form-control" required="true"
+							requiredMessage="Nome obrigatório" />
+						<p:watermark for="keyword" value="Nome do aluno" id="nome" />
+					</div>
+
+					<div class="form-group">
+						<label for="keyword"><strong>*E-Mail:</strong></label><br />
+						<h:inputText value="#{alunoBean.alunoSelecionado.email}"
+							id="email" styleClass="form-control" required="true"
+							requiredMessage="E-Mail obrigatório" />
+						<p:watermark for="email" value="E-Mail do aluno" id="wateremail" />
+					</div>
+
+					<div class="pager">
+						<h:commandButton value="Salvar" action="#{alunoBean.salvarAluno}"
+							styleClass="btn btn-primary" update="growl" ajax="false"
+							onclick="PrimeFaces.monitorDownload(start, stop)" />
+
+						<h:link value="Cancelar"
+							outcome="/pages/protected/coordenador/crud/listagem/alunos.xhtml"
+							styleClass="btn btn-default" style="margin-left:5px" />
+					</div>
+
+				</h:form>
+
+				<script type="text/javascript">
+					function start() {
+					    PF('statusDialog').show();
+					}
+					
+					function stop() {
+					    PF('statusDialog').hide();
+					}
+				</script>
+
+			</div>
+		</div>
+
+	</ui:define>
+</ui:composition>
+
+</html>

@@ -1,20 +1,403 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <faces-config version="2.0" xmlns="http://java.sun.com/xml/ns/javaee"
 	xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd" >
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+	<managed-bean>
+		<managed-bean-name>currentDate</managed-bean-name>
+		<managed-bean-class>java.util.Date</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+	<navigation-rule>
+		<from-view-id>/pages/protected/aluno/*</from-view-id>
+		<navigation-case>
+			<from-action>#{propostaBean.controleProposta}</from-action>
+			<from-outcome>solicitarOrientação</from-outcome>
+			<to-view-id>/pages/protected/aluno/proposta/selecionarOrientador.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{propostaBean.controleProposta}</from-action>
+			<from-outcome>cadastrarProposta</from-outcome>
+			<to-view-id>/pages/protected/aluno/proposta/cadastrarProposta.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{propostaBean.preparaOrientacao}</from-action>
+			<from-outcome>orientacao</from-outcome>
+			<to-view-id>/pages/protected/aluno/orientacao/orientacoes.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{propostaBean.controleProposta}</from-action>
+			<from-outcome>emAndamento</from-outcome>
+			<to-view-id>/pages/protected/aluno/proposta/andamento.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{propostaBean.salvarProposta}</from-action>
+			<from-outcome>emAndamento</from-outcome>
+			<to-view-id>/pages/protected/aluno/proposta/andamento.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{alunoBean.prepararConta(usuarioLogin.user)}</from-action>
+			<from-outcome>redirecionaConta</from-outcome>
+			<to-view-id>/pages/protected/aluno/conta/consultarDados.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{reuniaoBean.controleProposta(usuarioLogin.user)}</from-action>
+			<from-outcome>emAndamento</from-outcome>
+			<to-view-id>/pages/protected/aluno/proposta/andamento.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{reuniaoBean.controleProposta(usuarioLogin.user)}</from-action>
+			<from-outcome>quadroAcompanhamento</from-outcome>
+			<to-view-id>/pages/protected/aluno/reuniao/listagemReuniao.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{quadroBean.prepararQuadro(usuarioLogin.user)}</from-action>
+			<from-outcome>andamentoQuadro</from-outcome>
+			<to-view-id>/pages/protected/aluno/quadro/listagemQuadro.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{navigationBean.solicitarProposta}</from-action>
+			<from-outcome>solicitarProposta</from-outcome>
+			<to-view-id>/pages/protected/aluno/proposta/solicitarProposta.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{atividadeBean.prepararCronograma(usuarioLogin.user)}</from-action>
+			<from-outcome>Cronograma</from-outcome>
+			<to-view-id>/pages/protected/aluno/cronograma/cronograma.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{bancaBean.banca}</from-action>
+			<from-outcome>banca</from-outcome>
+			<to-view-id>/pages/protected/aluno/banca/banca.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/pages/protected/coordenador/*</from-view-id>
+		<navigation-case>
+			<from-action>#{mensagemBean.enviarNoticias}</from-action>
+			<from-outcome>noticias</from-outcome>
+			<to-view-id>/pages/public/noticias.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{usuarioBean.preparaCadastro}</from-action>
+			<from-outcome>cadastrarAluno</from-outcome>
+			<to-view-id>/pages/protected/coordenador/crud/cadastro/cadastro-aluno.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
 
-<managed-bean>
-	<managed-bean-name>UsuarioLogin</managed-bean-name>
-	<managed-bean-class>com.sistema.usuario.UsuarioLogin</managed-bean-class>
-	<managed-bean-scope>session</managed-bean-scope>
-</managed-bean>
+		<navigation-case>
+			<from-action>#{alunoPageNavigation.alunosTCC}</from-action>
+			<from-outcome>alunosTCC</from-outcome>
+			<to-view-id>/pages/protected/coordenador/crud/listagem/alunos.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
 
-<navigation-rule>
-	<from-view-id>/pages/public/login.xhtml</from-view-id>
-	<navigation-case>
-		<from-outcome>primeiroAcesso</from-outcome>
-		<to-view-id>/pages/protected/coordenador/primeiroAcesso.xhtml</to-view-id>
-	</navigation-case>
-</navigation-rule>
-
+		<navigation-case>
+			<from-action>#{propostaPageNavigation.quadroTCC}</from-action>
+			<from-outcome>alunosTCC</from-outcome>
+			<to-view-id>/pages/protected/coordenador/quadro/selecionar-aluno.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{propostaPageNavigation.alunosTCC}</from-action>
+			<from-outcome>alunosTCC</from-outcome>
+			<to-view-id>/pages/protected/coordenador/proposta/lista-alunos.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{propostaPageNavigation.onListaChangeTCCs}</from-action>
+			<from-outcome>alunosTCC</from-outcome>
+			<to-view-id>/pages/protected/coordenador/proposta/lista-alunos.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{propostaPageNavigation.apresentacoesTCC}</from-action>
+			<from-outcome>alunosTCC</from-outcome>
+			<to-view-id>/pages/protected/coordenador/banca/listaCoordenados.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{coordenadorBean.prepararConta(usuarioLogin.user)}</from-action>
+			<from-outcome>redirecionaConta</from-outcome>
+			<to-view-id>/pages/protected/coordenador/conta/consultarDados.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{navigationBean.cadastrarBanca}</from-action>
+			<from-outcome>cadastrarBanca</from-outcome>
+			<to-view-id>/pages/protected/coordenador/banca/cadastrarBanca.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{propostaBean.prepararAlteracoes(proposta)}</from-action>
+			<from-outcome>editarDados</from-outcome>
+			<to-view-id>/pages/protected/coordenador/proposta/editar.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{navigationBean.arquivos}</from-action>
+			<from-outcome>documentos</from-outcome>
+			<to-view-id>/pages/protected/coordenador/documentos/arquivos.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{bancaPageNavigation.documentos}</from-action>
+			<from-outcome>documentos</from-outcome>
+			<to-view-id>/pages/protected/coordenador/documentos/alunos.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{bancaPageNavigation.apresentacoes}</from-action>
+			<from-outcome>apresentacoes</from-outcome>
+			<to-view-id>/pages/protected/coordenador/banca/banca.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/pages/protected/orientador/*</from-view-id>
+		<navigation-case>
+			<from-action>#{propostaPageNavigation.alunosTCC}</from-action>
+			<from-outcome>alunosTCC</from-outcome>
+			<to-view-id>/pages/protected/orientador/proposta/alunosTCC.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{propostaPageNavigation.alunosITCC}</from-action>
+			<from-outcome>alunosITCC</from-outcome>
+			<to-view-id>/pages/protected/orientador/proposta/alunosITCC.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{propostaPageNavigation.orientacoesTCC}</from-action>
+			<from-outcome>alunosTCC</from-outcome>
+			<to-view-id>/pages/protected/orientador/orientacao/alunosTCC.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{propostaPageNavigation.orientacoesITCC}</from-action>
+			<from-outcome>alunosITCC</from-outcome>
+			<to-view-id>/pages/protected/orientador/orientacao/alunosITCC.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{propostaPageNavigation.reunioesTCC}</from-action>
+			<from-outcome>alunosTCC</from-outcome>
+			<to-view-id>/pages/protected/orientador/reuniao/alunosTCC.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{propostaPageNavigation.reunioesITCC}</from-action>
+			<from-outcome>alunosITCC</from-outcome>
+			<to-view-id>/pages/protected/orientador/reuniao/alunosITCC.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{propostaPageNavigation.quadroTCC}</from-action>
+			<from-outcome>alunosTCC</from-outcome>
+			<to-view-id>/pages/protected/orientador/quadro/alunosTCC.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{propostaPageNavigation.quadroITCC}</from-action>
+			<from-outcome>alunosITCC</from-outcome>
+			<to-view-id>/pages/protected/orientador/quadro/alunosITCC.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{propostaBean.preparaOrientacoes}</from-action>
+			<from-outcome>orientacoes</from-outcome>
+			<to-view-id>/pages/protected/orientador/orientacao/alunosTCC.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{orientacaoBean.preparaOrientacoes}</from-action>
+			<from-outcome>orientacoes</from-outcome>
+			<to-view-id>/pages/protected/orientador/orientacao/orientacoes.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{reuniaoBean.prepararReunioes}</from-action>
+			<from-outcome>listagemReuniao</from-outcome>
+			<to-view-id>/pages/protected/orientador/reuniao/listagemReuniao.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{orientadorBean.prepararConta(usuarioLogin.user)}</from-action>
+			<from-outcome>redirecionaConta</from-outcome>
+			<to-view-id>/pages/protected/orientador/conta/consultarDados.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{orientadorBean.prepararCronograma}</from-action>
+			<from-outcome>Cronograma</from-outcome>
+			<to-view-id>/pages/protected/orientador/cronograma/cronograma.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{bancaBean.prepararOrientados}</from-action>
+			<from-outcome>apresentacoes</from-outcome>
+			<to-view-id>/pages/protected/orientador/banca/banca.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/pages/protected/coordenador/cronograma/selecionarPeriodo.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{atividadeBean.prepararEdicao}</from-action>
+			<from-outcome>editarAtividades</from-outcome>
+			<to-view-id>/pages/protected/coordenador/cronograma/manterAtividades.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/pages/protected/admin/*</from-view-id>
+		<navigation-case>
+			<from-action>#{adminNavigationRule.coordenador}</from-action>
+			<from-outcome>coordenador</from-outcome>
+			<to-view-id>/pages/protected/admin/coordenador/listaCoordenadores.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{adminNavigationRule.bibliotecario}</from-action>
+			<from-outcome>bibliotecario</from-outcome>
+			<to-view-id>/pages/protected/admin/bibliotecario/listaBibliotecarios.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{adminNavigationRule.periodoLetivo}</from-action>
+			<from-outcome>periodoLetivo</from-outcome>
+			<to-view-id>/pages/protected/admin/periodo-letivo/selecionarPeriodo.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{adminNavigationRule.coordenacao}</from-action>
+			<from-outcome>coordenacao</from-outcome>
+			<to-view-id>/pages/protected/admin/coordenacao/listaCoordenacao.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{adminNavigationRule.curso}</from-action>
+			<from-outcome>curso</from-outcome>
+			<to-view-id>/pages/protected/admin/cursos/listaCursos.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{usuarioBean.prepararEdicao}</from-action>
+			<from-outcome>EditarConta</from-outcome>
+			<to-view-id>/pages/protected/admin/edicao/alterarBibliotecario.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{usuarioBean.alterarBibliotecario}</from-action>
+			<from-outcome>Bibliotecarios</from-outcome>
+			<to-view-id>/pages/protected/admin/bibliotecario/listaBibliotecarios.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/pages/protected/bibliotecario/*</from-view-id>
+		<navigation-case>
+			<from-action>#{alunoBean.salvarAluno}</from-action>
+			<from-outcome>Proposta</from-outcome>
+			<to-view-id>/pages/protected/bibliotecario/tcc/cadastrarTCC.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/*</from-view-id>
+		<navigation-case>
+			<from-action>#{usuarioBean.prepararConta(usuarioLogin.user)}</from-action>
+			<from-outcome>redirecionaConta</from-outcome>
+			<to-view-id>/pages/protected/admin/conta/consultarDados.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{usuarioLogin.doLogin}</from-action>
+			<from-outcome>administrador</from-outcome>
+			<to-view-id>/pages/protected/admin/paginaInicial.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{navigationBean.paginaInicial}</from-action>
+			<from-outcome>aluno</from-outcome>
+			<to-view-id>/pages/protected/aluno/paginaInicial.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{navigationBean.paginaInicial}</from-action>
+			<from-outcome>orientador</from-outcome>
+			<to-view-id>/pages/protected/orientador/paginaInicial.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{navigationBean.paginaInicial}</from-action>
+			<from-outcome>coordenador</from-outcome>
+			<to-view-id>/pages/protected/coordenador/paginaInicial.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{navigationBean.paginaInicial}</from-action>
+			<from-outcome>admin</from-outcome>
+			<to-view-id>/pages/protected/admin/paginaInicial.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{navigationBean.paginaInicial}</from-action>
+			<from-outcome>bibliotecario</from-outcome>
+			<to-view-id>/pages/protected/bibliotecario/paginaInicial.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{navigationBean.cadastrarNoticias}</from-action>
+			<from-outcome>cadastrarNoticias</from-outcome>
+			<to-view-id>/pages/protected/coordenador/noticias/cadastrarNoticias.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{usuarioLogin.doLogin}</from-action>
+			<from-outcome>Bibliotecario</from-outcome>
+			<to-view-id>/pages/protected/bibliotecario/paginaInicial.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{navigationBean.noticias}</from-action>
+			<from-outcome>noticias</from-outcome>
+			<to-view-id>/pages/public/noticias.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{navigationBean.tccs}</from-action>
+			<from-outcome>tccs</from-outcome>
+			<to-view-id>/pages/public/tccs.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{navigationBean.sugestoes}</from-action>
+			<from-outcome>sugestoes</from-outcome>
+			<to-view-id>/pages/public/sugestoes.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{navigationBean.manuais}</from-action>
+			<from-outcome>tccs</from-outcome>
+			<to-view-id>/pages/public/manuais.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{navigationBean.tccs}</from-action>
+			<from-outcome>tccs</from-outcome>
+			<to-view-id>/pages/public/sobre.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{navigationBean.andamentoProposta}</from-action>
+			<from-outcome>andamentoProposta</from-outcome>
+			<to-view-id>/pages/protected/aluno/proposta/andamento.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{navigationBean.atualizaLista}</from-action>
+			<from-outcome>atualizaLista</from-outcome>
+			<to-view-id>/pages/protected/coordenador/cronograma/manterAtividades.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<application>
+		<action-listener>org.primefaces.application.DialogActionListener</action-listener>
+		<navigation-handler>org.primefaces.application.DialogNavigationHandler</navigation-handler>
+		<view-handler>org.primefaces.application.DialogViewHandler</view-handler>
+	</application>
 </faces-config>

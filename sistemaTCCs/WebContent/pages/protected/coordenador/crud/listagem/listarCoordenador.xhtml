@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
@@ -11,99 +11,199 @@
 		with actual data.
 	 -->
 <ui:composition template="/templates/template.xhtml">
-	<ui:define name="pageTitle">Listar Coordenadorr</ui:define>
+	<ui:define name="pageTitle">Lista de Coordenadores | TCCs Fucapi</ui:define>
 	<ui:define name="perfilUsuario">
 		<h:form>
 			<p class="perfil">
-				<h:link value="#{usuarioLogin.user.nome}"
-					outcome="../../conta/consultarDados.xhtml" />
+				<h:commandLink value="#{usuarioLogin.user.nome}"
+					action="#{coordenadorBean.prepararConta(usuarioLogin.user)}" />
 				|
 				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
 			</p>
 		</h:form>
 	</ui:define>
 	<ui:define name="menuLateral">
-		<div class="menu-destaque">
-			<ul class="nav nav-list">
-				<li class="nav-header">Navegação</li>
-				<li><a href="#">Propostas em Andamento</a></li>
-				<li><a href="#">Upload de Arquivos</a></li>
-				<li><a href="#">Revisões das Propostas</a></li>
-				<li class="nav-header">Administrar</li>
-				<li><a href="#">Cadastro de Propostas</a></li>
-				<li class="active"><a href="../../pessoas.xhtml">Pessoas</a></li>
-				<li><a href="#">Notas</a></li>
-				<li class="nav-header">Perfil</li>
-				<li><h:link value="Minha conta"
-						outcome="../../conta/consultarDados.xhtml" /></li>
-				<li><a href="#">Sair</a></li>
-			</ul>
-		</div>
+		<h:form>
+			<div class="panel-group" id="accordion">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion"
+								href="#collapseOne"><span
+								class="glyphicon glyphicon-folder-close"> </span>Navegação</a>
+						</h4>
+					</div>
+					<div id="collapseOne" class="panel-collapse collapse in">
+						<div class="panel-body">
+							<table class="table">
+								<tr>
+									<td><span class="glyphicon glyphicon-file text-muted"></span>
+										<h:commandLink value="Projetos de TCC"
+											action="#{propostaPageNavigation.alunosTCC}" /></td>
+								</tr>
+								<tr>
+									<td><span class="glyphicon glyphicon-list-alt text-muted"></span>
+										<h:commandLink value="Quadro de Acompanhamento"
+											action="#{propostaPageNavigation.quadroTCC}" /></td>
+								</tr>
+
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion"
+								href="#collapseTwo"><span class="glyphicon glyphicon-wrench">
+							</span>Administrar</a>
+						</h4>
+					</div>
+					<div id="collapseTwo">
+						<div class="panel-body">
+							<table class="table">
+								<tr class="active" style="font-weight: bold;">
+									<td><span class="glyphicon glyphicon-user text-muted"></span>
+										<h:link value="Pessoas" outcome="../../pessoas.xhtml" /></td>
+								</tr>
+								<tr>
+									<td><span class="glyphicon glyphicon-calendar text-muted"></span>
+										<h:link value="Cronograma"
+											outcome="../../cronograma/selecionarPeriodo.xhtml" /></td>
+								</tr>
+								<tr>
+									<td><span class="glyphicon glyphicon-th-large text-muted"></span>
+										<h:link value="Apresentações"
+											outcome="../../banca/banca.xhtml" /></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion"
+								href="#collapseThree"><span class="glyphicon glyphicon-cog">
+							</span>Configurações</a>
+						</h4>
+					</div>
+					<div id="collapseTwo">
+						<div class="panel-body">
+							<table class="table">
+								<tr>
+									<td><span class="glyphicon glyphicon-user text-muted"></span>
+										<h:commandLink value="Minha conta"
+											action="#{coordenadorBean.prepararConta(usuarioLogin.user)}" /></td>
+								</tr>
+								<tr>
+									<td><span class="glyphicon glyphicon-log-out text-muted"></span>
+										<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" /></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</h:form>
 	</ui:define>
 	<ui:define name="body">
+
+		<div class="page-header">
+			<h1>
+				<small>Coordenadores</small>
+			</h1>
+		</div>
+
 		<ul class="breadcrumb">
-			<li><a href="../../paginaInicial.xhtml">Página Inicial</a> <span
-				class="divider">/</span></li>
-			<li><a href="../../pessoas.xhtml">Alterar Perfil</a> <span
-				class="divider">/</span></li>
-			<li class="active">Orientador</li>
+			<li><a href="../../paginaInicial.xhtml">Página Inicial</a></li>
+			<li><a href="../../pessoas.xhtml">Alterar perfil</a></li>
+			<li class="active">Coordenadores</li>
 		</ul>
 
-		<ul class="nav nav-tabs">
-			<li><a href="../manterCoordenador.xhtml">Consultar Orientador</a></li>
-			<li class="active"><a href="#">Listar Orientadores</a></li>
+		<h:form id="form">
 
-			<h:form styleClass="accordion-inner">
-				<p:growl id="growl" showDetail="true" sticky="true" />
-				<h:messages />
-				<h:inputHidden value="#{orientadorBean.orientadorSelecionado.id}" />
-				<br />
-				<br />
-				<legend>Listagem de Coordenadores</legend>
-
-				<h:dataTable var="coordenador"
-					value="#{usuarioBean.listarCoordenador}" style="width:960px"
-					styleClass="table table-striped"
-					rendered="#{not empty usuarioBean.listarCoordenador}">
-					<p:column headerText="Id">
-						<f:facet name="header">#</f:facet>
-						<h:outputText value="#{coordenador.id}" />
-					</p:column>
-
-					<p:column headerText="Nome">
-						<f:facet name="header">Nome</f:facet>
-						<h:outputText value="#{coordenador.nome}" />
-					</p:column>
-
-					<p:column headerText="E-mail">
-						<f:facet name="header">E-mail</f:facet>
-						<h:outputText value="#{coordenador.email}" />
-					</p:column>
-
-					<h:column headerText="Telefone">
-						<f:facet name="header">Telefone</f:facet>
-						<h:outputText value="#{coordenador.telefone}" />
-					</h:column>
-
-					<p:column headerText="Status">
-						<f:facet name="header">Status</f:facet>
-						<h:outputText value="#{coordenador.status}" />
-					</p:column>
-
-					<p:column>
-						<f:facet name="header">Ações</f:facet>
-
-						<h:commandLink
-							action="#{coordenadorBean.prepararEdicao(coordenador)}">
-							<h:graphicImage library="imagens" name="wrench-icon.png" />
-						</h:commandLink>
-					</p:column>
-
-				</h:dataTable>
+			<p:messages id="messages" showDetail="true" autoUpdate="true"
+				closable="true" />
+			
+			<h:form rendered="#{empty coordenadorBean.lista}">
+					#{messagesView.infoEmptyUsers()}
+				<p:messages id="messages" showDetail="true" autoUpdate="true"
+					closable="true" />
 			</h:form>
+			
+			<p:dataTable id="form" var="coordenador"
+				value="#{coordenadorBean.lista}"
+				style="margin-bottom:20px;width:960px;" editable="true"
+				rendered="#{not empty coordenadorBean.lista}">
 
-		</ul>
+				<p:column style="width:32px;text-align: center">
+					<f:facet name="header">#</f:facet>
+					<p:commandButton update=":form:coordenadorDetail"
+						oncomplete="PF('coordenadorDialog').show()" icon="ui-icon-search"
+						title="View">
+						<f:setPropertyActionListener value="#{coordenador}"
+							target="#{coordenadorBean.coordenadorSelecionado}" />
+					</p:commandButton>
+				</p:column>
 
+				<p:column headerText="Nome" style="text-align: center">
+					<f:facet name="header">Nome</f:facet>
+					<h:outputText value="#{coordenador.nome}" styleClass="text-info" />
+				</p:column>
+
+				<p:column headerText="Coordenação" style="text-align: center">
+					<f:facet name="header">Coordenação</f:facet>
+					<h:outputText value="#{coordenador.coordenacao}"
+						styleClass="text-info" />
+				</p:column>
+
+				<p:column headerText="E-Mail" style="text-align: center">
+					<f:facet name="header">E-Mail</f:facet>
+					<h:outputText value="#{coordenador.email}" styleClass="text-muted" />
+				</p:column>
+
+				<p:column headerText="Conta" style="text-align: center">
+					<f:facet name="header">Conta</f:facet>
+					<h:outputText value="#{coordenador.status}" styleClass="text-muted" />
+				</p:column>
+
+			</p:dataTable>
+
+			<p:dialog header="Coordenador" widgetVar="coordenadorDialog"
+				showEffect="fade" hideEffect="fade" resizable="false">
+				<div class="pagination-centered">
+					<p:outputPanel id="coordenadorDetail">
+						<p:panelGrid columns="2"
+							rendered="#{not empty coordenadorBean.coordenadorSelecionado}">
+
+							<h:outputText value="Nome:" />
+							<h:outputText
+								value="#{coordenadorBean.coordenadorSelecionado.nome}" />
+
+							<h:outputText value="Matricula:" />
+							<h:outputText
+								value="#{coordenadorBean.coordenadorSelecionado.matricula}" />
+
+							<h:outputText value="Email:" />
+							<h:outputText
+								value="#{coordenadorBean.coordenadorSelecionado.email}" />
+
+							<h:outputText value="Telefone:" />
+							<h:outputText
+								value="#{coordenadorBean.coordenadorSelecionado.telefone}" />
+
+							<h:outputText value="Status:" />
+							<h:outputText
+								value="#{coordenadorBean.coordenadorSelecionado.status}" />
+
+						</p:panelGrid>
+
+					</p:outputPanel>
+
+				</div>
+			</p:dialog>
+		</h:form>
 	</ui:define>
 </ui:composition>
 

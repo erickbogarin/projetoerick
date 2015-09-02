@@ -2,8 +2,6 @@ package br.com.sistema.external;
 
 import java.util.Properties;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.mail.Address;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -13,14 +11,11 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import com.sistema.usuario.orientador.Orientador;
+import com.sistema.usuario.Usuario;
 
-
-@ManagedBean
-@RequestScoped
 public class Email {
 	
-	public static void enviarEmail(Orientador professor) {
+	public static void enviarEmail(Usuario professor) {
 		        Properties props = new Properties();
 	            /** Parâmetros de conexão com servidor Gmail */
 	            props.put("mail.smtp.host", "smtp.gmail.com");
@@ -56,9 +51,7 @@ public class Email {
 	                  Transport.send(message);
 	                  
 	                  System.out.println("Feito!!!");
-	                  
-	                  professor.setSenha(ConversorMD5
-	      					.convertStringToMd5(professor.getSenha()));
+	      
 	      			
 	             } catch (MessagingException e) {
 	                  throw new RuntimeException(e);

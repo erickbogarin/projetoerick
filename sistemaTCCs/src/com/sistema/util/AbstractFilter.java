@@ -23,4 +23,9 @@ public class AbstractFilter {
 		RequestDispatcher rd = req.getRequestDispatcher("/pages/public/acessoNegado.xhtml");
 		rd.forward(request, response);
 	}
+	
+	protected void primeiroAcesso(ServletRequest request, ServletResponse response, HttpServletRequest req) throws ServletException, IOException {
+		RequestDispatcher rd = req.getRequestDispatcher("/pages/protected/primeiroAcesso.xhtml");
+		rd.forward(request, response);
+	}
 }
