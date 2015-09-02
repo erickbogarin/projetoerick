@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:b="http://bootsfaces.net/ui" xmlns:p="http://primefaces.org/ui">
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/template.xhtml">
+	<ui:define name="pageTitle">Notícias | TCCs Fucapi</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form rendered="#{not empty usuarioLogin.user}">
+			<p class="perfil">
+				<a href="#">#{usuarioLogin.user.nome}</a> |
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+		<h:form rendered="#{empty usuarioLogin.user}">
+			<p class="perfil">
+				Visitante |
+				<h:commandLink action="login.xhtml" value="Entrar" />
+			</p>
+		</h:form>
+	</ui:define>
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+
+		<div
+			class="col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+
+			<div class="page-header">
+				<h1>
+					<small>Banca</small>
+				</h1>
+
+			</div>
+
+			<h:form
+				rendered="#{not empty usuarioLogin.user}">
+				<ul class="breadcrumb">
+					<li><h:commandLink value="Página Inicial"
+							action="#{navigationBean.paginaInicial}" /></li>
+					<li class="active">Banca</li>
+
+				</ul>
+			</h:form>
+
+			<h:form rendered="#{empty usuarioLogin.user}">
+				<ul class="breadcrumb">
+					<li><h:commandLink value="Fazer login" action="login.xhtml" /></li>
+					<li class="active">Defesas do TCC</li>
+				</ul>
+			</h:form>
+
+			<div class="page-body">
+
+				<p:messages id="messages" showDetail="true" autoUpdate="true"
+					closable="true" />
+
+				<p:dataTable id="form" var="banca" value="#{bancaBean.bancaAlunos}"
+					style="margin-bottom:20px;"
+					emptyMessage="Ainda não foram agendadas apresentações para este período letivo">
+					
+					<f:facet name="header">Período Letivo: #{bancaBean.periodoSelecionado.nome}</f:facet>
+					
+					<p:column headerText="Dia" style="text-align: center">
+						<h:outputText value="#{banca.dataApresentacao}"
+							styleClass="text-muted">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Horario" style="text-align: center">
+						<h:outputText value="#{banca.dataApresentacao}"
+							styleClass="text-muted">
+							<f:convertDateTime pattern="HH:mm"
+								timeZone="#{initParam.timezone}" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Aluno" style="text-align: center">
+						<h:outputText value="#{banca.proposta.aluno.nome}"
+							styleClass="text-muted" />
+					</p:column>
+
+					<p:column headerText="Título do Trabalho"
+						style="text-align: center">
+						<h:outputText value="#{banca.proposta.tema}"
+							styleClass="text-muted" />
+					</p:column>
+
+					<p:column headerText="Resumo" style="text-align: center">
+						<h:outputText value="#{banca.proposta.descricao}"
+							styleClass="text-muted" />
+					</p:column>
+
+					<p:column headerText="Sala" style="text-align: center">
+						<h:outputText value="#{banca.sala}" styleClass="text-muted" />
+					</p:column>
+
+				</p:dataTable>
+			</div>
+
+		</div>
+
+	</ui:define>
+</ui:composition>
+
+</html>

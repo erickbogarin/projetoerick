@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/_templateOrientador.xhtml">
+	<ui:define name="pageTitle">Pessoas | TCCs Fucapi</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<h:commandLink value="#{usuarioLogin.user.nome}"
+					action="#{orientadorBean.prepararConta(usuarioLogin.user)}" />
+				|
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+
+	<ui:define name="body">
+
+		<div class="page-header">
+			<h1>
+				<small>Coordenadores</small>
+			</h1>
+		</div>
+
+		<ul class="breadcrumb">
+			<li><a href="../paginaInicial.xhtml">Página Inicial</a></li>
+			<li><a href="../pessoas.xhtml">Alterar perfil</a></li>
+			<li class="active">Coordenadores</li>
+		</ul>
+
+		<h:form id="form">
+
+			<p:messages id="messages" showDetail="true" autoUpdate="true"
+				closable="true" />
+
+			<p:dataTable id="form" var="coordenador"
+				value="#{coordenadorBean.lista}" style="margin-bottom:20px;"
+				rendered="#{not empty coordenadorBean.lista}">
+
+				<p:column style="text-align:center;font-weight:bold">
+					<f:facet name="header">⌕ Consultar coordenador</f:facet>
+					<p:commandLink update=":form:coordenadorDetail"
+						oncomplete="PF('coordenadorDialog').show()" title="Mais informações">
+						<f:setPropertyActionListener value="#{coordenador}"
+							target="#{coordenadorBean.coordenadorSelecionado}" />
+						<h:outputText value="#{coordenador.nome}" styleClass="text-info" />
+					</p:commandLink>
+				</p:column>
+
+				<p:column headerText="E-mail" style="text-align: center">
+					<f:facet name="header">E-mail</f:facet>
+					<h:outputText value="#{coordenador.email}" styleClass="text-muted" />
+				</p:column>
+
+				<p:column headerText="Status" style="text-align: center">
+					<f:facet name="header">Status</f:facet>
+					<h:outputText value="#{coordenador.status}" styleClass="text-info" />
+				</p:column>
+
+			</p:dataTable>
+
+			<p:dialog header="Coordenador" widgetVar="coordenadorDialog"
+				showEffect="fade" hideEffect="fade" resizable="false">
+				<div class="pagination-centered">
+					<p:outputPanel id="coordenadorDetail">
+						<p:panelGrid columns="2"
+							rendered="#{not empty coordenadorBean.coordenadorSelecionado}">
+
+							<h:outputText value="Nome:" />
+							<h:outputText
+								value="#{coordenadorBean.coordenadorSelecionado.nome}" />
+
+							<h:outputText value="Email:" />
+							<h:outputText
+								value="#{coordenadorBean.coordenadorSelecionado.email}" />
+
+							<h:outputText value="Celular:" />
+							<h:outputText
+								value="#{coordenadorBean.coordenadorSelecionado.celular}" />
+
+							<h:outputText value="Status:" />
+							<h:outputText
+								value="#{coordenadorBean.coordenadorSelecionado.status}" />
+
+						</p:panelGrid>
+
+					</p:outputPanel>
+
+				</div>
+			</p:dialog>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+
+</html>

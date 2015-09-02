@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+<ui:composition template="/templates/template.xhtml">
+	<ui:define name="pageTitle">Documentos | TCCs Fucapi</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<h:commandLink value="#{usuarioLogin.user.nome}"
+					action="#{coordenadorBean.prepararConta(usuarioLogin.user)}" />
+				|
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+	<ui:define name="menuLateral">
+		<h:form>
+			<div class="panel-group" id="accordion">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion"
+								href="#collapseOne"><span
+								class="glyphicon glyphicon-folder-close text-muted"> </span><label
+								class="text-muted">Navegação</label></a>
+						</h4>
+					</div>
+					<div id="collapseOne" class="panel-collapse collapse in">
+						<div class="panel-body">
+							<table class="table">
+								<tr>
+									<td><span class="glyphicon glyphicon-file text-muted"></span>
+										<h:commandLink value="Projetos de TCC"
+											action="#{propostaPageNavigation.alunosTCC}" /></td>
+								</tr>
+								<tr>
+									<td><span class="glyphicon glyphicon-list-alt text-muted"></span>
+										<h:commandLink value="Quadro de Acompanhamento"
+											action="#{propostaPageNavigation.quadroTCC}" /></td>
+								</tr>
+
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion"
+								href="#collapseTwo"><span
+								class="glyphicon glyphicon-wrench text-muted"> </span><label
+								class="text-muted">Administrar</label></a>
+						</h4>
+					</div>
+					<div id="collapseTwo">
+						<div class="panel-body">
+							<table class="table">
+								<tr>
+									<td><span class="glyphicon glyphicon-user text-muted"></span>
+										<h:link value="Pessoas" outcome="../pessoas.xhtml" /></td>
+								</tr>
+								<tr>
+									<td><span class="glyphicon glyphicon-calendar text-muted"></span>
+										<h:link value="Cronograma"
+											outcome="../cronograma/selecionarPeriodo.xhtml" /></td>
+								</tr>
+								<h:panelGroup
+									rendered="#{coordenadorBean.coordenadorSelecionado.disciplina == 'TCC'}">
+									<tr>
+										<td><span class="glyphicon glyphicon-th-large text-muted"></span>
+											<h:commandLink value="Apresentações"
+												action="#{bancaPageNavigation.apresentacoes}" /></td>
+									</tr>
+									<tr class="active" style="font-weight: bold">
+										<td><span
+											class="glyphicon glyphicon-folder-open text-muted"></span> <h:commandLink
+												value="Documentos"
+												action="#{bancaPageNavigation.documentos}" /></td>
+									</tr>
+								</h:panelGroup>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion"
+								href="#collapseThree"><span
+								class="glyphicon glyphicon-cog text-muted"> </span><label
+								class="text-muted">Configurações</label></a>
+						</h4>
+					</div>
+					<div id="collapseTwo">
+						<div class="panel-body">
+							<table class="table">
+								<tr>
+									<td><span class="glyphicon glyphicon-info-sign text-muted"></span>
+										<h:commandLink value="Minha conta"
+											action="#{coordenadorBean.prepararConta(usuarioLogin.user)}" /></td>
+								</tr>
+								<tr>
+									<td><span class="glyphicon glyphicon-log-out text-muted"></span>
+										<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" /></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</h:form>
+	</ui:define>
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+		<h:form>
+
+			<div class="page-header">
+				<h1>
+					<small>Documentos</small>
+				</h1>
+
+			</div>
+
+			<ul class="breadcrumb">
+				<li><h:commandLink value="Página Inicial"
+						action="#{navigationBean.paginaInicial}" /></li>
+				<li><h:commandLink value="Selecionar Aluno"
+						action="#{bancaPageNavigation.documentos}" /></li>
+				<li class="active">Documentação</li>
+			</ul>
+
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">Arquivos para download</h3>
+				</div>
+
+				<ul class="list-group">
+					<li class="list-group-item"><h:commandLink value="Declaração"
+							style="font-weight:bold" styleClass="text-uppercase">
+							<p:fileDownload value="#{bancaBean.declaracao}" />
+						</h:commandLink></li>
+
+
+					<li class="list-group-item"><h:commandLink
+							value="Ata de Avaliação" style="font-weight:bold"
+							styleClass="text-uppercase">
+							<p:fileDownload value="#{bancaBean.ata}" />
+						</h:commandLink></li>
+
+
+					<li class="list-group-item"><h:commandLink
+							value="Ficha de Avaliação" style="font-weight:bold"
+							styleClass="text-uppercase">
+							<p:fileDownload value="#{bancaBean.avaliacao}" />
+						</h:commandLink></li>
+				</ul>
+
+			</div>
+
+		</h:form>
+
+
+	</ui:define>
+</ui:composition>
+
+</html>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/_templateCoordenador.xhtml">
+	<ui:define name="pageTitle">Proposta | TCCs Fucapi</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<a href="#">#{usuarioLogin.user.nome}</a> |
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+
+		<div class="page-header">
+			<h1>
+				<small>Projetos de TCC</small>
+			</h1>
+
+		</div>
+
+		<h:form id="num">
+			<ul class="breadcrumb">
+				<li><h:link value="Página Inicial"
+						outcome="/pages/protected/coordenador/paginaInicial.xhtml" /></li>
+				<li class="active">Projetos da Disciplina: <span class="badge">#{propostaBean.coordenados.size()}
+				</span></li>
+
+			</ul>
+		</h:form>
+
+		<h:form id="form">
+			<h5>
+				<strong>Período Letivo:</strong>
+			</h5>
+			<h:selectOneMenu value="#{propostaBean.periodoSelecionado}"
+				styleClass="form-control input-lg">
+				<f:selectItems value="#{periodoBean.periodoSelect}" />
+				<f:ajax execute="@this" render="form :num"
+					listener="#{propostaBean.onListaChange()}" />
+			</h:selectOneMenu>
+
+			<p:messages id="messages" showDetail="true" autoUpdate="true"
+				closable="true" />
+
+			<p:dataTable id="form" var="proposta"
+				value="#{propostaBean.coordenados}" style="margin-bottom:20px;"
+				emptyMessage="Nenhum aluno cadastrado.">
+
+				<p:column style="text-align:center;font-weight:bold"
+					headerText="⌕ Consultar aluno">
+					<p:commandLink update=":form:propostaDetail"
+						oncomplete="PF('propostaDialog').show()"
+						title="Mais informações e alteração de status do projeto">
+						<h:outputText value="#{proposta.aluno.nome}"
+							styleClass="text-info" />
+						<f:setPropertyActionListener value="#{proposta}"
+							target="#{propostaBean.propostaSelecionada}" />
+					</p:commandLink>
+				</p:column>
+
+				<p:column headerText="Orientador" style="text-align: center;">
+					<h:outputText value="#{proposta.orientador.nome}"
+						styleClass="text-muted" />
+				</p:column>
+
+				<p:column style="text-align: center">
+					<f:facet name="header">Título do Trabalho</f:facet>
+					<h:outputText value="#{proposta.tema}" styleClass="text-muted" />
+				</p:column>
+
+				<p:column headerText="Status" style="text-align: center">
+					<p:commandLink update=":form:statusDetail"
+						oncomplete="PF('statusDialog').show()" process="@this"
+						title="Alterar status">
+						<h:outputText value="#{proposta.status.status}"
+							styleClass="text-info" />
+						<f:setPropertyActionListener value="#{proposta}"
+							target="#{propostaBean.propostaSelecionada}" />
+					</p:commandLink>
+
+				</p:column>
+
+				<p:column style="width:100px;text-align:center">
+					<f:facet name="header">Formulário</f:facet>
+					<p:commandLink styleClass="glyphicon glyphicon-download-alt"
+						ajax="false" rendered="#{not empty proposta.file}"
+						title="Formulário de Cadastro do TCC">
+						<p:fileDownload value="#{propostaBean.file(proposta)}" />
+					</p:commandLink>
+					<h:outputText title="Preencher Formulário de Cadastro do TCC"
+						styleClass="glyphicon glyphicon-ban-circle text-danger"
+						rendered="#{empty proposta.file}" />
+				</p:column>
+
+			</p:dataTable>
+
+			<p:dialog header="Informações do Trabalho" widgetVar="propostaDialog"
+				showEffect="fade" hideEffect="fade" resizable="false">
+
+				<div class="pagination-centered">
+					<p:outputPanel id="propostaDetail" styleClass="text-muted">
+						<p:panelGrid columns="2"
+							rendered="#{not empty propostaBean.propostaSelecionada}">
+
+							<h:outputText value="Nome do Aluno"
+								style="font-weight:bold;text-align:center" />
+							<h:outputText
+								value="#{propostaBean.propostaSelecionada.aluno.nome}" />
+
+							<h:outputText value="Matrícula" style="font-weight:bold" />
+							<h:outputText
+								value="#{propostaBean.propostaSelecionada.aluno.matricula}" />
+
+							<h:outputText value="Curso" style="font-weight:bold" />
+							<h:outputText
+								value="#{propostaBean.propostaSelecionada.aluno.curso.nome}" />
+
+							<h:outputText value="Celular" style="font-weight:bold" />
+							<h:outputText
+								value="#{propostaBean.propostaSelecionada.aluno.telefone}" />
+
+							<h:outputText value="Título do Trabalho" style="font-weight:bold" />
+							<h:outputText value="#{propostaBean.propostaSelecionada.tema}" />
+
+
+							<h:outputText value="Modalidade" style="font-weight:bold" />
+							<h:outputText
+								value="#{propostaBean.propostaSelecionada.modalidade}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+
+							<h:outputText value="Area de Concentração "
+								style="font-weight:bold" />
+							<h:outputText
+								value="#{propostaBean.propostaSelecionada.areaConcentracao}" />
+
+							<h:outputText value="Descrição" style="font-weight:bold" />
+							<h:outputText
+								value="#{propostaBean.propostaSelecionada.descricao}" />
+
+							<h:outputText value="Resultados Esperados"
+								style="font-weight:bold" />
+							<h:outputText
+								value="#{propostaBean.propostaSelecionada.resultadosEsperados}" />
+
+							<h:outputText value="Última atualização" style="font-weight:bold" />
+							<h:outputText
+								value="#{propostaBean.propostaSelecionada.dataCadastro}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+
+							<h:outputText value="Orientador" style="font-weight:bold" />
+							<h:outputText
+								value="#{propostaBean.propostaSelecionada.orientador.nome}"
+								style="font-weight:bold" />
+
+							<h:outputText value="Co-Orientador" style="font-weight:bold" />
+							<h:outputText
+								rendered="#{empty propostaBean.propostaSelecionada.coOrientador}"
+								value="Não possui" />
+							<h:outputText
+								rendered="#{not empty propostaBean.propostaSelecionada.coOrientador}"
+								value="#{propostaBean.propostaSelecionada.coOrientador.nome}"
+								style="font-weight:bold" styleClass="text-muted" />
+
+							<h:outputText value="Status do Projeto:" style="font-weight:bold"
+								rendered="#{propostaBean.coordenadorSelecionado.disciplina == 'ITCC'}" />
+							<h:outputText value="#{propostaBean.propostaSelecionada.status}"
+								style="font-weight:bold"
+								rendered="#{propostaBean.coordenadorSelecionado.disciplina == 'ITCC'}" />
+
+						</p:panelGrid>
+
+					</p:outputPanel>
+
+				</div>
+			</p:dialog>
+
+
+			<p:dialog header="Alterar status" widgetVar="statusDialog"
+				showEffect="fade" hideEffect="fade" resizable="false">
+
+				<div class="pagination-centered">
+					<p:outputPanel id="statusDetail">
+
+						<div class="form-group">
+							<h4>
+								<h:outputText style="font-weight:bold;text-align:center"
+									value="#{propostaBean.propostaSelecionada.aluno.nome}" />
+							</h4>
+							<span class="glyphicon glyphicon-edit text-info" />
+
+							<h:outputLabel value="Status do Projeto: "
+								styleClass="text-muted" />
+							<abbr title="attribute"><h:outputText value="ⓘ"
+									style="font-size:18px;font-weight:bold;"
+									styleClass="text-info"
+									title="Em Andamento: &#13; Permite o agendamento da apresentação na banca e a geração do formulário de cadastro do TCC &#13;
+										&#13; Solicitar Orientador: &#13; Elimina todas as informações do TCC e o aluno deve solicitar um novo orientador&#13;
+										&#13; Cadastrar Projeto Final: &#13; Permite que o aluno possa alterar as informações do cadastro do TCC&#13;
+										&#13; Em análise: &#13; Quando o aluno já realizou o cadastro do TCC e o coordenador da disciplina deve alterar o status do trabalho do aluno" />
+							</abbr>
+							<h:selectOneMenu
+								value="#{propostaBean.propostaSelecionada.status}"
+								styleClass="form-control input-lg">
+								<f:selectItem itemLabel="Alterar status..."
+									itemValue="#{propostaBean.status}" />
+								<f:selectItems value="#{propostaBean.tiposStatus}" var="status"
+									itemLabel="#{status.label}" itemValue="{status}" />
+							</h:selectOneMenu>
+
+							<div class="pager">
+								<h:commandButton value="Alterar status"
+									action="#{propostaBean.alterarProposta}" ajax="false"
+									styleClass="btn btn-info" title="Confirmar alteração"
+									onclick="if (!confirm('Deseja realmente alterar este projeto?')) return false;">
+								</h:commandButton>
+
+								<h:commandButton value="Cancelar" styleClass="btn btn-default"
+									title="Fechar janela" style="margin-left:5px" update=":form">
+
+								</h:commandButton>
+
+							</div>
+						</div>
+					</p:outputPanel>
+				</div>
+			</p:dialog>
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+
+</html>

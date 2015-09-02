@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:b="http://bootsfaces.net/ui" xmlns:p="http://primefaces.org/ui">
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/template.xhtml">
+	<ui:define name="pageTitle">Notícias | TCCs Fucapi</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form rendered="#{not empty usuarioLogin.user}">
+			<p class="perfil">
+				<a href="#">#{usuarioLogin.user.nome}</a> |
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+		<h:form rendered="#{empty usuarioLogin.user}">
+			<p class="perfil">
+				Visitante |
+				<h:commandLink action="login.xhtml" value="Entrar" />
+			</p>
+		</h:form>
+	</ui:define>
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+
+		<div
+			class="col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+
+			<div class="page-header">
+				<h1>
+					<small>Notícias</small>
+				</h1>
+
+			</div>
+
+			<h:form
+				rendered="#{not empty usuarioLogin.user and !usuarioLogin.user.coordenador}">
+				<ul class="breadcrumb">
+					<li><h:commandLink value="Página Inicial"
+							action="#{navigationBean.paginaInicial}" /></li>
+					<li class="active">Notícias</li>
+
+				</ul>
+			</h:form>
+
+			<h:form rendered="#{empty usuarioLogin.user}">
+				<ul class="breadcrumb">
+					<li><h:commandLink value="Fazer login" action="login.xhtml" /></li>
+					<li class="active">Notícias</li>
+				</ul>
+			</h:form>
+
+			<h:form rendered="#{usuarioLogin.user.coordenador}">
+				<ul class="nav nav-pills">
+					<li><h:commandLink value="Página Inicial"
+							action="#{navigationBean.paginaInicial}" /></li>
+					<li class="active"><a href="#">Notícias</a></li>
+					<li><h:commandLink value="Cadastrar Notícia"
+							action="#{navigationBean.cadastrarNoticias}" /></li>
+				</ul>
+				<br />
+			</h:form>
+
+			<div class="page-body">
+
+				<p:messages id="messages" showDetail="true" autoUpdate="true"
+					closable="true" />
+		
+				<p:dataTable var="mensagem" value="#{mensagemBean.noticias}"
+					rows="10" paginator="true" paginatorTemplate="{PageLinks}"
+					rowsPerPageTemplate="5,10,15" styleClass="table table-bordered"
+					emptyMessage="Ainda não foram anunciadas novas notícias">
+
+					<p:column headerText="#"
+						style="width:5px;text-align:center;buttom:0">
+
+						<h:outputText value="#{mensagem.data}" styleClass="text-muted">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Assunto"
+						style="width:inherit;text-align:left;">
+						<h:outputText value="#{mensagem.mensagem}"
+							styleClass="text-primary" />
+					</p:column>
+
+				</p:dataTable>
+			</div>
+		
+		</div>
+
+	</ui:define>
+</ui:composition>
+
+</html>

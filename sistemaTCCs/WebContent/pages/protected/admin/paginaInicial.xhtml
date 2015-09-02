@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/_templateAdmin.xhtml">
+	<ui:define name="pageTitle">Página Inicial | TCCs Fucapi</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<h:commandLink value="#{usuarioLogin.user.nome}"
+					action="#{usuarioBean.prepararConta(usuarioLogin.user)}" />
+				|
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+	
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+		<h:form>
+
+			<div class="page-header">
+				<h1>
+					<small>Mensagens</small>
+				</h1>
+
+			</div>
+
+			<ul class="breadcrumb">
+				<li class="active">Página Inicial</li>
+			</ul>
+
+			<div class="page-body">
+
+				<p:dataTable var="mensagem" value="#{mensagemBean.lista}" rows="2"
+					paginator="true" paginatorTemplate="{PageLinks}"
+					rowsPerPageTemplate="5,10,15" emptyMessage="Você ainda não possui mensagens.">
+
+					<p:column style="width:5px">
+
+						<h:outputText value="#{mensagem.data}" styleClass="text-info">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+					<p:column>
+
+						<h:outputText value="#{mensagem.mensagem}" styleClass="text-info" />
+					</p:column>
+				</p:dataTable>
+			</div>
+		</h:form>
+
+		<script src="http://code.jquery.com/jquery-latest.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+	</ui:define>
+</ui:composition>
+
+</html>

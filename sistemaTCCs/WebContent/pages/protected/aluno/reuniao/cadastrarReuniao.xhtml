@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/_templateAluno.xhtml">
+	<ui:define name="pageTitle">Reuniões | TCCs Fucapi</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<h:commandLink value="#{usuarioLogin.user.nome}"
+					action="#{alunoBean.prepararConta(usuarioLogin.user)}" />
+				|
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+
+		<div class="page-header">
+			<h1>
+				<small>Reuniões</small>
+			</h1>
+
+		</div>
+
+		<ul class="breadcrumb">
+			<li><h:link value="Página Inicial"
+					outcome="../paginaInicial.xhtml" /></li>
+			<li class="active">Reuniões</li>
+		</ul>
+
+		<ul class="nav nav-tabs">
+			<li><h:link value="Reuniões Realizadas"
+					outcome="listagemReuniao.xhtml" /></li>
+			<li class="active"><a href="#">Cadastrar Reunião</a></li>
+		</ul>
+
+
+		<div class="panel-body">
+			<div class="panel panel-default">
+				<h:form styleClass="text-muted panel-body">
+
+					<p:messages id="messages" showDetail="false" autoUpdate="true"
+						closable="true" />
+
+					<h4>
+						<small>Data:</small>
+					</h4>
+
+					<div class="form-group">
+						<p:calendar id="mask"
+							value="#{reuniaoBean.reuniaoSelecionada.dataReuniao}"
+							pattern="dd/MM/yyyy" mask="true" />
+						<p:watermark for="mask"
+							value="#{propostaBean.orientadorSelecionado.nome}"
+							id="calendario" />
+					</div>
+					<div class="form-group">
+						<h5><label for="assunto">Assunto Discutido:</label></h5>
+						<p:inputTextarea required="true"
+							requiredMessage="Assunto obrigatório" 
+							value="#{reuniaoBean.reuniaoSelecionada.assuntoDiscutido}"
+							id="assunto" styleClass="form-control" 
+							rows="3" cols="30" counter="display" maxlength="250" counterTemplate="{0} caracteres restantes." autoResize="false"/>
+						<p:watermark for="assunto" value="Descreva o assunto discutido com o seu orientador" 
+							id="waterassunto" />
+						<h:outputText id="display"/>	
+					</div>
+
+					<div class="form-group">
+						<h5><label for="resultados">Resultados Alcançados:</label></h5>
+						<p:inputTextarea required="true"
+							requiredMessage="Resultados obrigatório"
+							value="#{reuniaoBean.reuniaoSelecionada.resultadosObtidos}"
+							id="resultados" styleClass="form-control"
+							rows="3" cols="30" counter="rdisplay" maxlength="250" counterTemplate="{0} caracteres restantes." autoResize="false"/>
+						<p:watermark for="resultados" value="Descreva os resultados alcançados da orientação"
+							id="waterresultados" />
+						<h:outputText id="rdisplay" />	
+					</div>
+
+					<div class="pager">
+						<h:commandButton value="Salvar"
+							action="#{reuniaoBean.cadastrarReuniao(reuniaoBean.propostaSelecionada.orientador)}"
+							styleClass="btn btn-primary" title="Confirmar reunião realizada"/>
+
+						<h:link value="Cancelar" outcome="listagemReuniao.xhtml?faces-redirect=true"
+							styleClass="btn btn-default" style="margin-left:5px" />
+					</div>
+
+				</h:form>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>
+
+</html>

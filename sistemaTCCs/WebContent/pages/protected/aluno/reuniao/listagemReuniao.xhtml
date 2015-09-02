@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/_templateAluno.xhtml">
+	<ui:define name="pageTitle">Reuniões | TCCs Fucapi</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<h:commandLink value="#{usuarioLogin.user.nome}"
+					action="#{alunoBean.prepararConta(usuarioLogin.user)}" />
+				|
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+		<h:form>
+
+			<div class="page-header">
+				<h1>
+					<small>Reuniões</small>
+				</h1>
+			</div>
+
+			<ul class="breadcrumb">
+				<li><h:link value="Página Inicial"
+						outcome="../paginaInicial.xhtml" /></li>
+				<li class="active">Reuniões</li>
+			</ul>
+
+			<h:inputHidden value="#{reuniaoBean.propostaSelecionada.id}" />
+
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#">Reuniões Realizadas</a></li>
+				<li><h:link value="Cadastrar Reunião"
+						outcome="cadastrarReuniao.xhtml" /></li>
+			</ul>
+			
+			<p:messages id="messages" showDetail="true" autoUpdate="true"
+					closable="true" />
+			
+			<p:dataTable var="agenda" value="#{reuniaoBean.listaReuniaoAluno}"
+				emptyMessage="Nenhuma reunião registrada.">
+
+				<f:facet name="header">Realizadas</f:facet>
+
+				<p:column headerText="Dia" style="width:5px">
+					<f:facet name="header">Dia</f:facet>
+					<h:outputText value="#{agenda.dataReuniao}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Assunto Discutido">
+					<h:outputText value="#{agenda.assuntoDiscutido}" />
+				</p:column>
+
+				<p:column headerText="Resultados Obtidos">
+					<h:outputText value="#{agenda.resultadosObtidos}" />
+				</p:column>
+
+			</p:dataTable>
+
+			<p:dataTable var="agenda" value="#{reuniaoBean.listaCadastroAluno}"
+				rendered="#{not empty reuniaoBean.listaCadastroAluno}">
+
+				<f:facet name="header">Não Confirmadas</f:facet>
+
+				<p:column headerText="Dia" style="width:5px">
+					<f:facet name="header">Dia</f:facet>
+					<h:outputText value="#{agenda.dataReuniao}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Assunto Discutido" style="text-align:center">
+					<h:outputText value="#{agenda.assuntoDiscutido}" />
+				</p:column>
+
+				<p:column headerText="Resultados Obtidos" style="text-align:center">
+					<h:outputText value="#{agenda.resultadosObtidos}" />
+				</p:column>
+
+				<p:column headerText="Status" style="text-align:center">
+					<f:facet name="header">Status</f:facet>
+					<h:outputText value="#{agenda.status}" style="font-weight:bold" 
+						title="Aguarde a confirmação da reunião pelo seu orientador"/>
+				</p:column>
+
+			</p:dataTable>
+
+
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</html>

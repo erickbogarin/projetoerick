@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/_templateAluno.xhtml">
+	<ui:define name="pageTitle">Cadastro do TCC | TCCs Fucapi</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<h:commandLink value="#{usuarioLogin.user.nome}"
+					action="#{alunoBean.prepararConta(usuarioLogin.user)}" />
+				|
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+
+		<div class="page-header">
+			<h1>
+				<small>Cadastro do TCC</small>
+			</h1>
+		</div>
+
+		<ul class="breadcrumb">
+			<li><h:link value="Página Inicial"
+					outcome="../paginaInicial.xhtml" /></li>
+			<li class="active">Cadastro do Projeto</li>
+
+		</ul>
+
+		<h:form styleClass="accordion-toggle" id="campo">
+
+			<p:growl id="growl" showDetail="true" sticky="true" autoUpdate="true"/>
+
+			<p:panel header="Proposta">
+
+				<div class="form-group">
+					<label>Orientador: </label>
+					<p:inputText
+						value="#{propostaBean.propostaSelecionada.orientador.nome}"
+						styleClass="form-control" type="text" disabled="true" />
+				</div>
+
+				<div class="form-group">
+					<h:outputText value="Co-Orientador: (Opcional)" />
+					<h:selectOneMenu
+						value="#{propostaBean.propostaSelecionada.coOrientador}"
+						styleClass="form-control input-lg">
+						<f:selectItem itemLabel="Nenhum" itemValue="#{null}" />
+						<f:selectItems value="#{orientadorBean.orientadorSelect}" />
+					</h:selectOneMenu>
+				</div>
+
+				<div class="form-group">
+					<h:outputLabel value="Tema:" />
+					<p:inputText value="#{propostaBean.propostaSelecionada.tema}"
+						styleClass="form-control" type="text" disabled="true" />
+				</div>
+
+				<div class="form-group">
+					<h:outputLabel value="Descrição:" />
+					<p:inputTextarea rows="4"
+						value="#{propostaBean.propostaSelecionada.descricao}"
+						styleClass="form-control" type="text" disabled="true" />
+				</div>
+
+				<div class="form-group">
+					<h:outputLabel value="Área de Concentração:" />
+					<h:inputText id="area"
+						value="#{propostaBean.propostaSelecionada.areaConcentracao}"
+						styleClass="form-control" required="true" requiredMessage="Área de concentração obrigatório"/>
+				</div>
+
+				<div class="form-group">
+					<h:outputLabel value="Resultados esperados do TCC:" />
+					<p:inputTextarea
+						value="#{propostaBean.propostaSelecionada.resultadosEsperados}"
+						styleClass="form-control" type="text" required="true"
+						requiredMessage="Resultados esperados obrigatório" rows="3"
+						cols="30" counter="display" maxlength="250"
+						counterTemplate="{0} caracteres restantes." autoResize="false" />
+					<h:outputText id="display" />
+				</div>
+				<p:messages closable="true" autoUpdate="true"/>
+			</p:panel>
+
+			<div class="pager">
+
+				<p:commandButton action="#{propostaBean.salvarProposta}"
+					value="Salvar" styleClass="btn btn-primary" update="@all">
+					<f:setPropertyActionListener
+						target="#{propostaBean.orientadorSelecionado}" type="submit"
+						value="#{propostaBean.propostaSelecionada.orientador}" />
+				</p:commandButton>
+				<p:commandButton value="Cancelar" action="../paginaInicial.xhtml?faces-redirect=true" immediate="true"
+					styleClass="btn btn-default" margin-left="10px" />
+			</div>
+
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</html>

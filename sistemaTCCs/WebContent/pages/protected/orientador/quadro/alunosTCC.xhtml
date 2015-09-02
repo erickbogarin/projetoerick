@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/_templateOrientador.xhtml">
+	<ui:define name="pageTitle">Quadro de Acompanhamento | TCCs Fucapi</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<h:commandLink value="#{usuarioLogin.user.nome}"
+					action="#{orientadorBean.prepararConta(usuarioLogin.user)}" />
+				|
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+
+		<div class="page-header">
+			<h1>
+				<small>Quadro de Acompanhamento</small>
+			</h1>
+		</div>
+
+		<ul class="breadcrumb">
+			<li><h:link value="Página Inicial"
+					outcome="../paginaInicial.xhtml" /></li>
+			<li class="active">Selecionar Aluno</li>
+		</ul>
+
+		<h:form>
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#">TCC</a></li>
+				<li><h:commandLink value="ITCC"
+						action="#{propostaPageNavigation.quadroITCC}" /></li>
+			</ul>
+		</h:form>
+
+		<p:messages id="messages" showDetail="true" autoUpdate="true"
+			closable="true" />
+
+		<h:form id="form" style="margin-top:3px">
+			<label><strong>Período Letivo</strong></label>
+			<h:selectOneMenu value="#{propostaBean.periodoSelecionado}"
+				styleClass="form-control input-lg">
+				<f:selectItems value="#{periodoBean.periodoSelect}" />
+				<f:ajax execute="@this" render="form"
+					listener="#{propostaBean.onListaChange}" />
+			</h:selectOneMenu>
+
+			<p:dataTable var="proposta" value="#{propostaBean.orientados}"
+				styleClass="table table-striped"
+				emptyMessage="Nenhum aluno associado a este período letivo.">
+
+				<p:column headerText="✔ Selecionar Aluno"
+					style="text-align:center;font-weight:bold;">
+					<h:commandLink action="listagemQuadro?faces-redirect=true">
+						<h:outputText value="#{proposta.aluno.nome}"
+							styleClass="text-info" title="Visualizar quadro de acompanhamento"/>
+						<f:setPropertyActionListener
+							target="#{quadroBean.propostaSelecionada}" value="#{proposta}" />
+						<f:setPropertyActionListener
+							target="#{reuniaoBean.propostaSelecionada}" value="#{proposta}" />
+					</h:commandLink>
+				</p:column>
+
+				<p:column headerText="Título do Projeto" style="text-align:center">
+					<h:outputText value="#{proposta.tema}" styleClass="text-muted" />
+				</p:column>
+
+				<p:column headerText="Status do Projeto" style="font-weight:bold;text-align:center">
+					<h:outputText value="#{proposta.status.status}"/>
+				</p:column>
+
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</html>

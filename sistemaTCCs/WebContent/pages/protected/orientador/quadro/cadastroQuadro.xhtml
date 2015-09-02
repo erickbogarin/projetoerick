@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/_templateOrientador.xhtml">
+	<ui:define name="pageTitle">Quadro de Acompanhamento | TCCs Fucapi</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<h:commandLink value="#{usuarioLogin.user.nome}"
+					action="#{orientadorBean.prepararConta(usuarioLogin.user)}" />
+				|
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+
+		<div class="page-header">
+			<h1>
+				<small>Quadro de Acompanhamento</small>
+			</h1>
+		</div>
+
+		<h:form>
+			<ul class="breadcrumb">
+				<li><h:link value="Página Inicial"
+						outcome="/pages/protected/orientador/paginaInicial.xhtml" /></li>
+				<li><h:commandLink value="Selecionar aluno"
+						action="#{propostaPageNavigation.quadroTCC}" /></li>
+				<li><h:outputText
+						value="#{quadroBean.propostaSelecionada.aluno.nome}"
+						style="font-weight:bold" /></li>
+			</ul>
+
+			<ul class="nav nav-tabs">
+				<li><h:link value="Quadro de Acompanhamento"
+						outcome="listagemQuadro.xhtml" /></li>
+				<li class="active"><a href="#">Cadastrar Avaliação</a></li>
+			</ul>
+		</h:form>
+
+		<div class="panel  panel-default" style="margin-top: -1px">
+			<p:messages id="messages" showDetail="false" autoUpdate="true"
+				closable="true" />
+			<h:form styleClass="panel-body text-muted" acceptcharset="ISO-8859-1">
+
+				<div class="form-group">
+					<p:commandButton id="movieBtn"
+						value="Consultar Reuniões Realizadas"
+						styleClass="form-control btn btn-default" icon="ui-icon-search" />
+					<p:overlayPanel id="moviePanel" for="movieBtn" hideEffect="fade"
+						dynamic="true" style="width:600px">
+						<p:dataTable var="reuniao"
+							value="#{reuniaoBean.listaReuniaoAluno}" rows="5"
+							paginator="true"
+							emptyMessage="Nennhuma reunião foi cadastrada para este aluno.">
+							<p:column headerText="Dia">
+								<h:outputText value="#{reuniao.dataReuniao}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="Aluno">
+								<h:outputText value="#{reuniao.proposta.aluno.nome}" />
+							</p:column>
+
+							<p:column headerText="Assunto Discutido">
+								<h:outputText value="#{reuniao.assuntoDiscutido}" />
+							</p:column>
+
+							<p:column headerText="Resultados Obtidos">
+								<h:outputText value="#{reuniao.resultadosObtidos}" />
+							</p:column>
+
+						</p:dataTable>
+					</p:overlayPanel>
+				</div>
+
+				<div class="form-group">
+					<h5>
+						<label>*Período:</label>
+					</h5>
+					<h:selectOneMenu id="periodo"
+						value="#{quadroBean.quadroSelecionado.periodo}"
+						styleClass="form-control" required="true"
+						requiredMessage="Período obrigatório">
+						<f:selectItem
+							itemLabel="Selecionar o mês referênte ao acompanhamento"
+							itemValue="#{null}" />
+						<f:selectItem itemLabel="Janeiro" itemValue="Janeiro" />
+						<f:selectItem itemLabel="Fevereiro" itemValue="Fevereiro" />
+						<f:selectItem itemLabel="Março" itemValue="Março" />
+						<f:selectItem itemLabel="Abril" itemValue="Abril" />
+						<f:selectItem itemLabel="Maio" itemValue="Maio" />
+						<f:selectItem itemLabel="Junho" itemValue="Junho" />
+						<f:selectItem itemLabel="Julho" itemValue="Julho" />
+						<f:selectItem itemLabel="Agosto" itemValue="Agosto" />
+						<f:selectItem itemLabel="Setembro" itemValue="Setembro" />
+						<f:selectItem itemLabel="Outubro" itemValue="Outubro" />
+						<f:selectItem itemLabel="Novembro" itemValue="Novembro" />
+						<f:selectItem itemLabel="Dezembro" itemValue="Dezembro" />
+					</h:selectOneMenu>
+					<h:outputText value="de " style="margin-left: 5px" />
+					<h:outputText value="#{currentDate}" style="margin-left:5px">
+						<f:convertDateTime pattern="yyyy" />
+					</h:outputText>
+
+				</div>
+
+				<div class="form-group">
+					<h5>
+						<label for="avaliacao">*Avaliação dos resultados
+							alcançados:</label>
+					</h5>
+					<p:inputTextarea id="avaliacao" styleClass="form-control"
+						required="true"
+						requiredMessage="Descrição da avaliação obrigatório"
+						value="#{quadroBean.quadroSelecionado.avaliacaoResultados}"
+						rows="3" cols="30" counter="display" maxlength="250"
+						counterTemplate="{0} caracteres restantes." autoResize="false" />
+					<p:watermark for="avaliacao"
+						value="Descreva uma avaliação dos resultados alcançados"
+						id="watermar" />
+					<h:outputText id="display" />
+				</div>
+
+				<div class="pager">
+					<p:commandButton value="Salvar" action="#{quadroBean.salvar}"
+						styleClass="btn btn-primary" />
+					<h:link value="Cancelar"
+						outcome="listagemQuadro.xhtml?faces-redirect=true"
+						styleClass="btn btn-default" style="margin-left: 5px" />
+				</div>
+
+			</h:form>
+		</div>
+
+	</ui:define>
+</ui:composition>
+
+</html>

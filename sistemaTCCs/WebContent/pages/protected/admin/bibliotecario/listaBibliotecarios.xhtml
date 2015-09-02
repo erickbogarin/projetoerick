@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/template.xhtml">
+	<ui:define name="pageTitle">Coordenadores | TCCs Fucapi</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<h:commandLink value="#{usuarioLogin.user.nome}"
+					action="#{usuarioBean.prepararConta(usuarioLogin.user)}" />
+				|
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+	<ui:define name="menuLateral">
+		<h:form>
+			<div class="panel-group" id="accordion">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion"
+								href="#collapseOne"><span
+								class="glyphicon glyphicon-wrench text-muted"> </span><label
+								class="text-muted">Administrar</label></a>
+						</h4>
+					</div>
+					<div id="collapseOne" class="panel-collapse collapse in">
+						<div class="panel-body">
+							<table class="table">
+								<tr>
+									<td><span class="glyphicon glyphicon-user text-muted"></span>
+										<h:link value="Coordenadores"
+											outcome="listaCoordenadores.xhtml" /></td>
+								</tr>
+								<tr class="active" style="font-weight: bold">
+									<td><span class="glyphicon glyphicon-user text-muted"></span>
+										<h:link value="Bibliotecários"
+											outcome="listaBibliotecarios.xhtml" /></td>
+								</tr>
+								<tr>
+									<td><span class="glyphicon glyphicon-calendar text-muted"></span>
+										<h:link value="Cronograma"
+											outcome="cronograma/selecionarPeriodo.xhtml" /></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion"
+								href="#collapseOne"><span
+								class="glyphicon glyphicon-cog text-muted"> </span><label
+								class="text-muted">Configurações</label></a>
+						</h4>
+					</div>
+					<div id="collapseOne" class="panel-collapse collapse in">
+						<div class="panel-body">
+							<table class="table">
+								<tr>
+									<td><span class="glyphicon glyphicon-info-sign text-muted"></span>
+										<h:commandLink value="Minha conta"
+											action="#{usuarioBean.prepararConta(usuarioLogin.user)}" /></td>
+								</tr>
+								<tr>
+									<td><span class="glyphicon glyphicon-log-out text-muted"></span>
+										<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" /></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</h:form>
+	</ui:define>
+	<ui:define name="body">
+		<div class="page-header">
+			<h1>
+				<small>Bibliotecarios</small>
+			</h1>
+		</div>
+
+		<ul class="breadcrumb">
+			<li><h:link value="Página Inicial" outcome="paginaInicial.xhtml" /></li>
+			<li class="active">Bibliotecarios</li>
+		</ul>
+
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="#">Bibliotecarios</a></li>
+			<li><a href="cadastrarBibliotecario.xhtml">Novo Cadastro</a></li>
+		</ul>
+
+		<h:form>
+
+			<h:form rendered="#{empty usuarioBean.bibliotecarios}">
+					#{messagesView.infoEmptyCoordenador()}
+					<p:messages id="messages" showDetail="true" autoUpdate="true"
+					closable="true" />
+			</h:form>
+
+			<p:growl id="growl" showDetail="true" sticky="true" />
+
+			<p:dataTable id="pg" var="bibliotecario"
+				value="#{usuarioBean.bibliotecarios}" 
+				styleClass="table table-striped"
+				rendered="#{not empty usuarioBean.bibliotecarios}">
+
+				<p:column style="width:32px;text-align: center">
+					<f:facet name="header">#</f:facet>
+					<h:commandLink action="#{usuarioBean.prepararEdicao}" styleClass="glyphicon glyphicon-edit text-muted"
+						title="Editar">
+						<f:setPropertyActionListener value="#{bibliotecario}"
+							target="#{usuarioBean.usuarioSelecionado}" />
+					</h:commandLink>
+				</p:column>
+
+
+				<p:column headerText="Nome" style="text-align:center">
+					<f:facet name="header">Nome</f:facet>
+					<h:outputText value="#{bibliotecario.nome}" styleClass="text-muted"/>
+				</p:column>
+
+				<p:column headerText="E-mail" style="text-align:center">
+					<f:facet name="header">E-mail</f:facet>
+					<h:outputText value="#{bibliotecario.email}" styleClass="text-muted"/>
+				</p:column>
+
+				<h:column headerText="Telefone" style="text-align:center">
+					<f:facet name="header">Telefone</f:facet>
+					<h:outputText value="#{bibliotecario.telefone}" styleClass="text-muted"/>
+				</h:column>
+
+				<p:column headerText="Status" style="text-align:center">
+					<f:facet name="header">Status</f:facet>
+					<h:outputText value="#{bibliotecario.status}" styleClass="text-info"/>
+				</p:column>
+
+				<p:column style="text-align:center">
+					<f:facet name="header">Conta</f:facet>
+					<h:commandLink action="#{usuarioBean.excluir}" styleClass="glyphicon glyphicon-trash"
+						onclick="if (!confirm('Deseja realmente excluir o usuário #{bibliotecario.nome}?')) return false;">
+						<f:setPropertyActionListener
+							target="#{usuarioBean.usuarioSelecionado}"
+							value="#{bibliotecario}" />
+					</h:commandLink>
+
+				</p:column>
+
+			</p:dataTable>
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+
+</html>

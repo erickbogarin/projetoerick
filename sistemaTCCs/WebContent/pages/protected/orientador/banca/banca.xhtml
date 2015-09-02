@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/_templateOrientador.xhtml">
+	<ui:define name="pageTitle">Página Inicial | TCCs Fucapi</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<h:commandLink value="#{usuarioLogin.user.nome}"
+					action="#{orientadorBean.prepararConta(usuarioLogin.user)}" />
+				|
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+
+		<div class="page-header">
+			<h1>
+				<small>Apresentações da Disciplina TCC</small>
+			</h1>
+
+		</div>
+
+		<ul class="breadcrumb">
+			<li><h:link value="Página Inicial"
+					outcome="../paginaInicial.xhtml" /></li>
+			<li class="active">Banca</li>
+		</ul>
+
+
+		<h:form id="form" styleClass="form-group">
+			<h5>
+				<strong>Período Letivo:</strong>
+			</h5>
+			<h:selectOneMenu value="#{bancaBean.periodoSelecionado}"
+				styleClass="form-control input-lg">
+				<f:selectItems value="#{periodoBean.periodoSelect}" />
+				<f:ajax execute="@this" render="form"
+					listener="#{bancaBean.onListaChange}" />
+			</h:selectOneMenu>
+
+			<p:messages id="messages" showDetail="true" autoUpdate="true"
+				closable="true" />
+
+			<p:dataTable id="form" var="banca" value="#{bancaBean.orientados}"
+				style="margin-bottom:20px;"
+				emptyMessage="Ainda não foram agendadas datas de apresentações para este período letivo">
+
+				<p:column headerText="#" style="width:32px;text-align: center">
+					<p:commandButton update=":form:bancaDetail"
+						oncomplete="PF('bancaDialog').show()" icon="ui-icon-search"
+						title="View">
+						<f:setPropertyActionListener value="#{banca}"
+							target="#{bancaBean.bancaSelecionada}" />
+					</p:commandButton>
+				</p:column>
+
+				<p:column headerText="Aluno" style="text-align: center">
+					<h:outputText value="#{banca.proposta.aluno.nome}"
+						styleClass="text-muted" />
+				</p:column>
+
+				<p:column headerText="Dia" style="text-align: center">
+					<h:outputText value="#{banca.dataApresentacao}"
+						styleClass="text-info">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Horário" style="text-align: center">
+					<h:outputText value="#{banca.dataApresentacao}"
+						styleClass="text-info">
+						<f:convertDateTime pattern="HH:mm"
+							timeZone="#{initParam.timezone}" />
+					</h:outputText>
+					<h:outputText value="h" styleClass="text-info" />
+				</p:column>
+
+				<p:column headerText="Avaliador" style="text-align: center">
+					<h:outputText value="#{banca.primeiroConvidado}"
+						styleClass="text-muted" />
+				</p:column>
+
+				<p:column headerText="Avaliador" style="text-align: center">
+					<h:outputText value="#{banca.segundoConvidado}"
+						styleClass="text-muted" />
+				</p:column>
+
+			</p:dataTable>
+
+			<p:dialog header="Proposta" widgetVar="bancaDialog" showEffect="fade"
+				hideEffect="fade" resizable="false">
+				<div class="pagination-centered">
+					<p:outputPanel id="bancaDetail">
+						<p:panelGrid columns="2"
+							rendered="#{not empty bancaBean.bancaSelecionada}">
+
+							<h:outputText value="Orientador:" />
+							<h:outputText
+								value="#{bancaBean.bancaSelecionada.proposta.orientador.nome}" />
+
+							<h:outputText value="Aluno:" />
+							<h:outputText
+								value="#{bancaBean.bancaSelecionada.proposta.aluno.nome}" />
+
+							<h:outputText value="Tema:" />
+							<h:outputText value="#{bancaBean.bancaSelecionada.proposta.tema}" />
+
+
+							<h:outputText value="Modalidade:" />
+							<h:outputText
+								value="#{bancaBean.bancaSelecionada.proposta.modalidade}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+
+							<h:outputText value="Area de Concentração: " />
+							<h:outputText
+								value="#{bancaBean.bancaSelecionada.proposta.areaConcentracao}" />
+
+							<h:outputText value="Descrição:" />
+							<h:outputText
+								value="#{bancaBean.bancaSelecionada.proposta.descricao}" />
+
+							<h:outputText value="Resultados Esperados:" />
+							<h:outputText
+								value="#{bancaBean.bancaSelecionada.proposta.resultadosEsperados}" />
+
+							<h:outputText value="Dia Cadastrado:" />
+							<h:outputText
+								value="#{bancaBean.bancaSelecionada.proposta.dataCadastro}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+
+							<h:outputText value="Status:" />
+							<h:outputText
+								value="#{bancaBean.bancaSelecionada.proposta.status}" />
+
+						</p:panelGrid>
+
+					</p:outputPanel>
+
+				</div>
+			</p:dialog>
+
+		</h:form>
+
+
+	</ui:define>
+</ui:composition>
+
+</html>

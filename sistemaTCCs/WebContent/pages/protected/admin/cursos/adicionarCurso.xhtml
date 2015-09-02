@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/_templateAdmin.xhtml">
+	<ui:define name="pageTitle">Adicionar Coordenação | TCCs Fucapi</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<h:commandLink value="#{usuarioLogin.user.nome}"
+					action="#{usuarioBean.prepararConta(usuarioLogin.user)}" />
+				|
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+
+	<ui:define name="body">
+		<div class="page-header">
+			<h1>
+				<small>Coordenações</small>
+			</h1>
+		</div>
+
+		<h:form>
+			<ul class="breadcrumb">
+				<li><h:commandLink value="Página Inicial"
+						action="#{navigationBean.paginaInicial}" /></li>
+				<li class="active">Manter Curso</li>
+			</ul>
+		</h:form>
+
+		<h:form>
+			<ul class="nav nav-tabs">
+				<li><h:commandLink value="Curso"
+						action="listaCursos?faces-redirect=true" /></li>
+				<li class="active"><a href="#">Adicionar Curso</a></li>
+			</ul>
+		</h:form>
+
+		<div class="panel panel-default" style="margin-top: -1px">
+			<h:form styleClass="text-muted panel-body" acceptcharset="ISO-8859-1">
+				<p:messages id="messages" autoUpdate="true" closable="true" />
+
+				<div class="form-group">
+					<label for="inputNome">Nome</label>
+					<h:inputText value="#{cursoBean.curso.nome}" id="inputNome"
+						styleClass="form-control" required="true"
+						requiredMessage="Nome obrigatório" />
+					<p:watermark for="inputNome" value="Nome do Curso" id="nome" />
+				</div>
+
+				<div class="form-group">
+					<h:outputLabel value="Selecione ou" for="coordenacao" />
+					<p:commandLink value=" cadastre nova coordenação"
+						action="../coordenacao/adicionarCoordenacao?faces-redirect=true" immediate="true" />
+					<br />
+					<p:selectOneMenu value="#{cursoBean.coordenacaoId}"
+						id="coordenacao">
+						<f:selectItems value="#{cursoBean.coordenacoes}" var="coordenacao"
+							itemLabel="#{coordenacao.nome}" itemValue="#{coordenacao.id}" />
+					</p:selectOneMenu>
+				</div>
+
+				<div class="pager">
+					<h:commandButton value="Salvar"
+						action="#{cursoBean.adicionarCurso}"
+						styleClass="btn btn-primary" />
+					<h:link value="Cancelar"
+						outcome="listaCursos?faces-redirect=true"
+						styleClass="btn btn-default" style="margin-left:5px" />
+				</div>
+
+			</h:form>
+		</div>
+
+
+	</ui:define>
+</ui:composition>
+
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/template.xhtml">
+	<ui:define name="pageTitle">Proposta | TCCs Fucapi</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<a href="#">#{usuarioLogin.user.nome}</a> |
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+	<ui:define name="menuLateral">
+		<h:form>
+			<div class="panel-group" id="accordion">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion"
+								href="#collapseOne"><span
+								class="glyphicon glyphicon-folder-close text-muted"> </span><label
+								class="text-muted">Navegação</label></a>
+						</h4>
+					</div>
+					<div id="collapseOne" class="panel-collapse collapse in">
+						<div class="panel-body">
+							<table class="table">
+								<tr class="active" style="font-weight: bold;">
+									<td><span class="glyphicon glyphicon-file text-muted"></span>
+										<h:commandLink value="Projetos de TCC"
+											action="#{propostaPageNavigation.alunosTCC}" /></td>
+								</tr>
+								<tr>
+									<td><span class="glyphicon glyphicon-list-alt text-muted"></span>
+										<h:commandLink value="Quadro de Acompanhamento"
+											action="#{propostaPageNavigation.quadroTCC}" /></td>
+								</tr>
+
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion"
+								href="#collapseTwo"><span
+								class="glyphicon glyphicon-wrench text-muted"> </span><label
+								class="text-muted">Administrar</label></a>
+						</h4>
+					</div>
+					<div id="collapseTwo">
+						<div class="panel-body">
+							<table class="table">
+								<tr>
+									<td><span class="glyphicon glyphicon-user text-muted"></span>
+										<h:link value="Pessoas" outcome="../pessoas.xhtml" /></td>
+								</tr>
+								<tr>
+									<td><span class="glyphicon glyphicon-calendar text-muted"></span>
+										<h:link value="Cronograma"
+											outcome="../cronograma/selecionarPeriodo.xhtml" /></td>
+								</tr>
+								<tr>
+									<td><span class="glyphicon glyphicon-th-large text-muted"></span>
+										<h:link value="Apresentações" outcome="../banca/banca.xhtml" /></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion"
+								href="#collapseThree"><span
+								class="glyphicon glyphicon-cog text-muted"> </span><label
+								class="text-muted">Configurações</label></a>
+						</h4>
+					</div>
+					<div id="collapseTwo">
+						<div class="panel-body">
+							<table class="table">
+								<tr>
+									<td><span class="glyphicon glyphicon-info-sign text-muted"></span>
+										<h:commandLink value="Minha conta"
+											action="#{coordenadorBean.prepararConta(usuarioLogin.user)}" /></td>
+								</tr>
+								<tr>
+									<td><span class="glyphicon glyphicon-log-out text-muted"></span>
+										<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" /></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</h:form>
+	</ui:define>
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+
+		<div class="page-header">
+			<h1>
+				<small>Projetos de TCC</small>
+			</h1>
+
+		</div>
+
+		<h:form>
+			<ul class="breadcrumb">
+				<li><h:link value="Página Inicial"
+						outcome="../paginaInicial.xhtml" /></li>
+				<li><h:commandLink value="Disciplina de TCC"
+						action="#{propostaPageNavigation.orientacoesTCC}" /></li>
+				<li class="active">Disciplina de TCC</li>
+			</ul>
+		</h:form>
+
+		<div class="panel-body">
+			<div class="panel panel-default">
+
+				<h:form class="panel-body text-muted">
+
+					<div class="form-group">
+						<h:outputText value="Aluno:" />
+						<h:inputText
+							value="#{propostaBean.propostaSelecionada.aluno.nome}"
+							disabled="true" styleClass="form-control" />
+					</div>
+
+					<div class="form-group">
+						<h:outputText value="Tema:" />
+						<h:inputText value="#{propostaBean.propostaSelecionada.tema}"
+							styleClass="form-control" disabled="true" />
+					</div>
+
+					<div class="form-group">
+						<h:outputText value="Modalidade:" />
+						<h:inputText
+							value="#{propostaBean.propostaSelecionada.modalidade}"
+							styleClass="form-control" disabled="true" />
+					</div>
+
+					<div class="form-group">
+						<h:outputText value="Area de Concentração: " />
+						<h:inputText
+							value="#{propostaBean.propostaSelecionada.areaConcentracao}"
+							styleClass="form-control" disabled="true" />
+					</div>
+
+					<div class="form-group">
+						<h:outputText value="Descrição:" />
+						<h:inputTextarea
+							value="#{propostaBean.propostaSelecionada.descricao}"
+							styleClass="form-control" disabled="true" />
+					</div>
+
+					<div class="form-group">
+						<h:outputText value="Resultados Esperados:" />
+						<h:inputTextarea
+							value="#{propostaBean.propostaSelecionada.resultadosEsperados}"
+							styleClass="form-control" disabled="true" />
+					</div>
+
+					<div class="form-group">
+						<h:outputText value="Cadastrado:" />
+						<h:inputText
+							value="#{propostaBean.propostaSelecionada.dataCadastro}"
+							styleClass="form-control" disabled="true">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:inputText>
+					</div>
+
+					<br />
+					<h:outputText value="Orientador:" />
+					<h:selectOneMenu
+						value="#{propostaBean.propostaSelecionada.orientador}"
+						styleClass="form-control input-sm">
+						<f:selectItems value="#{orientadorBean.orientadorSelect}" />
+					</h:selectOneMenu>
+
+					<br />
+					<h:outputText value="Co-Orientador:" />
+					<h:selectOneMenu disabled="true"
+						value="#{propostaBean.propostaSelecionada.coOrientador}"
+						styleClass="form-control input-sm">
+						<f:selectItem itemLabel="Nenhum" itemValue="#{null}" />
+						<f:selectItems value="#{orientadorBean.orientadorSelect}" />
+					</h:selectOneMenu>
+
+					<br />
+					<h:outputText value="Status do projeto:" />
+					<h:selectOneMenu value="#{propostaBean.status}"
+						styleClass="form-control input-group-sm">
+						<f:selectItem itemLabel="Análise"
+							itemValue="#{propostaBean.analise}" />
+						<f:selectItem itemLabel="Recadastrar" itemValue="Cadastrar	" />
+						<f:selectItem itemLabel="Andamento" itemValue="Andamento" />
+						<f:selectItem itemLabel="Aceito" itemValue="Aceito" />
+						<f:selectItem itemLabel="Reprovado" itemValue="Reprovado" />
+					</h:selectOneMenu>
+
+					<br />
+					<h:outputText value="Status do projeto:" />
+					<h:selectOneMenu value="#{propostaBean.status}"
+						styleClass="form-control input-group-sm">
+						<f:selectItem itemLabel="ITCC"
+							itemValue="#{propostaBean.propostaSelecionada.status}" />
+						<f:selectItem itemLabel="Transferir Projeto para Disciplina TCC"
+							itemValue="Rematricular" />
+					</h:selectOneMenu>
+
+					<br />
+					<p:commandButton value="Alterar dados"
+						action="#{propostaBean.alterarProposta}"
+						styleClass="btn btn-primary form-control" />
+
+				</h:form>
+			</div>
+		</div>
+
+	</ui:define>
+</ui:composition>
+
+
+</html>

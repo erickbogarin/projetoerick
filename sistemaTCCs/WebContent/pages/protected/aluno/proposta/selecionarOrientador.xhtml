@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/_templateAluno.xhtml">
+	<ui:define name="pageTitle">Página Inicial</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<h:commandLink value="#{usuarioLogin.user.nome}"
+					action="#{alunoBean.prepararConta(usuarioLogin.user)}" />
+				|
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+	
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+		<h:form>
+
+			<div class="page-header">
+				<h1>
+					<small>Selecione um orientador</small>
+				</h1>
+
+			</div>
+
+			<ul class="breadcrumb">
+				<li><h:link value="Página Inicial"
+						outcome="../paginaInicial.xhtml" /></li>
+				<li class="active">Selecionar Orientador</li>
+
+			</ul>
+			<p:growl id="growl" showDetail="true" sticky="true" />
+			<h:messages />
+
+			<p:dataTable var="orientador" value="#{orientadorBean.orientadoresCoordenacao}"
+				styleClass="table table-bordered"
+				emptyMessage="Nenhum orientador cadastrado.">
+
+				<p:column style="text-align:center;font-weight:bold;" headerText="✔ Selecionar Orientador">
+					<h:commandLink action="#{navigationBean.solicitarProposta}" title="Confirmar orientador">
+						<h:outputText value="#{orientador.nome}" styleClass="text-info" />
+						<f:setPropertyActionListener
+							target="#{propostaBean.orientadorSelecionado}"
+							value="#{orientador}" />
+					</h:commandLink>
+				</p:column>
+
+				<p:column headerText="Linha de Pesquisa">
+					<h:outputText value="#{orientador.linhaPesquisa}"
+						styleClass="text-muted" />
+				</p:column>
+
+				<p:column headerText="Título" style="text-align:center">
+					<h:outputText value="#{orientador.titulo}" styleClass="text-muted" />
+				</p:column>
+
+			</p:dataTable>
+
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</html>

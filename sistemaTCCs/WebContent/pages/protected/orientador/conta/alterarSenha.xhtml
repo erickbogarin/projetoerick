@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/_templateOrientador.xhtml">
+	<ui:define name="pageTitle">Alterar senha - TCCs Fucapi</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<a href="#">#{usuarioLogin.user.nome}</a> |
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+
+		<h:form>
+
+			<div class="page-header">
+				<h1>
+					<small>Alterar senha</small>
+				</h1>
+			</div>
+
+			<ul class="nav nav-pills">
+				<li><h:link value="Página Inicial"
+						outcome="../paginaInicial.xhtml" /></li>
+				<li><h:link value="Minha conta" outcome="consultarDados.xhtml" /></li>
+				<li class="active"><a href="#">Alterar senha</a></li>
+			</ul>
+
+		</h:form>
+
+		<p:messages id="messages" showDetail="false" autoUpdate="true"
+			closable="true" />
+
+		<div
+			class="col-xs-12 col-sm-10 col-sm-offset-2 col-md-10 col-md-offset-1 col-lg-12 col-lg-offset-0
+		 	panel panel-default"
+			style="margin-top: 2px">
+			<div class="panel panel-body">
+				<h:form id="matchGrid" styleClass="form-group">
+					<div class="form-group">
+						<h5>
+							<b>Senha Atual: </b>
+						</h5>
+						<p:password id="senhaAtual" value="#{usuarioBean.senhaAtual}"
+							required="true" requiredMessage="Senha atual obrigatório"
+							styleClass="form-control">
+						</p:password>
+						<p:watermark for="senhaAtual" value="Senha atual"
+							id="waterSenhaAtual" />
+					</div>
+
+					<h5>
+						<b>Nova senha: </b><small>min. 6 digitos</small>
+					</h5>
+					<div class="form-group">
+						<p:password id="pwd1" value="#{usuarioBean.novaSenha}"
+							match="pwd2" label="Password 1" required="true"
+							styleClass="form-control">
+							<f:validateLength minimum="6" maximum="8"/>
+						</p:password>
+						<p:watermark for="pwd1" value="Nova senha" id="waterpwd1" />
+					</div>
+
+					<div class="form-group">
+						<p:password id="pwd2" value="#{usuarioBean.novaSenha}"
+							label="Password 2" required="true" styleClass="form-control" />
+						<p:watermark for="pwd2" value="Confirmar senha" id="waterpwd2" />
+					</div>
+
+					<div class="form-group">
+						<h:commandButton action="#{usuarioBean.alterarSenha}"
+							value="Alterar senha"
+							styleClass="btn btn-primary active form-control"
+							update="matchGrid" />
+					</div>
+
+				</h:form>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>
+
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+<ui:composition template="/templates/_templateOrientador.xhtml">
+	<ui:define name="pageTitle">Orientacões | TCCs Fucapi</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<h:commandLink
+					value="#{usuarioLogin.user.role}: #{usuarioLogin.user.nome}"
+					action="#{orientadorBean.prepararConta(usuarioLogin.user)}" />
+				|
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+
+		<div class="page-header">
+			<h1>
+				<small>Orientações</small>
+			</h1>
+
+		</div>
+
+		<h:form>
+			<ul class="breadcrumb">
+				<li><h:link value="Página Inicial"
+						outcome="../paginaInicial.xhtml" /></li>
+				<li><h:commandLink value="Listagem de Orientados"
+						action="#{propostaPageNavigation.orientacoesTCC}" /></li>
+				<li class="active">Orientações</li>
+			</ul>
+		</h:form>
+
+		<h:form id="form" acceptcharset="ISO-8859-1">
+			<p:growl id="growl" life="2000" />
+
+			<div>
+				<h:commandLink title="arquivo" style="margin-left:10px"
+					rendered="#{not empty propostaBean.propostaSelecionada.correcao}">
+					<span class="glyphicon glyphicon-download-alt" />
+					<h:outputLabel value="Download do arquivo atual para correções" />
+					<p:fileDownload value="#{propostaBean.correcao}" />
+				</h:commandLink>
+			</div>
+
+			<div>
+				<p:commandButton value="Adicionar Nova Observação"
+					style="margin-left:5px;" onclick="PF('orientacao').show();"
+					type="button" icon="ui-icon-pencil" styleClass="btn btn-default" />
+
+				<p:dialog header="Enviar Orientação" widgetVar="orientacao"
+					dynamic="true" modal="true">
+					<h:panelGrid width="400">
+
+						<form class="form-group">
+							<p:inputTextarea
+								value="#{orientacaoBean.orientacaoSelecionada.mensagem}"
+								id="keyword" rows="3" cols="30"
+								counter="display" maxlength="250" styleClass="form-control"
+								counterTemplate="{0} caracteres restantes." autoResize="false" />
+							<p:watermark for="keyword" value="Descrever observações"
+								id="watermark" />
+							<h:outputText id="display" />	
+						</form>
+
+						<div class="form-group">
+							<p:commandButton actionListener="#{orientacaoBean.salvar}"
+								value="Enviar" styleClass="btn btn-default form-control"
+								type="submit" update="tbl, growl">
+							</p:commandButton>
+						</div>
+
+					</h:panelGrid>
+				</p:dialog>
+			</div>
+
+			<p:messages id="messages" showDetail="true" autoUpdate="true"
+				closable="true" />
+
+			<div>
+				<br />
+				<p:dataTable id="tbl" var="orientacao"
+					value="#{orientacaoBean.lista}" paginator="true" rows="1"
+					emptyMessage="Nenhuma orientação foi registrada"
+					styleClass="table table-bordered">
+
+					<p:column style="width:32px">
+						<f:facet name="header">
+							<h:outputText value="Autor" />
+						</f:facet>
+						<h:outputText value="#{orientacao.autor}" styleClass="text-muted" />
+					</p:column>
+
+					<p:column style="text-align:left">
+						<f:facet name="header">
+							<h:outputText value="Observações" />
+						</f:facet>
+						<h3 class="text-justify">
+							<h:outputText value="#{orientacao.mensagem}" />
+						</h3>
+					</p:column>
+
+
+				</p:dataTable>
+			</div>
+		</h:form>
+
+
+	</ui:define>
+</ui:composition>
+
+</html>

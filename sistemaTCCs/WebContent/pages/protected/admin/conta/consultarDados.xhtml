@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/_templateAdmin.xhtml">
+	<ui:define name="pageTitle">Informações do Perfil</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<a href="consultarDados.xhtml">#{usuarioLogin.user.nome}</a> |
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+	<ui:define name="menuLateral">
+		<div class="menu-destaque">
+			<h:form>
+				<ul class="nav nav-list">
+					<li class="nav-header">Navegação</li>
+					<li><h:link value="Coordenadores"
+							outcome="../listaCoordenadores.xhtml" /></li>
+					<li class="nav-header">Configurações</li>
+					<h:commandLink value="Minha conta"
+						action="#{usuarioBean.prepararConta(usuarioLogin.user)}" />
+					<li><h:commandLink action="#{usuarioLogin.doLogout}"
+							value="Sair" /></li>
+				</ul>
+			</h:form>
+		</div>
+	</ui:define>
+
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+
+		<div class="page-header">
+			<h1>
+				<small>Minha conta</small>
+			</h1>
+		</div>
+
+		<ul class="nav nav-pills">
+			<li><h:link value="Página Inicial"
+					outcome="../paginaInicial.xhtml" /></li>
+			<li class="active"><a href="#">Meus dados</a></li>
+			<li><h:link value="Alterar senha" outcome="alterarSenha.xhtml" /></li>
+		</ul>
+
+		<p:messages id="messages" showDetail="true" autoUpdate="true"
+			closable="true" />
+
+		<div class="pagination-centered">
+			<h:form styleClass="well well-small">
+				<div class="control-group">
+					<div class="controls">
+						<h6>Nome</h6>
+						<h:inputText value="#{usuarioBean.usuarioSelecionado.nome}"
+							styleClass="span6" />
+					</div>
+				</div>
+
+				<div class="control-group">
+					<div class="controls">
+						<h6>E-mail</h6>
+						<p:inputText value="#{usuarioBean.usuarioSelecionado.email}"
+							required="true" label="text" styleClass="span6" />
+					</div>
+				</div>
+
+				<div class="control-group">
+					<div class="controls">
+						<h:commandButton value="Alterar dados"
+							action="#{usuarioBean.alterar()}"
+							styleClass="btn btn-primary span6">
+						</h:commandButton>
+					</div>
+				</div>
+			</h:form>
+
+		</div>
+
+	</ui:define>
+</ui:composition>
+
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/_templateAluno.xhtml">
+	<ui:define name="pageTitle">Andamento | TCCs Fucapi</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<h:commandLink value="#{usuarioLogin.user.nome}"
+					action="#{alunoBean.prepararConta(usuarioLogin.user)}" />
+				|
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+
+		<h:form>
+			<div class="page-header">
+				<h1>
+					<small>Projeto de TCC</small>
+				</h1>
+			</div>
+
+			<ul class="breadcrumb">
+				<li><h:link value="Página Inicial"
+						outcome="../paginaInicial.xhtml" /></li>
+				<li class="active">Projeto de Pesquisa</li>
+
+			</ul>
+		</h:form>
+
+		<h:form id="form">
+
+			<p:dataTable var="proposta"
+				value="#{propostaBean.propostaSelecionada}"
+				styleClass="table table-striped">
+
+				<f:facet name="header">Projeto em andamento</f:facet>
+
+				<p:column headerText="#" style="width:32px;text-align: center">
+					<p:commandLink update=":form:propostaDetail"
+						oncomplete="PF('propostaDialog').show()"
+						styleClass="glyphicon glyphicon-search text-muted" title="Mais informações">
+						<f:setPropertyActionListener value="#{proposta}"
+							target="#{propostaBean.propostaSelecionada}" />
+					</p:commandLink>
+				</p:column>
+			
+				<p:column headerText="Título do Trabalho" style="text-align:center;font-weight:bold">
+					<h:outputText value="#{proposta.tema}" />
+				</p:column>
+				
+				<p:column headerText="Disciplina" style="text-align:center">
+					<h:outputText value="#{proposta.disciplina.nome}"
+						styleClass="text-muted" title="need go!" />
+				</p:column>
+				
+				<p:column headerText="Status" style="text-align:center">
+					<f:facet name="header">Status</f:facet>
+					<h:outputText value="#{proposta.status.status}"
+						styleClass="text-muted" />
+				</p:column>
+
+				<p:column style="width:32px;text-align:center">
+					<f:facet name="header">Formulário</f:facet>
+					<p:commandLink styleClass="glyphicon glyphicon-download-alt"
+						ajax="false" rendered="#{not empty proposta.file}"
+						title="Formulário de Cadastro do TCC">
+						<p:fileDownload value="#{propostaBean.file(proposta)}" />
+					</p:commandLink>
+					<h:outputText title="Formulário de cadastro do TCC será dísponivel quando o trabalho estiver em andamento"
+						styleClass="glyphicon glyphicon-ban-circle text-danger"
+						rendered="#{empty proposta.file}" />
+				</p:column>
+			</p:dataTable>
+
+			<p:dataTable var="proposta" value="#{propostaBean.projetos}" 
+				styleClass="table table-striped"
+				rendered="#{not empty propostaBean.projetos}">
+
+				<f:facet name="header">Projetos anteriores</f:facet>
+
+				<p:column headerText="#" style="width:32px;text-align: center">
+					<p:commandLink update=":form:propostaDetail"
+						oncomplete="PF('propostaDialog').show()"
+						styleClass="glyphicon glyphicon-search text-muted" title="Mais informações">
+						<f:setPropertyActionListener value="#{proposta}"
+							target="#{propostaBean.propostaSelecionada}" />
+					</p:commandLink>
+				</p:column>
+
+				<p:column headerText="Título do Trabalho" style="text-align:center;font-weight:bold">
+					<h:outputText value="#{proposta.tema}" />
+				</p:column>
+
+				<p:column headerText="Disciplina" style="text-align:center">
+					<h:outputText value="#{proposta.disciplina.nome}"
+						styleClass="text-muted" title="need go!" />
+				</p:column>
+
+				<p:column headerText="Status" style="text-align:center">
+					<f:facet name="header">Status</f:facet>
+					<h:outputText value="#{proposta.status.status}"
+						styleClass="text-muted" />
+				</p:column>
+
+				<p:column style="width:32px;text-align:center">
+					<f:facet name="header">Formulário</f:facet>
+					<p:commandLink styleClass="glyphicon glyphicon-download-alt"
+						ajax="false" rendered="#{not empty proposta.file}"
+						title="Formulário de Cadastro do TCC">
+						<p:fileDownload value="#{propostaBean.file(proposta)}" />
+					</p:commandLink>
+					<h:outputText title="Formulário não disponivel"
+						styleClass="glyphicon glyphicon-ban-circle text-danger"
+						rendered="#{empty proposta.file}" />
+				</p:column>
+
+			</p:dataTable>
+
+			<p:dialog header="Projeto" widgetVar="propostaDialog"
+				showEffect="fade" hideEffect="fade" resizable="false">
+				<div class="pagination-centered">
+					<p:outputPanel id="propostaDetail">
+						<p:panelGrid columns="2"
+							rendered="#{not empty propostaBean.propostaSelecionada}">
+
+							<h:outputText value="Nome:" />
+							<h:outputText
+								value="#{propostaBean.propostaSelecionada.aluno.nome}" />
+
+							<h:outputText value="Area de Concentração: " />
+							<h:outputText
+								value="#{propostaBean.propostaSelecionada.areaConcentracao}" />
+
+							<h:outputText value="Tema:" />
+							<h:outputText value="#{propostaBean.propostaSelecionada.tema}" />
+
+							<h:outputText value="Descrição:" />
+							<h:outputText
+								value="#{propostaBean.propostaSelecionada.descricao}" />
+
+							<h:outputText value="Resultados Esperados:" />
+							<h:outputText
+								value="#{propostaBean.propostaSelecionada.resultadosEsperados}" />
+
+							<h:outputText value="Status:" />
+							<h:outputText value="#{propostaBean.propostaSelecionada.status}" />
+							
+							<h:outputText value="Co-Orientador:" />
+							<h:outputText
+								value="#{propostaBean.propostaSelecionada.coOrientador.nome}" />
+
+						</p:panelGrid>
+
+					</p:outputPanel>
+
+				</div>
+
+			</p:dialog>
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+
+</html>

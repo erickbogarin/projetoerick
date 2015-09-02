@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/_templateCoordenador.xhtml">
+	<ui:define name="pageTitle">Manter Atividades | TCCs Fucapi</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<h:commandLink value="#{usuarioLogin.user.nome}"
+					action="#{coordenadorBean.prepararConta(usuarioLogin.user)}" />
+				|
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+
+		<f:event listener="#{atividadeBean.carregaCoordenador}"
+			type="preRenderView" />
+
+		<h:form>
+			<div class="page-header">
+				<h1>
+					<small>Cronograma</small>
+				</h1>
+			</div>
+
+			<ul class="breadcrumb">
+				<li><h:link value="Página Inicial"
+						outcome="../paginaInicial.xhtml" /></li>
+				<li><h:link value="Selecionar Periodo"
+						outcome="selecionarPeriodo.xhtml" /></li>
+				<li class="active">#{atividadeBean.cronogramaSelecionado.nome}</li>
+			</ul>
+
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#">Cronograma</a></li>
+				<li><h:commandLink value="Nova Atividade"
+						action="#{atividadeBean.novaAtividade(atividadeBean.cronogramaSelecionado)}" /></li>
+			</ul>
+
+
+			<p:messages id="messages" showDetail="true" autoUpdate="true"
+				closable="true" />
+
+
+			<p:dataTable id="display" var="atividade"
+				value="#{atividadeBean.lista}" style="width:960px"
+				styleClass="table table-striped"
+				emptyMessage="Nenhuma atividade foi registrada para este período letivo">
+
+				<p:column headerText="Data: ">
+					<f:facet name="header">Dia</f:facet>
+					<h:outputText value="#{atividade.data}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Atividade: ">
+					<f:facet name="header">Atividade</f:facet>
+					<h:outputText value="#{atividade.descricao}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">#</f:facet>
+
+					<h:commandLink action="#{atividadeBean.excluir}"
+						onclick="if (!confirm('Deseja realmente excluir o periodo #{atividade.data}?')) return false;">
+						<h:graphicImage library="imagens" name="trash.png" />
+						<f:setPropertyActionListener
+							target="#{atividadeBean.atividadeSelecionada}"
+							value="#{atividade}" />
+					</h:commandLink>
+
+				</p:column>
+
+			</p:dataTable>
+
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/_templateAdmin.xhtml">
+	<ui:define name="pageTitle">Adicionar Coordenação | TCCs Fucapi</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<h:commandLink value="#{usuarioLogin.user.nome}"
+					action="#{usuarioBean.prepararConta(usuarioLogin.user)}" />
+				|
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+
+	<ui:define name="body">
+		<div class="page-header">
+			<h1>
+				<small>Coordenações</small>
+			</h1>
+		</div>
+
+		<h:form>
+			<ul class="breadcrumb">
+				<li><h:commandLink value="Página Inicial"
+						action="#{navigationBean.paginaInicial}" /></li>
+				<li class="active">Manter Coordenação</li>
+			</ul>
+		</h:form>
+
+		<h:form>
+			<ul class="nav nav-tabs">
+				<li><h:commandLink value="Coordenacão"
+						action="listaCoordenacao?faces-redirect=true" /></li>
+				<li class="active"><a href="#">Adicionar Coordenacão</a></li>
+			</ul>
+		</h:form>
+
+		<div class="panel panel-default" style="margin-top: -1px">
+			<h:form styleClass="text-muted panel-body" acceptcharset="ISO-8859-1">
+				<p:messages id="messages" autoUpdate="true" closable="true" />
+
+				<div class="form-group">
+					<label for="inputNome">Nome</label>
+					<h:inputText value="#{coordenacaoBean.coordenacao.nome}"
+						id="inputNome" styleClass="form-control" required="true"
+						requiredMessage="Título obrigatório" />
+					<p:watermark for="inputNome" value="Nome da Coordenação" id="nome" />
+				</div>
+
+				<div class="form-inline panel panel-default">
+
+					<div class="form-group panel panel-body">
+						<h:outputLabel value="Selecione ou" for="curso" />
+						<p:commandLink value=" cadastre novo curso"
+							action="autor?faces-redirect=true" immediate="true" />
+						<br />
+						<p:selectOneMenu value="#{coordenacaoBean.cursoId}" id="curso">
+							<f:selectItems value="#{coordenacaoBean.cursos}" var="curso"
+								itemLabel="#{curso.nome}" itemValue="#{curso.id}" />
+						</p:selectOneMenu>
+						<br />
+						<h:commandButton value="Adiciona Curso"
+							action="#{coordenacaoBean.adicionarCurso}"
+							styleClass="btn btn-default">
+							<f:ajax execute="curso" render="tabelaCursos" />
+						</h:commandButton>
+
+						<p:dataTable value="#{coordenacaoBean.cursosDaCoordenacao}"
+							var="curso" id="tabelaCursos" style="width:100%"
+							emptyMessage="Nenhum curso associado">
+							<p:column headerText="Cursos da Coordenação">
+								<h:outputText value="#{curso.nome}" />
+							</p:column>
+						</p:dataTable>
+
+					</div>
+					
+					<div class="form-group panel panel-body">
+						<h:outputLabel value="Selecione ou" for="coordenador" />
+						<p:commandLink value=" cadastre novo coordenador"
+							action="autor?faces-redirect=true" immediate="true" />
+						<br />
+						<p:selectOneMenu value="#{coordenacaoBean.coordenadorId}" id="coordenador">
+							<f:selectItems value="#{coordenacaoBean.coordenadores}" var="coordenador"
+								itemLabel="#{coordenador.nome}" itemValue="#{coordenador.id}" />
+						</p:selectOneMenu>
+						<br />
+						<h:commandButton value="Adiciona Coordenador"
+							action="#{coordenacaoBean.adicionarCoordenador}"
+							styleClass="btn btn-default">
+							<f:ajax execute="coordenador" render="tabelaCoordenadores" />
+						</h:commandButton>
+
+						<p:dataTable value="#{coordenacaoBean.coordenadoresdaCoordenacao}"
+							var="coordenador" id="tabelaCoordenadores" 
+							emptyMessage="Nenhum coordenador associado">
+							<p:column headerText="Coordenadores da Coordenação">
+								<h:outputText value="#{coordenador.nome}" />
+							</p:column>
+						</p:dataTable>
+
+					</div>
+					
+					<div class="form-group panel panel-body">
+						<h:outputLabel value="Selecione ou" for="orientador" />
+						<p:commandLink value=" cadastre novo orientador"
+							action="autor?faces-redirect=true" immediate="true" />
+						<br />
+						<p:selectOneMenu value="#{coordenacaoBean.orientadorId}" id="orientador">
+							<f:selectItems value="#{coordenacaoBean.orientadores}" var="orientador"
+								itemLabel="#{orientador.nome}" itemValue="#{orientador.id}" />
+						</p:selectOneMenu>
+						<br />
+						<h:commandButton value="Adiciona Orientador (Opcional)"
+							action="#{coordenacaoBean.adicionarOrientador}"
+							styleClass="btn btn-default">
+							<f:ajax execute="orientador" render="tabelaOrientadores" />
+						</h:commandButton>
+
+						<p:dataTable value="#{coordenacaoBean.orientadoresdaCoordenacao}"
+							var="orientador" id="tabelaOrientadores" 
+							emptyMessage="Nenhum orientador associado">
+							<p:column headerText="Orientador da Coordenação">
+								<h:outputText value="#{orientador.nome}" />
+							</p:column>
+						</p:dataTable>
+
+					</div>
+					
+				</div>
+
+				<div class="pager">
+					<p:commandButton value="Salvar"
+						action="#{coordenacaoBean.adicionarCoordenacao}"
+						styleClass="btn btn-primary" process="@form" update="@form" />
+					<h:link value="Cancelar"
+						outcome="listaCoordenacao?faces-redirect=true"
+						styleClass="btn btn-default" style="margin-left:5px" />
+				</div>
+
+			</h:form>
+		</div>
+
+
+	</ui:define>
+</ui:composition>
+
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/template.xhtml">
+	<ui:define name="pageTitle">Primeiro Acesso</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<a href="#">#{usuarioLogin.user.nome}</a> |
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+
+		<div class="">
+
+			<h:form id="campo" style="margin-top:20px" acceptcharset="ISO-8859-1"
+				styleClass="col-sm-5 col-md-6 col-md-offset-2">
+
+				<p:messages id="messages" autoUpdate="true"
+					closable="true" />
+
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h3 class="panel-title">Atualizar dados</h3>
+					</div>
+
+					<div class="panel-body">
+
+						<div class="form-group">
+							<label>E-mail:</label>
+							<p:inputText value="#{alunoBean.alunoSelecionado.email}"
+								styleClass="form-control" required="true" type="email" />
+						</div>
+
+						<div class="form-group">
+							<label>Matricula:*</label>
+							<p:inputText value="#{alunoBean.alunoSelecionado.matricula}" id="Matricula"
+								styleClass="form-control" required="true" type="text" />
+						</div>
+						
+						<div class="form-group">
+							<label>Curso:*</label>
+							<h:selectOneMenu id="curso" styleClass="form-control" type="text"
+								value="#{alunoBean.alunoSelecionado.curso}" required="true">
+								<f:selectItem itemValue="" itemLabel="Selecionar" />
+								<f:selectItem itemValue="Administração"
+									itemLabel="Administração" />
+								<f:selectItem itemValue="Ciências da Computação"
+									itemLabel="Ciências da Computação" />
+								<f:selectItem itemValue="Design" itemLabel="Design" />
+								<f:selectItem itemValue="Engenharia Ambiental e Sanitária"
+									itemLabel="Engenharia Ambiental e Sanitária" />
+								<f:selectItem itemValue="Engenharia de Bioprocessos"
+									itemLabel="Engenharia de Bioprocessos" />
+								<f:selectItem itemValue="Engenharia Civil"
+									itemLabel="Engenharia Civil" />
+								<f:selectItem itemValue="Engenharia da Computação"
+									itemLabel="Engenharia da Computação" />
+								<f:selectItem itemValue="Sistemas de Informação"
+									itemLabel="Sistemas de Informação" />
+								<f:selectItem itemValue="Tecnologia em Design de Produto"
+									itemLabel="Sistemas  em Design de Produto" />	
+							</h:selectOneMenu>
+						</div>
+						
+						<div class="form-group">
+							<label>Celular:*</label>
+							<p:inputMask id="Celular"
+								value="#{alunoBean.alunoSelecionado.celular}"
+								mask="(99) 99999-9999" required="true" styleClass="form-control" />
+						</div>
+
+						<div class="form-group">
+							<label>Telefone:</label>
+							<p:inputMask id="Telefone"
+								value="#{alunoBean.alunoSelecionado.telefone}"
+								mask="(99) 99999-9999" styleClass="form-control" />
+						</div>
+
+						<ul>
+							<li><h:commandButton
+									action="#{alunoBean.prepararAtualizacao(alunoBean.alunoSelecionado)}"
+									value="Avançar" styleClass="form-control" type="submit" /></li>
+						</ul>
+					</div>
+				</div>
+			</h:form>
+
+		</div>
+	</ui:define>
+</ui:composition>
+
+</html>

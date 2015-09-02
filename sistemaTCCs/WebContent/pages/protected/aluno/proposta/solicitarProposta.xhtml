@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/_templateAluno.xhtml">
+	<ui:define name="pageTitle">Página Inicial</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<h:commandLink value="#{usuarioLogin.user.nome}"
+					action="#{alunoBean.prepararConta(usuarioLogin.user)}" />
+				|
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+
+		<div class="page-header">
+			<h1>
+				<small>Solicitar Orientação</small>
+			</h1>
+
+		</div>
+
+		<ul class="breadcrumb">
+			<li><h:link value="Página Inicial"
+					outcome="../paginaInicial.xhtml" /></li>
+			<li><h:link value="Selecionar Orientador"
+					outcome="selecionarOrientador.xhtml" /></li>
+			<li class="active">Selicitar proposta</li>
+
+		</ul>
+
+		<div class="panel-body">
+			<div class="panel panel-default">
+				<p:messages closable="true" autoUpdate="true" />
+				<h:form styleClass="text-muted panel-body" id="campo"
+					acceptcharset="ISO-8859-1">
+
+					<h:inputHidden value="#{propostaBean.orientadorSelecionado.id}" />
+
+					<div class="form-group">
+						<h5>
+							<label for="tema">Orientador seleciodo(a):</label>
+						</h5>
+						<h:inputText disabled="true" id="keyword"
+							styleClass="form-control" />
+						<p:watermark for="keyword"
+							value="#{propostaBean.orientadorSelecionado.nome}" id="nome" />
+					</div>
+
+					<div class="form-group">
+						<h5>
+							<label for="tema">*Modalidade:</label>
+						</h5>
+						<h:selectOneMenu id="modalidade"
+							value="#{propostaBean.propostaSelecionada.modalidade}"
+							styleClass="form-control" required="true" requiredMessage="Modalidade obrigatório">
+							<f:selectItem itemValue="#{null}"
+								itemLabel="Selecionar modalidade" />
+							<f:selectItem itemValue="Monografia" itemLabel="Monografia" />
+							<f:selectItem itemValue="Produto Tecnologico"
+								itemLabel="Produto Tecnologico" />
+							<f:selectItem itemValue="Artigo Científico"
+								itemLabel="Artigo Científico" />
+						</h:selectOneMenu>
+					</div>
+
+					<div class="form-group">
+						<h5>
+							<label for="tema">*Título do trabalho:</label>
+						</h5>
+						<h:inputText value="#{propostaBean.propostaSelecionada.tema}"
+							required="true" id="tema" styleClass="form-control"
+							requiredMessage="Título do trabalho obrigatório" />
+						<p:watermark for="tema" value="Informe um título do seu trabalho"
+							id="watertema" />
+					</div>
+
+					<div class="form-group">
+						<h5>
+							<label for="tema">*Descrição do trabalho:</label>
+						</h5>
+						<p:inputTextarea required="true" requiredMessage="Descrição do trabalho obrigatório"
+							value="#{propostaBean.propostaSelecionada.descricao}"
+							id="descricao" styleClass="form-control" type="text" rows="3"
+							cols="30" counter="display" maxlength="250" 
+							counterTemplate="{0} caracteres restantes." autoResize="false" />
+						<p:watermark for="descricao"
+							value="Descreva um resumo sobre o seu projeto de pesquisa"
+							id="waterdescricao" />
+						<h:outputText id="display" />
+					</div>
+
+					<div class="pager">
+						<h:commandButton value="Solicitar orientação"
+							title="Confirmar solicitação"
+							action="#{propostaBean.solicitarProposta}"
+							styleClass="btn btn-primary span6">
+							<f:setPropertyActionListener
+								target="#{propostaBean.alunoSelecionado}"
+								value="#{usuarioLogin.user}" />
+						</h:commandButton>
+
+						<h:link value="Voltar passo anterior"
+							title="Selecionar outro orientador(a)"
+							outcome="/pages/protected/aluno/proposta/selecionarOrientador.xhtml"
+							styleClass="btn btn-default" style="margin-left:5px" />
+					</div>
+
+				</h:form>
+
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>
+
+</html>

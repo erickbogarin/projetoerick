@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+<h:head>
+</h:head>
+<h:body>
+	<h:form>
+		<p:messages />
+		<p:inputText id="email"
+			value="#{usuarioBean.usuarioSelecionado.email}">
+			<f:validator validatorId="custom.emailValidator" />
+		</p:inputText>
+		<p:message for="email" />
+		<p:commandButton value="Save" validateClient="true" ajax="false" />
+	</h:form>
+
+	<p:calendar value="#{dateBean.date}" mode="inline" mindate="07/10/2010"
+		maxdate="07/15/2010" />
+
+	<p:orderList value="#{periodoBean.lista}" var="city"
+		itemLabel="#{city.nome}" itemValue="#{city}.nome"/>
+
+
+
+
+</h:body>
+</html>

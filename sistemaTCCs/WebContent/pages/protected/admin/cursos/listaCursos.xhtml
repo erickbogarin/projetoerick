@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/_templateAdmin.xhtml">
+	<ui:define name="pageTitle">Cursos | TCCs Fucapi</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<h:commandLink value="#{usuarioLogin.user.nome}"
+					action="#{usuarioBean.prepararConta(usuarioLogin.user)}" />
+				|
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+
+	<ui:define name="body">
+		<div class="page-header">
+			<h1>
+				<small>Cursos</small>
+			</h1>
+		</div>
+
+		<h:form>
+			<ul class="breadcrumb">
+				<li><h:commandLink value="Página Inicial"
+						action="#{navigationBean.paginaInicial}" /></li>
+				<li class="active">Manter Curso</li>
+			</ul>
+
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#">Curso</a></li>
+				<li><h:commandLink value="Adicionar Curso"
+						action="adicionarCurso?faces-redirect=true" /></li>
+			</ul>
+
+		</h:form>
+
+		<h:form id="form">
+			<p:messages id="messages" autoUpdate="true" closable="true" />
+			<p:dataTable id="tabelaCursos" var="curso"
+				value="#{cursoBean.cursos}" styleClass="table table-striped"
+				emptyMessage="Nenhum curso cadastrado">
+
+				<p:column style="text-align:center;font-weight:bold">
+					<f:facet name="header">Selecionar Curso</f:facet>
+					<p:commandLink update=":form:cursoDetail"
+						oncomplete="PF('cursoDialog').show()" title="View" process="@this">
+						<h:outputText styleClass="text-info" value="#{curso.nome}" />
+						<f:setPropertyActionListener value="#{curso}"
+							target="#{cursoBean.curso}" />
+					</p:commandLink>
+				</p:column>
+
+				<p:column style="text-align:center;font-weight:bold">
+					<f:facet name="header">Coordenação</f:facet>
+					<h:outputText value="#{curso.coordenacao.nome}"
+						styleClass="text-muted" />
+				</p:column>
+
+				<p:column style="text-align:center">
+					<f:facet name="header">Excluir</f:facet>
+					<p:commandLink styleClass="glyphicon glyphicon-remove"
+						title="Excluir curso" action="#{cursoBean.deletarCurso}"
+						process="@this" update="@form"
+						onclick="if (!confirm('Deseja realmente excluir o curso de #{curso.nome}?')) return false;">
+						<f:setPropertyActionListener value="#{curso}"
+							target="#{cursoBean.curso}" />
+					</p:commandLink>
+
+				</p:column>
+
+			</p:dataTable>
+
+			<p:dialog header="Informações do Curso" widgetVar="cursoDialog"
+				showEffect="fade" hideEffect="fade" resizable="false">
+					<div class="pagination-centered">
+						<p:outputPanel id="cursoDetail" styleClass="text-muted">
+
+							<div class="form-group">
+								<label for="inputNome">Nome do Curso</label>
+								<h:inputText id="inputNome" value="#{cursoBean.curso.nome}"
+									styleClass="form-control" required="true"
+									requiredMessage="Nome obrigatório" />
+							</div>
+
+							<div class="form-group">
+								<label for="coordenacao">Coordenação</label><br />
+								<p:selectOneMenu value="#{cursoBean.coordenacaoId}"
+									id="coordenacao">
+									<f:selectItems value="#{cursoBean.coordenacoes}"
+										var="coordenacao" itemLabel="#{coordenacao.nome}"
+										itemValue="#{coordenacao.id}" />
+								</p:selectOneMenu>
+							</div>
+
+							<div class="pager">
+								<p:commandButton value="Editar Curso" update="@all :form"
+									actionListener="#{cursoBean.alterarCurso}" />
+							</div>
+
+						</p:outputPanel>
+					</div>
+
+			</p:dialog>
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+
+</html>

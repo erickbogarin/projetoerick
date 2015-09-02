@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/_templateOrientador.xhtml">
+	<ui:define name="pageTitle">Pessoas - TCCs Fucapi</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<h:commandLink value="#{usuarioLogin.user.nome}"
+					action="#{orientadorBean.prepararConta(usuarioLogin.user)}" />
+				|
+
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+
+		<div class="page-header">
+			<h1>
+				<small>Pessoas</small>
+			</h1>
+		</div>
+		<ul class="breadcrumb">
+			<li><h:link outcome="paginaInicial.xhtml" value="Página Inicial" /></li>
+			<li class="active">Selecionar Perfil</li>
+		</ul>
+
+		<nav class="navbar navbar-default ">
+			<ul class="nav navbar-nav">
+				<li><h:link outcome="consulta/listarOrientador.xhtml"
+						value="Orientador" /></li>
+				<li><h:link outcome="consulta/listarCoordenador.xhtml"
+						value="Coordenador" /></li>
+			</ul>
+		</nav>
+
+	</ui:define>
+</ui:composition>
+
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/_templateAdmin.xhtml">
+	<ui:define name="pageTitle">Selecionar Periodo | TCCs Fucapi</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<h:commandLink value="#{usuarioLogin.user.nome}"
+					action="#{coordenadorBean.prepararConta(usuarioLogin.user)}" />
+				|
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+		<h:form>
+			<div class="page-header">
+				<h1>
+					<small>Cronograma</small>
+				</h1>
+			</div>
+
+			<ul class="breadcrumb">
+				<li><h:link value="Página Inicial"
+						outcome="../paginaInicial.xhtml" /><span class="divider"></span></li>
+				<li class="active">Selecionar periodo</li>
+			</ul>
+
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#">Período Letivo</a></li>
+				<li><h:link value="Novo Período" outcome="novoPeriodo.xhtml" /></li>
+			</ul>
+
+			<p:messages id="messages" showDetail="true" autoUpdate="true"
+				closable="true" />
+
+			<p:dataTable var="periodo" value="#{periodoBean.lista}"
+				styleClass="table table-striped"
+				emptyMessage="Nenhum período letívo cadastrado">
+
+				<p:column headerText="Período" style="text-align:center">
+					<h:commandLink action="#{atividadeBean.prepararEdicao}"
+						styleClass="btn btn-default.disabled.focus form-control">
+						<h:outputText value="#{periodo.nome}" style="font-weight:bold" />
+						<f:setPropertyActionListener
+							target="#{atividadeBean.cronogramaSelecionado}"
+							value="#{periodo}" />
+					</h:commandLink>
+				</p:column>
+
+				<p:column headerText="Remover" style="text-align:center;width:32px">
+					<h:commandLink action="#{periodoBean.excluir}"
+						onclick="if (!confirm('Deseja realmente excluir o periodo #{periodo.nome}?')) return false;">
+						<h:graphicImage library="imagens" name="trash.png" />
+						<f:setPropertyActionListener
+							target="#{periodoBean.periodoSelecionado}" value="#{periodo}" />
+					</h:commandLink>
+
+				</p:column>
+
+			</p:dataTable>
+
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</html>

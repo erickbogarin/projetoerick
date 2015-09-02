@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/template.xhtml">
+	<ui:define name="pageTitle">Cadastrar Bibliotecário</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<h:link value="#{usuarioLogin.user.nome}"
+					outcome="conta/consultarDados.xhtml" />
+				|
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+	<ui:define name="menuLateral">
+		<h:form>
+			<div class="panel-group" id="accordion">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion"
+								href="#collapseOne"><span
+								class="glyphicon glyphicon-wrench text-muted"> </span><label
+								class="text-muted">Administrar</label></a>
+						</h4>
+					</div>
+					<div id="collapseOne" class="panel-collapse collapse in">
+						<div class="panel-body">
+							<table class="table">
+								<tr>
+									<td><span class="glyphicon glyphicon-user text-muted"></span>
+										<h:link value="Coordenadores"
+											outcome="listaCoordenadores.xhtml" /></td>
+								</tr>
+								<tr class="active" style="font-weight: bold">
+									<td><span class="glyphicon glyphicon-user text-muted"></span>
+										<h:link value="Bibliotecários"
+											outcome="listaBibliotecarios.xhtml" /></td>
+								</tr>
+								<tr>
+									<td><span class="glyphicon glyphicon-calendar text-muted"></span>
+										<h:link value="Cronograma"
+											outcome="cronograma/selecionarPeriodo.xhtml" /></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion"
+								href="#collapseOne"><span
+								class="glyphicon glyphicon-cog text-muted"> </span><label
+								class="text-muted">Configurações</label></a>
+						</h4>
+					</div>
+					<div id="collapseOne" class="panel-collapse collapse in">
+						<div class="panel-body">
+							<table class="table">
+								<tr>
+									<td><span class="glyphicon glyphicon-info-sign text-muted"></span>
+										<h:commandLink value="Minha conta"
+											action="#{usuarioBean.prepararConta(usuarioLogin.user)}" /></td>
+								</tr>
+								<tr>
+									<td><span class="glyphicon glyphicon-log-out text-muted"></span>
+										<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" /></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</h:form>
+	</ui:define>
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+
+		<div class="page-header">
+			<h1>
+				<small>Cadastrar Bibliotecário</small>
+			</h1>
+		</div>
+
+		<ul class="breadcrumb">
+			<li><a href="paginaInicial.xhtml">Página Inicial</a></li>
+			<li class="active">Bibliotecários</li>
+		</ul>
+
+		<p:messages id="messages" showDetail="true" autoUpdate="true"
+			closable="true" />
+
+
+		<ul class="nav nav-tabs">
+			<li><a href="listaBibliotecarios.xhtml">Bibliotecários</a></li>
+			<li class="active"><a href="#">Novo Cadastro</a></li>
+		</ul>
+
+		<div class="panel panel-default" style="margin-top: -1px">
+			<h:form styleClass="text-muted panel-body">
+
+				<div class="form-group">
+					<h:inputText value="#{usuarioBean.usuarioSelecionado.nome}"
+						id="keyword" styleClass="form-control" />
+					<p:watermark for="keyword" value="Nome" id="nome" />
+				</div>
+
+				<div class="form-group">
+					<h:inputText value="#{usuarioBean.usuarioSelecionado.email}"
+						id="email" styleClass="form-control" />
+					<p:watermark for="email" value="Email" id="wateremail" />
+				</div>
+
+				<div class="pager">
+					<h:commandButton value="Salvar"
+						action="#{usuarioBean.salvarBibliotecario}"
+						styleClass="btn btn-primary" />
+					<h:commandButton value="Cancelar"
+						action="listaBibliotecarios.xhtml" styleClass="btn btn-default"
+						style="margin-left:5px" />
+				</div>
+
+			</h:form>
+		</div>
+
+	</ui:define>
+</ui:composition>
+
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:b="http://bootsfaces.net/ui" xmlns:p="http://primefaces.org/ui">
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/template.xhtml">
+	<ui:define name="pageTitle">Sobre | TCCs Fucapi</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form rendered="#{not empty usuarioLogin.user}">
+			<p class="perfil">
+				<a href="#">#{usuarioLogin.user.nome}</a> |
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+		<h:form rendered="#{empty usuarioLogin.user}">
+			<p class="perfil">
+				Visitante |
+				<h:commandLink action="login.xhtml" value="Entrar" />
+			</p>
+		</h:form>
+	</ui:define>
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+
+		<div
+			class="col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+
+			<div class="page-header">
+				<h1>
+					<small>Sobre</small>
+				</h1>
+			</div>
+
+			<h:form rendered="#{not empty usuarioLogin.user}">
+				<ul class="breadcrumb">
+					<li><h:commandLink value="Página Inicial"
+							action="#{navigationBean.paginaInicial}" /></li>
+					<li class="active">Finalidade</li>
+
+				</ul>
+			</h:form>
+
+			<h:form rendered="#{empty usuarioLogin.user}">
+				<ul class="breadcrumb">
+					<li><h:commandLink value="Fazer login" action="login.xhtml" /></li>
+					<li class="active">Finalidade</li>
+				</ul>
+			</h:form>
+
+			<div class="page-body">
+				
+				<blockquote>
+					<p class="text-justify"
+						style="font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif; text-indent: 15px;">
+						<b>E</b>ste sistema tem como motivação tentar minimizar os
+						problemas de gerenciamento e controle da disciplina de TCC | ITCC
+						através de um sistema web com a finalidade de facilitar aos
+						coordenadores da disciplina o acompanhamento dos trabalhos em um
+						ambiente integrado, aos orientadores o controle dos alunos
+						orientados de forma padronizada e aos alunos o apoio nas etapas da
+						disciplina de maneira automatizada.
+					</p>
+				</blockquote>
+			
+				<blockquote class="blockquote-reverse">
+					<small class="text-right" style="text-indent: 15px;">
+						Sistema apresentado pelo aluno Erick Bogarin ao curso de
+						graduação de Sistemas de Informação da Faculdade Fucapi (Instituto
+						de Ensino Superior Fucapi), como requisito parcial para obtenção
+						do Título do Bacharel em Sistemas de Informação.
+					</small>
+				</blockquote>
+
+			</div>
+
+		</div>
+
+	</ui:define>
+
+</ui:composition>
+
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/_templateAdmin.xhtml">
+	<ui:define name="pageTitle">Editar Atividades | TCCs Fucapi</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<h:commandLink value="#{usuarioLogin.user.nome}"
+					action="#{coordenadorBean.prepararConta(usuarioLogin.user)}" />
+				|
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+
+		<div class="page-header">
+			<h1>
+				<small>Cronograma</small>
+			</h1>
+		</div>
+
+		<ul class="breadcrumb">
+			<li><h:link value="Página Inicial"
+					outcome="../paginaInicial.xhtml" /></li>
+			<li class="active">Período letivo</li>
+		</ul>
+
+		<ul class="nav nav-tabs">
+			<li><h:link value="Período Letivo"
+					outcome="selecionarPeriodo.xhtml" /></li>
+			<li class="active"><a href="#">Novo Período</a></li>
+		</ul>
+
+		<div class="panel-body">
+			<div class="col-md-3 panel panel-default">
+
+				<h:form class="form-text panel panel-body">
+
+					<h5>
+						<strong>Ano letivo: </strong>
+					</h5>
+					<div class="form-group">
+
+						<p:autoComplete id="acSimple"
+							value="#{periodoBean.periodoSelecionado.nome}"
+							completeMethod="#{periodoBean.completeText}" type="text" />
+						<p:watermark for="acSimple" value="ex: 2015" id="watermark" />
+					</div>
+
+					<div class="pager">
+						<p:commandButton action="#{periodoBean.cadastrarPeriodo}"
+							value="Salvar" styleClass="btn btn-primary form-control"
+							type="submit" />
+					</div>
+
+				</h:form>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>
+
+</html>

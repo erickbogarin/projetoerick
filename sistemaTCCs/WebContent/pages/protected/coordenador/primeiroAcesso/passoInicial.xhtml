@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/template.xhtml">
+	<ui:define name="pageTitle">Primeiro Acesso</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<a href="#">#{usuarioLogin.user.nome}</a> |
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+		<h:form>
+			<div class="jumbotron panel-body" style="margin-top: 20px">
+				<h1>Bem vindo!</h1>
+				<p>Antes do primeiro acesso, atualize corretamente seus dados
+					cadastrais.</p>
+				<p>
+					<h:commandButton styleClass="btn btn-primary btn-lg"
+						action="#{coordenadorBean.primeiroAcesso(usuarioLogin.user)}"
+						value="Continuar" />
+				</p>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</html>

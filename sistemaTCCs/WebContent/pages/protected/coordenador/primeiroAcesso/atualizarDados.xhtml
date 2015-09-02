@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/template.xhtml">
+	<ui:define name="pageTitle">Primeiro Acesso</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<a href="#">#{usuarioLogin.user.nome}</a> |
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+		<h:form id="campo" style="margin-top:20px" acceptcharset="ISO-8859-1"
+			styleClass="col-sm-6 col-md-6 col-md-offset-2">
+
+			<p:messages id="messages" showDetail="true" autoUpdate="true"
+				closable="true" />
+
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title">Atualizar dados</h3>
+				</div>
+
+				<div class="panel-body">
+
+					<div class="form-group">
+						<label>E-Mail:</label>
+						<p:inputText required="true" type="email"
+							value="#{coordenadorBean.coordenadorSelecionado.email}"
+							styleClass="form-control" />
+					</div>
+					
+					<div class="form-group">
+						<label>Matrícula*:</label>
+						<p:inputText id="matricula" required="true"
+							value="#{coordenadorBean.coordenadorSelecionado.matricula}"
+							 styleClass="form-control" />
+					</div>
+					
+					<div class="form-group">
+						<label>Celular*:</label>
+						<p:inputMask id="celular" required="true"
+							value="#{coordenadorBean.coordenadorSelecionado.celular}"
+							mask="(99) 99999-9999" styleClass="form-control" />
+					</div>
+
+					<div class="form-group">
+						<label>Telefone:</label>
+						<p:inputMask id="telefone" 
+							value="#{coordenadorBean.coordenadorSelecionado.telefone}"
+							mask="(99) 99999-9999" styleClass="form-control" />
+					</div>
+					
+					<div class="form-group">
+						<label>Comercial:</label>
+						<p:inputMask id="comercial" 
+							value="#{coordenadorBean.coordenadorSelecionado.comercial}"
+							mask="(99) 99999-9999" styleClass="form-control" />
+					</div>
+
+					<ul>
+						<li><h:commandButton styleClass="form-control"
+								action="#{coordenadorBean.atualizarDados(coordenadorBean.coordenadorSelecionado)}"
+								value="Avançar" type="submit" /></li>
+					</ul>
+				</div>
+			</div>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+
+</html>

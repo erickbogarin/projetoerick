@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/_templateAdmin.xhtml">
+	<ui:define name="pageTitle">Coordenadores | TCCs Fucapi</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<h:commandLink value="#{usuarioLogin.user.nome}"
+					action="#{usuarioBean.prepararConta(usuarioLogin.user)}" />
+				|
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+
+	<ui:define name="body">
+		<div class="page-header">
+			<h1>
+				<small>Coordenações</small>
+			</h1>
+		</div>
+
+		<h:form>
+			<ul class="breadcrumb">
+				<li><h:commandLink value="Página Inicial"
+						action="#{navigationBean.paginaInicial}" /></li>
+				<li class="active">Manter Coordenação</li>
+			</ul>
+
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#">Coordenação</a></li>
+				<li><h:commandLink value="Adicionar Coordenação"
+						action="adicionarCoordenacao?faces-redirect=true" /></li>
+			</ul>
+
+		</h:form>
+
+		<h:form id="form">
+			<p:messages id="messages" autoUpdate="true" closable="true" />
+			<p:dataTable id="tabelaCoordenacoes" var="coordenacao"
+				value="#{coordenacaoBean.coordenacoes}"
+				styleClass="table table-striped"
+				emptyMessage="Nenhuma coordenação cadastrada">
+
+				<p:column style="text-align:center;font-weight:bold">
+					<f:facet name="header">Selecionar Coordenação</f:facet>
+					<p:commandLink update=":form:coordenacaoDetail"
+						oncomplete="PF('coordenacaoDialog').show()"
+						title="Informações da Coordenação" process="@this">
+						<h:outputText styleClass="text-info" value="#{coordenacao.nome}" />
+						<f:setPropertyActionListener value="#{coordenacao}"
+							target="#{coordenacaoBean.coordenacao}" />
+					</p:commandLink>
+				</p:column>
+
+				<p:column style="text-align:center">
+					<f:facet name="header">Excluir</f:facet>
+					<p:commandLink styleClass="glyphicon glyphicon-remove"
+						title="Excluir coordenação"
+						action="#{coordenacaoBean.deletarCoordenacao}" process="@this"
+						update="@form"
+						onclick="if (!confirm('Deseja realmente excluir a coordenação de #{coordenacao.nome}?')) return false;">
+						<f:setPropertyActionListener value="#{coordenacao}"
+							target="#{coordenacaoBean.coordenacao}" />
+					</p:commandLink>
+
+				</p:column>
+
+			</p:dataTable>
+
+			<p:dialog header="Dados da Coordenação" widgetVar="coordenacaoDialog"
+				showEffect="fade" hideEffect="fade" resizable="false">
+				<div class="pagination-centered">
+					<p:outputPanel id="coordenacaoDetail" styleClass="text-muted">
+
+						<div class="form-group">
+							<label for="inputNome">Nome da Coordenação</label>
+							<h:inputText id="inputNome"
+								value="#{coordenacaoBean.coordenacao.nome}"
+								styleClass="form-control" required="true"
+								requiredMessage="Nome obrigatório" />
+						</div>
+
+						<div class="form-inline">
+
+							<div class="form-group panel panel-body panel panel-default">
+
+								<p:dataTable value="#{coordenacaoBean.cursosDaCoordenacao}"
+									var="curso" id="tabelaCursos" style="width:100%;margin-top:4px"
+									emptyMessage="Nenhum curso associado">
+									<p:column headerText="Cursos da Coordenação">
+										<h:outputText value="#{curso.nome}" />
+									</p:column>
+								</p:dataTable>
+
+								<div class="pager">
+
+									<h:link outcome="../cursos/listaCursos.xhtml" immediate="true">
+										<h:outputText value="alterar coordenação dos cursos"
+											styleClass="label label-info" />
+									</h:link>
+
+								</div>
+
+								<h:outputLabel value="Selecione ou" for="curso" />
+								<h:link outcome="../cursos/adicionarCurso.xhtml" immediate="true">
+									<h:outputText value=" cadastre um novo curso" styleClass="text-info"/>
+								</h:link>	
+								<br />
+								<p:selectOneMenu value="#{coordenacaoBean.cursoId}" id="curso">
+									<f:selectItems value="#{coordenacaoBean.cursos}" var="curso"
+										itemLabel="#{curso.nome}" itemValue="#{curso.id}" />
+								</p:selectOneMenu>
+								<br />
+
+								<div class="form-group">
+									<h:commandButton value="Adiciona Curso"
+										action="#{coordenacaoBean.adicionarCurso}"
+										styleClass="btn btn-default">
+										<f:ajax execute="curso" render="tabelaCursos" />
+									</h:commandButton>
+								</div>
+
+							</div>
+
+							<div class="form-group panel panel-body  panel panel-default">
+
+								<p:dataTable
+									value="#{coordenacaoBean.coordenadoresdaCoordenacao}"
+									var="coordenador" id="tabelaCoordenadores"
+									emptyMessage="Nenhum coordenador associado">
+									<p:column headerText="Coordenadores da Coordenação">
+										<h:outputText value="#{coordenador.nome}" />
+									</p:column>
+								</p:dataTable>
+
+								<div class="pager">
+
+									<h:link outcome="../cursos/listaCursos.xhtml" immediate="true">
+										<h:outputText value="alterar coordenação dos coordenadores"
+											styleClass="label label-info" />
+									</h:link>
+
+								</div>
+
+								<h:outputLabel value="Selecione ou" for="coordenador" />
+								<h:link outcome="../coordenador/cadastrarCoordenador.xhtml" immediate="true">
+									<h:outputText value=" cadastre um novo coordenador" styleClass="text-info"/>
+								</h:link>
+								<br />
+								<p:selectOneMenu value="#{coordenacaoBean.coordenadorId}"
+									id="coordenador">
+									<f:selectItems value="#{coordenacaoBean.coordenadores}"
+										var="coordenador" itemLabel="#{coordenador.nome}"
+										itemValue="#{coordenador.id}" />
+								</p:selectOneMenu>
+								<br />
+								<h:commandButton value="Adiciona Coordenador"
+									action="#{coordenacaoBean.adicionarCoordenador}"
+									styleClass="btn btn-default">
+									<f:ajax execute="coordenador" render="tabelaCoordenadores" />
+								</h:commandButton>
+
+							</div>
+
+							<div class="form-group panel panel-body  panel panel-default">
+								<p:dataTable
+									value="#{coordenacaoBean.orientadoresdaCoordenacao}"
+									var="orientador" id="tabelaOrientadores"
+									emptyMessage="Nenhum orientador associado">
+									<p:column headerText="Orientadores da Coordenação">
+										<h:outputText value="#{orientador.nome}" />
+									</p:column>
+								</p:dataTable>
+
+								<div class="pager">
+
+									<h:link outcome="../cursos/listaCursos.xhtml" immediate="true">
+										<h:outputText value="alterar coordenação dos orientadores"
+											styleClass="label label-info" />
+									</h:link>
+
+								</div>
+
+								<br />
+								<h:outputLabel value="Selecione ou" for="orientador" />
+								<p:commandLink immediate="true">
+									<h:outputText value=" cadastre novo orientador"
+										action="autor?faces-redirect=true" styleClass="text-info" />
+								</p:commandLink>
+								<br />
+								<p:selectOneMenu value="#{coordenacaoBean.orientadorId}"
+									id="orientador">
+									<f:selectItems value="#{coordenacaoBean.orientadores}"
+										var="orientador" itemLabel="#{orientador.nome}"
+										itemValue="#{orientador.id}" />
+								</p:selectOneMenu>
+								<br />
+								<h:commandButton value="Adiciona Orientador (Opcional)"
+									action="#{coordenacaoBean.adicionarOrientador}"
+									styleClass="btn btn-default">
+									<f:ajax execute="orientador" render="tabelaOrientadores" />
+								</h:commandButton>
+
+							</div>
+
+						</div>
+						<div class="pager">
+							<p:commandButton value="Editar Coordenação" update="@all :form"
+								actionListener="#{coordenacaoBean.alterarCoordenacao}" />
+						</div>
+					</p:outputPanel>
+				</div>
+			</p:dialog>
+
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+
+</html>

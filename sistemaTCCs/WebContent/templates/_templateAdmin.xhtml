@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+	<title><ui:insert name="pageTitle">Page Header</ui:insert></title>
+
+	<h:outputStylesheet library="css" name="estilo.css"></h:outputStylesheet>
+	<h:outputStylesheet library="css" name="reset.css"></h:outputStylesheet>
+	<h:outputStylesheet library="css" name="bootstrap.css" rel="stylesheet"></h:outputStylesheet>
+	<h:outputStylesheet library="css" name="bootstrap-theme.css"
+		rel="stylesheet"></h:outputStylesheet>
+	<h:outputStylesheet library="css" name="bootstrap-timepicker.css"
+		rel="stylesheet"></h:outputStylesheet>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+</h:head>
+
+<h:body>
+
+	<div class="container-fluid" id="wrapper"
+		style="background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(250, 250, 250, 1) 0%, rgba(255, 255, 255, 1) 100%);">
+		<div id="header">
+
+			<h:graphicImage value="/resources/imagens/logo.png" />
+
+			<h1>Sistema de Gerenciamento e Controle de TCCs</h1>
+
+			<div class="menu-opcoes">
+				<h:form>
+					<ul>
+						<li><h:commandLink value="notícias"
+								action="#{navigationBean.noticias}" /></li>
+						<li><h:commandLink value="tccs"
+								action="#{navigationBean.tccs}"
+								actionListener="#{propostaPageNavigation.preparaTCCs}" /></li>
+						<li><h:commandLink value="projetos em andamento"
+								action="#{navigationBean.sugestoes}" /></li>
+						<li><a href="#">manuais</a></li>
+						<li><h:link value="sobre" outcome="/pages/public/sobre.xhtml"/></li>
+					</ul>
+				</h:form>
+			</div>
+
+			<ui:insert name="perfilUsuario">
+				<div class="perfil">
+					<a href="#">Visitante</a> | <a href="#">Entrar</a>
+				</div>
+
+			</ui:insert>
+		</div>
+
+		<div class="row">
+			<div class="col-md-2 .col-md-pull-9" id="menu-lateral">
+				<h:form>
+					<div class="panel-group" id="accordion">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title">
+									<a data-toggle="collapse" data-parent="#accordion"
+										href="#collapseOne"><span
+										class="glyphicon glyphicon-wrench text-muted"> </span><label
+										class="text-muted">Administrar</label></a>
+								</h4>
+							</div>
+							<div id="collapseOne" class="panel-collapse collapse in">
+								<div class="panel-body">
+									<table class="table">
+										<tr>
+											<td><span class="glyphicon glyphicon-user text-muted"></span>
+												<h:commandLink value="Coordenador"
+													action="#{adminNavigationRule.coordenador}" /></td>
+										</tr>
+										<tr>
+											<td><span
+												class="glyphicon glyphicon-list-alt text-muted"></span> <h:commandLink
+													value="Coordenação"
+													action="#{adminNavigationRule.coordenacao}" /></td>
+										</tr>
+										<tr>
+											<td><span class="glyphicon glyphicon-list text-muted"></span>
+												<h:commandLink value="Cursos"
+													action="#{adminNavigationRule.curso}" /></td>
+										</tr>
+										<tr>
+											<td><span class="glyphicon glyphicon-user text-muted"></span>
+												<h:commandLink value="Bibliotecarios"
+													action="#{adminNavigationRule.bibliotecario}" /></td>
+										</tr>
+										<tr>
+											<td><span
+												class="glyphicon glyphicon-calendar text-muted"></span> <h:commandLink
+													value="Período Letivo"
+													action="#{adminNavigationRule.periodoLetivo}" /></td>
+										</tr>
+									</table>
+								</div>
+							</div>
+						</div>
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title">
+									<a data-toggle="collapse" data-parent="#accordion"
+										href="#collapseOne"><span
+										class="glyphicon glyphicon-cog text-muted"> </span><label
+										class="text-muted">Configurações</label></a>
+								</h4>
+							</div>
+							<div id="collapseOne" class="panel-collapse collapse in">
+								<div class="panel-body">
+									<table class="table">
+										<tr>
+											<td><span
+												class="glyphicon glyphicon-info-sign text-muted"></span> <h:commandLink
+													value="Minha conta"
+													action="#{usuarioBean.prepararConta(usuarioLogin.user)}" /></td>
+										</tr>
+										<tr>
+											<td><span class="glyphicon glyphicon-log-out text-muted"></span>
+												<h:commandLink action="#{usuarioLogin.doLogout}"
+													value="Sair" /></td>
+										</tr>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</h:form>
+			</div>
+			<div class="col-md-10 .col-md-push-2" id="content">
+				<ui:insert name="pageHeader"></ui:insert>
+				<ui:insert name="body"></ui:insert>
+			</div>
+		</div>
+
+		<div id="rodape">
+			© 2015 FUCAPI Todos os direitos reservados. Codificação: Erick Bogarin
+			<ui:insert name="texto">
+			</ui:insert>
+		</div>
+
+	</div>
+
+
+
+
+	<script src="js/jquery-ui.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+
+</h:body>
+
+</html>

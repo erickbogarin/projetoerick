@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/_templateOrientador.xhtml">
+	<ui:define name="pageTitle">Reuniões | TCCs Fucapi</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<h:commandLink value="#{usuarioLogin.user.nome}"
+					action="#{orientadorBean.prepararConta(usuarioLogin.user)}" />
+				|
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+		<h:form>
+			<div class="page-header">
+				<h1>
+					<small>Controle de Reuniões</small>
+				</h1>
+			</div>
+
+			<ul class="breadcrumb">
+				<li><h:link value="Página Inicial"
+						outcome="../paginaInicial.xhtml" /></li>
+				<li class="active"><h:commandLink value="Selecionar Aluno"
+						action="#{propostaPageNavigation.reunioesTCC}" immediate="true"/></li>
+				<li><h:outputText value="#{reuniaoBean.propostaSelecionada.aluno.nome}" style="font-weight:bold"/></li>
+			</ul>
+			
+			<p:messages id="messages" showDetail="false" autoUpdate="true"
+						closable="true" />
+
+			<p:dataTable var="solicitacao"
+				value="#{reuniaoBean.listaCadastroGeral}"
+				rendered="#{not empty reuniaoBean.listaCadastroGeral}">
+
+				<f:facet name="header">Confirmar Reunião</f:facet>
+
+				<p:column headerText="Dia" style="width:73px">
+					<f:facet name="header">Dia</f:facet>
+					<h:outputText value="#{solicitacao.dataReuniao}" style="width:73px">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Título do Projeto">
+					<h:outputText value="#{solicitacao.proposta.tema}" />
+				</p:column>
+
+				<p:column headerText="Assunto discutido">
+					<p:inputTextarea value="#{solicitacao.assuntoDiscutido}" required="true" requiredMessage="Campo assunto obrigatório"
+					rows="3" cols="30" counter="assunto" maxlength="250" counterTemplate="{0} caracteres restantes." autoResize="false"/>
+					<br />
+					<h:outputText id="assunto" />
+				</p:column>
+
+				<p:column headerText="Resultados Obtidos">
+					<p:inputTextarea value="#{solicitacao.resultadosObtidos}" required="true" requiredMessage="Campo resultados obrigatório"
+					rows="3" cols="30" counter="display" maxlength="250" counterTemplate="{0} caracteres restantes." autoResize="false"/>
+					<br/>
+					<h:outputText id="display" />
+				</p:column>
+
+				<p:column headerText="#"
+					style="font-weight:bold;text-align:center;width:32px;">
+					<p:commandLink styleClass="glyphicon glyphicon-ok"
+						action="#{reuniaoBean.confirmarReuniao}" title="Confirmar reunião"
+						onclick="if (!confirm('Confirmar reunião realizada?')) return false;">
+						<f:setPropertyActionListener
+							target="#{reuniaoBean.reuniaoSelecionada}" value="#{solicitacao}" />
+						<f:setPropertyActionListener
+							target="#{reuniaoBean.propostaSelecionada}"
+							value="#{solicitacao.proposta}" />
+					</p:commandLink>
+				</p:column>
+
+				<p:column headerText="#"
+					style="font-weight:bold;text-align:center;width:32px;">
+					<p:commandLink action="#{reuniaoBean.cancelarReuniao}" immediate="true" update="@all"
+						title="Rejeitar reunião" styleClass="glyphicon glyphicon-remove"
+						onclick="if (!confirm('Rejeitar reunião registrada?')) return false;">
+						<f:setPropertyActionListener
+							target="#{reuniaoBean.reuniaoSelecionada}" value="#{solicitacao}" />
+					</p:commandLink>
+				</p:column>
+
+
+			</p:dataTable>
+
+			<p:dataTable var="agenda" value="#{reuniaoBean.listaReuniaoAluno}"
+				emptyMessage="Nenhuma reunião foi registrada para este aluno.">
+
+				<p:column headerText="Dia" style="text-align:center">
+					<f:facet name="header">Dia</f:facet>
+					<h:outputText value="#{agenda.dataReuniao}" styleClass="text-muted">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Assunto Discutido" style="text-align:center">
+					<h:outputText value="#{agenda.assuntoDiscutido}"
+						styleClass="text-muted" />
+				</p:column>
+
+				<p:column headerText="Resultados Obtidos" style="text-align:center">
+					<h:outputText value="#{agenda.resultadosObtidos}"
+						styleClass="text-muted" />
+				</p:column>
+
+				<p:column headerText="#" style="text-align:center">
+					<h:commandLink action="#{reuniaoBean.cancelarReuniao}"
+						title="Excluir reunião"
+						onclick="if (!confirm('Deseja realmente excluir?')) return false;">
+						<h:graphicImage library="imagens" name="delete-20.png" />
+						<f:setPropertyActionListener
+							target="#{reuniaoBean.reuniaoSelecionada}" value="#{agenda}" />
+					</h:commandLink>
+				</p:column>
+
+
+			</p:dataTable>
+
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</html>

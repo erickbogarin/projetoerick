@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/template.xhtml">
+	<ui:define name="pageTitle">Página Inicial | TCCs Fucapi</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<h:commandLink value="#{usuarioLogin.user.nome}"
+					action="#{usuarioBean.prepararConta(usuarioLogin.user)}" />
+				|
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+	<ui:define name="menuLateral">
+		<h:form>
+			<div class="panel-group" id="accordion">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion"
+								href="#collapseOne"><span
+								class="glyphicon glyphicon-folder-close"> </span>Navegação</a>
+						</h4>
+					</div>
+					<div id="collapseOne" class="panel-collapse collapse in">
+						<div class="panel-body">
+							<table class="table">
+								<tr class="active" style="font-weight:bold;font-size:13px">
+									<td><span class="glyphicon glyphicon-file text-muted"></span>
+										<h:link value="Upload de Projetos"
+											outcome="listaAprovados.xhtml" /></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion"
+								href="#collapseThree"><span class="glyphicon glyphicon-cog">
+							</span>Configurações</a>
+						</h4>
+					</div>
+					<div id="collapseTwo">
+						<div class="panel-body">
+							<table class="table">
+								<tr>
+									<td><span class="glyphicon glyphicon-user text-muted"></span>
+										<h:commandLink value="Minha conta"
+											action="#{usuarioBean.prepararConta(usuarioLogin.user)}" /></td>
+								</tr>
+								<tr>
+									<td><span class="glyphicon glyphicon-log-out text-muted"></span>
+										<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" /></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</h:form>
+	</ui:define>
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+
+		<div class="page-header">
+			<h1>
+				<small>Upload de Projetos</small>
+			</h1>
+
+		</div>
+
+		<ul class="breadcrumb">
+			<li><h:link value="Página Inicial"
+					outcome="../paginaInicial.xhtml" /></li>
+			<li class="active">Cadastrar TCCs</li>
+		</ul>
+
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="#">Lista de Aprovados</a></li>
+			<li><h:link rendered="#{not empty periodoBean.lista}"
+					value="Novo Projeto" outcome="cadastrarAluno.xhtml" /></li>
+		</ul>
+
+		<div class="page-body">
+
+			<h:form id="form">
+
+				<p:growl showDetail="true" />
+
+				<p:dataTable id="tbl" var="tccs" value="#{propostaBean.aprovados}"
+					rows="10" paginator="true" paginatorTemplate="{PageLinks}"
+					rowsPerPageTemplate="5,10,15"
+					rendered="#{not empty propostaBean.aprovados}">
+
+					<p:column headerText="Upload" style="width:32px;text-align: center">
+						<p:commandButton update=":form:propostaDetail"
+							oncomplete="PF('propostaDialog').show()"
+							icon="ui-icon-folder-open" title="Upload">
+							<f:setPropertyActionListener value="#{tccs}"
+								target="#{propostaBean.propostaSelecionada}" />
+						</p:commandButton>
+					</p:column>
+
+					<p:column headerText="Dia" style="width:5px">
+						<h:outputText value="#{tccs.dataCadastro}" styleClass="text-info">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Título do Trabalho" style="text-align:center">
+						<h:outputText value="#{tccs.tema}" styleClass="text-info" />
+					</p:column>
+
+					<p:column headerText="Aluno" style="text-align:center">
+						<h:outputText value="#{tccs.aluno.nome}" styleClass="text-info" />
+					</p:column>
+
+				</p:dataTable>
+
+				<p:dialog header="Upload" widgetVar="propostaDialog"
+					showEffect="fade" hideEffect="fade" resizable="false">
+					<div class="pagination-centered">
+						<p:outputPanel id="propostaDetail">
+
+							<h:form enctype="multipart/form-data">
+								<p:fileUpload fileUploadListener="#{propostaBean.uploadTCC}"
+									mode="advanced" update="@all" auto="true" sizeLimit="100000"
+									allowTypes="/(\.|\/)(pdf)$/" type="submit" />
+
+							</h:form>
+
+						</p:outputPanel>
+					</div>
+				</p:dialog>
+
+			</h:form>
+		</div>
+
+	</ui:define>
+</ui:composition>
+
+</html>

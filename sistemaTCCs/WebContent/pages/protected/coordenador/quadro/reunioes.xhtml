@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+	<title>Reuniões Realizadas</title>
+
+	<h:outputStylesheet library="css" name="estilo.css"></h:outputStylesheet>
+	<h:outputStylesheet library="css" name="reset.css"></h:outputStylesheet>
+	<h:outputStylesheet library="css" name="bootstrap.css" rel="stylesheet"></h:outputStylesheet>
+	<h:outputStylesheet library="css" name="bootstrap-theme.css"
+		rel="stylesheet"></h:outputStylesheet>
+	<h:outputStylesheet library="css" name="bootstrap-timepicker.css"
+		rel="stylesheet"></h:outputStylesheet>
+
+</h:head>
+
+<h:body>
+	<h:form>
+		<p:dataTable var="agenda" value="#{reuniaoBean.periodos}" rows="5"
+			paginator="true" rendered="#{not empty reuniaoBean.periodos}">
+
+			<p:column headerText="Dia" style="width:5px">
+				<f:facet name="header">Dia</f:facet>
+				<h:outputText value="#{agenda.dataReuniao}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+			</p:column>
+
+			<p:column headerText="Assunto Discutido">
+				<h:outputText value="#{agenda.assuntoDiscutido}" />
+			</p:column>
+
+			<p:column headerText="Resultados Obtidos">
+				<h:outputText value="#{agenda.resultadosObtidos}" />
+			</p:column>
+		</p:dataTable>
+
+	</h:form>
+
+	<h:form rendered="#{empty reuniaoBean.periodos}">
+					#{messagesView.infoEmptyReunioes()}
+				<p:messages id="messages" showDetail="true" autoUpdate="true"
+			closable="true" />
+	</h:form>
+
+</h:body>
+
+</html>

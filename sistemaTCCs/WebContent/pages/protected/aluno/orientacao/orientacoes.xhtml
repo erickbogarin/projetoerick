@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/_templateAluno.xhtml">
+	<ui:define name="pageTitle">Orientacões | TCCs Fucapi</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<h:commandLink value="#{usuarioLogin.user.nome}"
+					action="#{alunoBean.prepararConta(usuarioLogin.user)}" />
+				|
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+
+		<div class="page-header">
+			<h1>
+				<small>Orientações</small>
+			</h1>
+
+		</div>
+
+		<ul class="breadcrumb">
+			<li><h:link value="Página Inicial"
+					outcome="/pages/protected/aluno/paginaInicial.xhtml" /></li>
+			<li class="active">Orientações</li>
+		</ul>
+
+		<h:form id="form">
+			<p:growl id="growl" life="2000" />
+
+			<div>
+				<h:commandLink title="arquivo" style="margin-left:10px"
+					rendered="#{not empty propostaBean.propostaSelecionada.correcao}">
+					<span class="glyphicon glyphicon-download-alt" />
+					<h:outputLabel value="Download do arquivo atual para correções" />
+					<p:fileDownload value="#{propostaBean.correcao}" />
+				</h:commandLink>
+			</div>
+
+			<p:commandButton value="Fazer upload do trabalho escrito para correção"
+				icon="ui-icon-folder-open" onclick="PF('upload').show();"
+				type="button" styleClass="btn btn-default" />
+
+
+			<p:dialog header="Selecione um arquivo .DOC" widgetVar="upload"
+				dynamic="true">
+				<h:form enctype="multipart/form-data">
+					<h:messages></h:messages>
+					<p:fileUpload fileUploadListener="#{propostaBean.fileUpload}"
+						mode="advanced" update="messages, :form" auto="true"
+						sizeLimit="100000" allowTypes="/(\.|\/)(doc|docx|xls|xlsx|pdf)$/" />
+
+					<p:growl id="messages" showDetail="true" />
+
+				</h:form>
+			</p:dialog>
+
+			<p:commandButton value="Solicitar Orientação" icon="ui-icon-comment"
+				onclick="PF('orientacao').show();" type="button"
+				styleClass="btn btn-default" style="margin-left:5px" />
+
+			<p:dialog header="Solicitar Orientação" widgetVar="orientacao"
+				dynamic="true" modal="true">
+				<h:panelGrid width="400">
+
+					<form class="form-group">
+						<p:inputTextarea
+							value="#{orientacaoBean.orientacaoSelecionada.mensagem}"
+							id="keyword" styleClass="form-control" />
+						<p:watermark for="keyword" value="Descreva sua mensagem"
+							id="watermark" />
+					</form>
+
+					<div class="form-group">
+						<p:commandButton actionListener="#{orientacaoBean.salvar}"
+							value="Enviar" styleClass="btn btn-default form-control"
+							type="submit" update="tbl, growl">
+						</p:commandButton>
+					</div>
+
+				</h:panelGrid>
+			</p:dialog>
+
+			<div>
+				<br />
+
+				<p:dataTable id="tbl" var="orientacao"
+					value="#{orientacaoBean.lista}" paginator="true" rows="1"
+					emptyMessage="Sem mensagens">
+
+					<p:column style="width:32px">
+						<f:facet name="header">
+							<h:outputText value="Autor" />
+						</f:facet>
+						<h:outputText value="#{orientacao.autor}" style="width:inherit" />
+					</p:column>
+
+					<p:column style="text-align:left">
+						<f:facet name="header">
+							<h:outputText value="Mensagem" />
+						</f:facet>
+						<h:outputText value="#{orientacao.mensagem}" />
+					</p:column>
+
+				</p:dataTable>
+			</div>
+		</h:form>
+
+
+	</ui:define>
+</ui:composition>
+
+</html>

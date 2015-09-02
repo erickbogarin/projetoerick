@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/_templateCoordenador.xhtml">
+	<ui:define name="pageTitle">Lista de Alunos | TCCs Fucapi</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<h:commandLink value="#{usuarioLogin.user.nome}"
+					action="#{coordenadorBean.prepararConta(usuarioLogin.user)}" />
+				|
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+
+		<div class="page-header">
+			<h1>
+				<small>Documentos</small>
+			</h1>
+
+		</div>
+
+		<ul class="breadcrumb">
+			<li><h:link value="Página Inicial"
+					outcome="../paginaInicial.xhtml" /></li>
+			<li class="active">Selecionar Aluno</li>
+
+		</ul>
+
+		<h:form id="form">
+			<h5>
+				<strong>Período Letivo:</strong>
+			</h5>
+			<h:selectOneMenu value="#{bancaBean.periodoSelecionado}"
+				styleClass="form-control input-lg">
+				<f:selectItems value="#{periodoBean.periodoSelect}" />
+				<f:ajax execute="@this" render="form"
+					listener="#{bancaBean.onListaChange}" />
+			</h:selectOneMenu>
+
+			<p:messages id="messages" showDetail="true" autoUpdate="true"
+				closable="true" />
+
+			<p:dataTable id="form" var="banca" value="#{bancaBean.apresentacoes}"
+				style="margin-bottom:20px;"
+				emptyMessage="Nenhum aluno associado a este período letivo">
+
+				<p:column style="width:32px;text-align: center">
+					<f:facet name="header">#</f:facet>
+					<h:commandLink action="#{navigationBean.arquivos}"
+						styleClass="glyphicon glyphicon-zoom-in"
+						title="Visualizar documentação">
+						<f:setPropertyActionListener value="#{banca}"
+							target="#{bancaBean.bancaSelecionada}" />
+					</h:commandLink>
+				</p:column>
+
+				<p:column headerText="Aluno" style="text-align: center">
+					<h:outputText value="#{banca.proposta.aluno.nome}"
+						styleClass="text-info" />
+				</p:column>
+
+				<p:column headerText="Status do Projeto" style="text-align: center">
+					<h:outputText value="#{banca.proposta.status}"
+						styleClass="text-info" />
+				</p:column>
+
+				<p:column headerText="Título do Projeto" style="text-align: center">
+					<h:outputText value="#{banca.proposta.tema}"
+						styleClass="text-muted" />
+				</p:column>
+
+
+				<p:column headerText="Disciplina" style="text-align: center">
+					<h:outputText value="#{banca.proposta.disciplina.nome}"
+						styleClass="text-muted" />
+				</p:column>
+
+			</p:dataTable>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+
+</html>

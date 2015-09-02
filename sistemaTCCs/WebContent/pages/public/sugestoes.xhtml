@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:b="http://bootsfaces.net/ui" xmlns:p="http://primefaces.org/ui">
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/template.xhtml">
+	<ui:define name="pageTitle">Projetos em Andamento | TCCs Fucapi</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form rendered="#{not empty usuarioLogin.user}">
+			<p class="perfil">
+				<a href="#">#{usuarioLogin.user.nome}</a> |
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+		<h:form rendered="#{empty usuarioLogin.user}">
+			<p class="perfil">
+				Visitante |
+				<h:commandLink action="login.xhtml" value="Entrar" />
+			</p>
+		</h:form>
+	</ui:define>
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+
+		<div class="col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+
+			<div class="page-header">
+				<h1>
+					<small>Projetos de Pesquisa em Andamento</small>
+				</h1>
+
+			</div>
+
+			<h:form rendered="#{not empty usuarioLogin.user}">
+				<ul class="breadcrumb">
+					<li><h:commandLink value="Página Inicial"
+							action="#{navigationBean.paginaInicial}" /></li>
+					<li class="active">Projetos de Pesquisa da Instituição de
+						Ensino Superior Fucapi</li>
+
+				</ul>
+			</h:form>
+
+			<h:form rendered="#{empty usuarioLogin.user}">
+				<ul class="breadcrumb">
+					<li><h:commandLink value="Fazer login" action="login.xhtml" /></li>
+					<li class="active">Projetos de Pesquisa da Instituição de
+						Ensino Superior Fucapi</li>
+				</ul>
+			</h:form>
+
+			<div class="page-body">
+
+				<h:form id="form">
+
+					<p:dataTable id="form" var="tccs" value="#{propostaBean.andamento}"
+						styleClass="table table-striped" 
+						emptyMessage="Ainda não foram divulgados os projetos em andamento para este período letivo.">
+						
+						<f:facet name="header">Período Letivo: #{propostaBean.periodoSelecionado.nome}</f:facet>
+						
+						<p:column headerText="Título do Projeto"
+							style="text-align:center;font-weight:bold">
+							<h:outputText value="#{tccs.tema}" styleClass="text-info" />
+						</p:column>
+
+						<p:column headerText="Aluno"
+							style="text-align:center;font-weight:bold">
+							<h:outputText value="#{tccs.aluno.nome}" styleClass="text-muted" />
+						</p:column>
+
+						<p:column headerText="Disciplina"
+							style="text-align:center;font-weight:bold">
+							<h:outputText value="#{tccs.disciplina.nome}"
+								styleClass="text-muted" />
+						</p:column>
+
+					</p:dataTable>
+				</h:form>
+			</div>
+
+		</div>
+		
+	</ui:define>
+</ui:composition>
+
+</html>

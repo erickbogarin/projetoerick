@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/template.xhtml">
+	<ui:define name="pageTitle">Primeiro Acesso</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<a href="#">#{usuarioLogin.user.nome}</a> |
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+	<ui:define name="menuLateral">
+		<div class="menu-destaque">
+			<ul class="nav nav-list">
+				<li class="nav-header">Navegação</li>
+				<li><a href="#">Coordenadores</a></li>
+				<li class="nav-header">Perfil</li>
+				<li class="active"><a href="#">Minha conta</a></li>
+				<li><a href="#">Logoff</a></li>
+			</ul>
+		</div>
+	</ui:define>
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+
+		<h:form>
+
+			<div class="page-header">
+				<h1>
+					<small>Alterar senha</small>
+				</h1>
+			</div>
+
+			<ul class="nav nav-pills">
+				<li><h:link value="Página Inicial"
+						outcome="../paginaInicial.xhtml" /></li>
+				<li><h:link value="Minha conta" outcome="consultarDados.xhtml" /></li>
+				<li class="active"><a href="#">Alterar senha</a></li>
+			</ul>
+
+			<p:messages id="messages" showDetail="true" autoUpdate="true" />
+
+		</h:form>
+
+		<h:form id="matchGrid" styleClass="form-actions pagination-centered">
+
+			<div class="control-group">
+				<div class="controls">
+					<h5><small>Minimo 6 digitos</small></h5>
+					<p:password id="pwd1"
+						value="#{usuarioBean.usuarioSelecionado.senha}" match="pwd2"
+						label="Password 1" required="true" styleClass="span4" />
+					<p:watermark for="pwd1" value="Nova senha" id="waterpwd1" />
+				</div>
+			</div>
+
+			<div class="control-group">
+				<div class="controls">
+					<p:password id="pwd2"
+						value="#{usuarioBean.usuarioSelecionado.senha}" label="Password 2"
+						required="true" styleClass="span4" />
+					<p:watermark for="pwd2" value="Confirmar senha" id="waterpwd2" />
+				</div>
+			</div>
+
+			<div class="control-group">
+				<div class="controls">
+					<h:commandButton action="#{usuarioBean.alterar()}" value="Salvar"
+						styleClass="btn btn-primary span4" update="matchGrid" />
+				</div>
+			</div>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+
+</html>

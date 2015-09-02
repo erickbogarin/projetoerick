@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/_templateOrientador.xhtml">
+	<ui:define name="pageTitle">Orientados | TCCs Fucapi</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<h:commandLink value="#{usuarioLogin.user.nome}"
+					action="#{orientadorBean.prepararConta(usuarioLogin.user)}" />
+				|
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+
+		<div class="page-header">
+			<h1>
+				<small>Projetos de TCC</small>
+			</h1>
+
+		</div>
+
+		<h:form id="num">
+			<ul class="breadcrumb">
+				<li><h:link value="Página Inicial"
+						outcome="/pages/protected/orientador/paginaInicial.xhtml" /><span
+					class="divider"></span></li>
+				<li style="font-weight: bold">Total de Orientados: <span
+					class="badge">#{propostaBean.orientados.size()} </span></li>
+
+			</ul>
+
+			<ul class="nav nav-tabs">
+				<li><h:commandLink value="TCC"
+						action="#{propostaPageNavigation.alunosTCC}" /></li>
+				<li class="active"><a href="#"> ITCC </a></li>
+			</ul>
+		</h:form>
+
+		<p:messages id="messages" showDetail="true" autoUpdate="true"
+			closable="true" />
+
+		<h:form id="outro">
+			<h:dataTable var="proposta" required="true"
+				value="#{propostaBean.solicitacoes}"
+				rendered="#{not empty propostaBean.solicitacoes}"
+				styleClass="table table-striped">
+
+				<f:facet name="header">Solicitações:</f:facet>
+
+				<p:column headerText="Aluno">
+					<f:facet name="header">Aluno</f:facet>
+					<h:outputText value="#{proposta.aluno.nome}" />
+				</p:column>
+
+				<p:column headerText="Status">
+					<f:facet name="header">Tema</f:facet>
+					<h:outputText value="#{proposta.tema}" styleClass="text-muted" />
+				</p:column>
+
+				<p:column headerText="Descrição">
+					<f:facet name="header">Descrição</f:facet>
+					<h:outputText value="#{proposta.descricao}" styleClass="text-muted" />
+				</p:column>
+
+				<p:column>
+					<h:commandLink
+						action="#{propostaBean.confirmarSolicitacao(proposta)}">
+						<h:graphicImage library="imagens" name="checked_user-20.png" />
+
+					</h:commandLink>
+				</p:column>
+
+				<p:column>
+					<h:commandLink action="#{propostaBean.recusarProposta(proposta)}"
+						onclick="if (!confirm('Deseja realmente recusar a proposta de #{proposta.aluno.nome}?')) return false;">
+						<h:graphicImage library="imagens" name="remove_user-20.png" />
+					</h:commandLink>
+				</p:column>
+
+			</h:dataTable>
+		</h:form>
+
+		<h:form id="form" styleClass="form-group">
+			<h5>
+				<strong>Período Letivo:</strong>
+			</h5>
+
+			<h:selectOneMenu value="#{propostaBean.periodoSelecionado}"
+				styleClass="form-control input-lg">
+				<f:selectItems value="#{periodoBean.periodoSelect}" />
+				<f:ajax execute="@this" render=":num form"
+					listener="#{propostaBean.onListaChange}" />
+			</h:selectOneMenu>
+
+			<p:dataTable id="form" var="proposta"
+				value="#{propostaBean.orientados}"
+				emptyMessage="Nenhum aluno associado a este período letivo.">
+
+				<p:column headerText="⌕ Consultar aluno"
+					style="font-weight:bold;text-align: center">
+					<p:commandLink update=":form:propostaDetail"
+						oncomplete="PF('propostaDialog').show()" title="Mais Informações">
+						<f:setPropertyActionListener value="#{proposta}"
+							target="#{propostaBean.propostaSelecionada}" />
+						<h:outputText value="#{proposta.aluno.nome}"
+							styleClass="text-info" />
+					</p:commandLink>
+				</p:column>
+
+				<p:column headerText="Título do Projeto" style="text-align: center">
+					<h:outputText value="#{proposta.tema}" styleClass="text-muted" />
+				</p:column>
+
+				<p:column headerText="Status" style="text-align: center">
+					<f:facet name="header">Status</f:facet>
+					<h:outputText value="#{proposta.status.status}"
+						style="font-weight:bold" />
+				</p:column>
+			</p:dataTable>
+
+			<p:dialog header="Projeto de Pesquisa" widgetVar="propostaDialog"
+				showEffect="fade" hideEffect="fade" resizable="false">
+				<div class="pagination-centered">
+					<p:outputPanel id="propostaDetail" styleClass="text-muted">
+						<p:panelGrid columns="2"
+							rendered="#{not empty propostaBean.propostaSelecionada}">
+
+							<h:outputText value="Nome do Aluno:" style="font-weight:bold" />
+							<h:outputText
+								value="#{propostaBean.propostaSelecionada.aluno.nome}" />
+
+							<h:outputText value="Matrícula:" style="font-weight:bold" />
+							<h:outputText
+								value="#{propostaBean.propostaSelecionada.aluno.matricula}" />
+
+							<h:outputText value="Celular:" style="font-weight:bold" />
+							<h:outputText
+								value="#{propostaBean.propostaSelecionada.aluno.telefone}" />
+
+							<h:outputText value="Título do Projeto:" style="font-weight:bold" />
+							<h:outputText value="#{propostaBean.propostaSelecionada.tema}" />
+
+
+							<h:outputText value="Modalidade:" style="font-weight:bold" />
+							<h:outputText
+								value="#{propostaBean.propostaSelecionada.modalidade}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+
+							<h:outputText value="Area de Concentração: "
+								style="font-weight:bold" />
+							<h:outputText
+								value="#{propostaBean.propostaSelecionada.areaConcentracao}" />
+
+							<h:outputText value="Descrição:" style="font-weight:bold" />
+							<h:outputText
+								value="#{propostaBean.propostaSelecionada.descricao}" />
+
+							<h:outputText value="Resultados Esperados:"
+								style="font-weight:bold" />
+							<h:outputText
+								value="#{propostaBean.propostaSelecionada.resultadosEsperados}" />
+
+							<h:outputText value="Data do Cadastrado:"
+								style="font-weight:bold" />
+							<h:outputText
+								value="#{propostaBean.propostaSelecionada.dataCadastro}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+
+							<h:outputText value="Orientador:" style="font-weight:bold" />
+							<h:outputText
+								value="#{propostaBean.propostaSelecionada.orientador.nome}"
+								style="font-weight:bold" />
+
+							<h:outputText value="Co-Orientador:" style="font-weight:bold" />
+							<h:outputText
+								rendered="#{empty propostaBean.propostaSelecionada.coOrientador}"
+								value="Não possui" />
+							<h:outputText
+								rendered="#{not empty propostaBean.propostaSelecionada.coOrientador}"
+								value="#{propostaBean.propostaSelecionada.coOrientador.nome}"
+								style="font-weight:bold" styleClass="text-muted" />
+
+							<h:outputText value="Status do Projeto:" style="font-weight:bold"
+								rendered="#{propostaBean.coordenadorSelecionado.disciplina == 'ITCC'}" />
+							<h:outputText value="#{propostaBean.propostaSelecionada.status}"
+								style="font-weight:bold"
+								rendered="#{propostaBean.coordenadorSelecionado.disciplina == 'ITCC'}" />
+
+						</p:panelGrid>
+
+
+					</p:outputPanel>
+
+				</div>
+			</p:dialog>
+
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</html>

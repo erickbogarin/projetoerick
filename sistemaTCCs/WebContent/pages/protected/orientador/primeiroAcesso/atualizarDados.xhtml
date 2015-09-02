@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/template.xhtml">
+	<ui:define name="pageTitle">Primeiro Acesso</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<a href="#">#{usuarioLogin.user.nome}</a> |
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+
+		<h:form style="margin-top:20px"
+			styleClass="col-sm-5 col-md-6 col-md-offset-2">
+
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title">Atualizar dados</h3>
+				</div>
+
+				<div class="panel-body">
+
+					<div class="form-group">
+						<label>E-mail:*</label>
+						<p:inputText value="#{orientadorBean.orientadorSelecionado.email}"
+							styleClass="form-control" required="true" type="email" />
+					</div>
+					
+					<div class="form-group">
+						<label>Titulo:*</label>
+						<h:selectOneMenu styleClass="form-control"
+							value="#{orientadorBean.orientadorSelecionado.titulo}">
+							<f:selectItem itemValue="" itemLabel="Nenhum" />
+							<f:selectItem itemValue="Especialista" itemLabel="Especialista" />
+							<f:selectItem itemValue="Mestre" itemLabel="Mestre" />
+							<f:selectItem itemValue="Doutor" itemLabel="Doutor" />
+						</h:selectOneMenu>
+					</div>
+					
+					<div class="form-group">
+						<label>Celular:*</label>
+						<p:inputMask id="celular"
+							value="#{orientadorBean.orientadorSelecionado.celular}"
+							mask="(99) 99999-9999" required="true" styleClass="form-control" />
+					</div>
+					
+					<div class="form-group">
+						<label>Comercial:</label>
+						<p:inputMask id="comercial"
+							value="#{orientadorBean.orientadorSelecionado.comercial}"
+							mask="(99) 99999-9999" styleClass="form-control" />
+					</div>
+					
+					<div class="form-group">
+						<label>Telefone:</label>
+						<p:inputMask id="telefone"
+							value="#{orientadorBean.orientadorSelecionado.telefone}"
+							mask="(99) 99999-9999" styleClass="form-control" />
+					</div>
+					
+					<div class="form-group">
+						<label>Linha de Pesquisa:</label>
+						<h:inputTextarea
+							value="#{orientadorBean.orientadorSelecionado.linhaPesquisa}"
+							styleClass="form-control"/>
+					</div>
+
+					<ul class="pager">
+						<li><h:commandButton
+								action="#{orientadorBean.passo1(orientadorBean.orientadorSelecionado)}"
+								value="Próximo" styleClass="form-control" type="submit" /></li>
+					</ul>
+
+				</div>
+			</div>
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+
+</html>

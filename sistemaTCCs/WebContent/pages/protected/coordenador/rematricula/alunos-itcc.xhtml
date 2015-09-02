@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+<ui:composition template="/templates/_templateCoordenador.xhtml">
+	<ui:define name="pageTitle">Rematrícula | TCCs Fucapi</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<h:commandLink value="#{usuarioLogin.user.nome}"
+					action="#{coordenadorBean.prepararConta(usuarioLogin.user)}" />
+				|
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+
+		<div class="page-header">
+			<h1>
+				<small>Rematrícula</small>
+			</h1>
+
+		</div>
+
+		<ul class="breadcrumb">
+			<li><h:link value="Página Inicial"
+					outcome="/pages/protected/coordenador/paginaInicial.xhtml" /></li>
+			<li class="active">Rematrícula</li>
+
+		</ul>
+
+		<h:form
+			rendered="#{coordenadorBean.coordenadorSelecionado.disciplina.nome == 'Trabalho de Conclusão de Curso'}">
+
+			<ul class="nav nav-pills nav-justified">
+
+				<li><h:commandLink value="Trabalho de Conclusão de Curso"
+						action="#{propostaPageNavigation.rematriculas}" /></li>
+				<li class="active"><a href="#">Introdução ao Trabalho de
+						Conclusão de Curso</a></li>
+
+
+			</ul>
+
+		</h:form>
+
+		<br />
+
+		<h:form id="form" styleClass="form-group">
+			<label><strong>Período Letivo</strong></label>
+			<h:selectOneMenu value="#{propostaBean.periodoSelecionado}"
+				styleClass="form-control input-lg">
+				<f:selectItems value="#{periodoBean.periodoSelect}" />
+				<f:ajax execute="@this" render="form"
+					listener="#{propostaBean.onListaChange}" />
+			</h:selectOneMenu>
+
+			<p:messages id="messages" autoUpdate="true"
+				closable="true" />
+
+			<p:dataTable var="proposta" value="#{propostaBean.coordenacaoITCC}"
+				emptyMessage="Nenhum aluno aprovado associado a este período letivo">
+
+				<p:column style="text-align:center;font-weight:bold"
+					rendered="#{propostaBean.periodo != propostaBean.periodoSelecionado}"
+					headerText="✔ Selecionar Aluno">
+					<p:commandLink update=":form:propostaDetail"
+						oncomplete="PF('propostaDialog').show()"
+						title="Mais informações e alteração de status do projeto">
+						<h:outputText value="#{proposta.aluno.nome}"
+							styleClass="text-info" />
+						<f:setPropertyActionListener value="#{proposta}"
+							target="#{propostaBean.propostaSelecionada}" />
+					</p:commandLink>
+				</p:column>
+
+				<p:column style="text-align:center;font-weight:bold"
+					rendered="#{propostaBean.periodo == propostaBean.periodoSelecionado}"
+					headerText="Aluno">
+					<h:outputText value="#{proposta.aluno.nome}"
+						styleClass="text-muted" />
+				</p:column>
+
+				<p:column headerText="Título do Trabalho" style="text-align:center">
+					<h:outputText value="#{proposta.tema}" styleClass="text-muted" />
+				</p:column>
+
+				<p:column headerText="Orientador" style="text-align:center">
+					<h:outputText value="#{proposta.orientador.nome}"
+						styleClass="text-muted" />
+				</p:column>
+
+				<p:column headerText="Status" style="text-align:center">
+					<h:outputText value="#{proposta.status.status}"
+						style="font-weight:bold" />
+				</p:column>
+
+			</p:dataTable>
+
+
+			<p:dialog header="Informações do Trabalho" widgetVar="propostaDialog"
+				showEffect="fade" hideEffect="fade" resizable="false">
+
+				<div class="pagination-centered">
+					<p:outputPanel id="propostaDetail" styleClass="text-muted">
+						<p:panelGrid columns="2">
+
+							<h:outputText value="Nome do Aluno"
+								style="font-weight:bold;text-align:center" />
+							<h:outputText
+								value="#{propostaBean.propostaSelecionada.aluno.nome}" />
+
+							<h:outputText value="Matrícula" style="font-weight:bold" />
+							<h:outputText
+								value="#{propostaBean.propostaSelecionada.aluno.matricula}" />
+
+							<h:outputText value="Curso" style="font-weight:bold" />
+							<h:outputText
+								value="#{propostaBean.propostaSelecionada.aluno.curso.nome}" />
+
+							<h:outputText value="Celular" style="font-weight:bold" />
+							<h:outputText
+								value="#{propostaBean.propostaSelecionada.aluno.telefone}" />
+
+							<h:outputText value="Título do Trabalho" style="font-weight:bold" />
+							<h:outputText value="#{propostaBean.propostaSelecionada.tema}" />
+
+
+							<h:outputText value="Modalidade" style="font-weight:bold" />
+							<h:outputText
+								value="#{propostaBean.propostaSelecionada.modalidade}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+
+							<h:outputText value="Area de Concentração "
+								style="font-weight:bold" />
+							<h:outputText
+								value="#{propostaBean.propostaSelecionada.areaConcentracao}" />
+
+							<h:outputText value="Descrição" style="font-weight:bold" />
+							<h:outputText
+								value="#{propostaBean.propostaSelecionada.descricao}" />
+
+							<h:outputText value="Resultados Esperados"
+								style="font-weight:bold" />
+							<h:outputText
+								value="#{propostaBean.propostaSelecionada.resultadosEsperados}" />
+
+							<h:outputText value="Data do Cadastrado" style="font-weight:bold" />
+							<h:outputText
+								value="#{propostaBean.propostaSelecionada.dataCadastro}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+
+							<h:outputText value="Orientador" style="font-weight:bold" />
+							<h:outputText
+								value="#{propostaBean.propostaSelecionada.orientador.nome}"
+								style="font-weight:bold" />
+
+							<h:outputText value="Co-Orientador" style="font-weight:bold" />
+							<h:outputText
+								rendered="#{empty propostaBean.propostaSelecionada.coOrientador}"
+								value="Não possui" />
+							<h:outputText
+								rendered="#{not empty propostaBean.propostaSelecionada.coOrientador}"
+								value="#{propostaBean.propostaSelecionada.coOrientador.nome}"
+								style="font-weight:bold" styleClass="text-muted" />
+
+						</p:panelGrid>
+
+						<div class="pager">
+
+							<p:commandButton value="Rematricular aluno"
+								action="#{propostaBean.rematriculaEmITCC}" ajax="false" update="@all"
+								onclick="if (!confirm('Deseja realmente rematricular este aluno?')) return false;"
+								title="Confirmar rematrícula do aluno">
+								<f:setPropertyActionListener value="#{periodoBean.periodoAtual}"
+									target="#{propostaBean.periodo}" />
+							</p:commandButton>
+
+							<p:commandButton value="Cancelar" title="Fechar janela" ajax="false" 
+								style="margin-left:5px" update="@all">
+							</p:commandButton>
+						</div>
+
+
+					</p:outputPanel>
+
+				</div>
+			</p:dialog>
+
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+
+</html>

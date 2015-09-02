@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/_templateOrientador.xhtml">
+	<ui:define name="pageTitle">Informações do Perfil</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<a href="consultarDados.xhtml">#{usuarioLogin.user.nome}</a> |
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+
+		<div class="page-header">
+			<h1>
+				<small>Minha conta</small>
+			</h1>
+		</div>
+
+		<ul class="nav nav-pills">
+			<li><h:link value="Página Inicial"
+					outcome="../paginaInicial.xhtml" /></li>
+			<li class="active"><a href="#">Meus dados</a></li>
+			<li><h:link value="Alterar senha" outcome="alterarSenha.xhtml" /></li>
+		</ul>
+
+		<p:messages id="messages" showDetail="false"  closable="true" autoUpdate="true" />
+
+		<div style="margin-top: 2px">
+			<div class="panel panel-default">
+
+				<h:form class="panel-body text-muted" acceptcharset="ISO-8859-1">
+					<div class="form-group">
+						<h6>Nome:</h6>
+						<h:inputText value="#{orientadorBean.orientadorSelecionado.nome}"
+							disabled="true" styleClass="form-control" />
+					</div>
+
+					<div class="form-group">
+						<h6>*E-mail:</h6>
+						<p:inputText value="#{orientadorBean.orientadorSelecionado.email}"
+							required="true" label="text" styleClass="form-control"
+							requiredMessage="E-Mail obrigatório" />
+					</div>
+
+					<div class="form-inline">
+
+						<div class="form-group">
+							<h5>Celular:</h5>
+							<p:inputMask id="celular"
+								value="#{orientadorBean.orientadorSelecionado.celular}"
+								mask="(99) 99999-9999" styleClass="form-control" />
+						</div>
+
+						<div class="form-group">
+							<h5>Telefone:</h5>
+							<p:inputMask id="telefone"
+								value="#{orientadorBean.orientadorSelecionado.telefone}"
+								mask="(99) 99999-9999" styleClass="form-control" />
+						</div>
+
+						<div class="form-group">
+							<h5>Comercial:</h5>
+							<p:inputMask id="comercial"
+								value="#{orientadorBean.orientadorSelecionado.comercial}"
+								mask="(99) 99999-9999" styleClass="form-control" />
+						</div>
+
+					</div>
+
+					<div class="form-group">
+						<h6>*Titulo:</h6>
+						<h:selectOneMenu
+							value="#{orientadorBean.orientadorSelecionado.titulo}"
+							required="true" requiredMessage="Título obrigatório"
+							styleClass="form-control">
+							<f:selectItem itemValue="Especialista" itemLabel="Especialista" />
+							<f:selectItem itemValue="Mestre" itemLabel="Mestre" />
+							<f:selectItem itemValue="Doutor" itemLabel="Doutor" />
+						</h:selectOneMenu>
+					</div>
+
+					<div class="form-group">
+						<h5>*Linha de Pesquisa:</h5>
+						<p:inputTextarea
+							value="#{orientadorBean.orientadorSelecionado.linhaPesquisa}"
+							required="true" requiredMessage="Linha de pesquisa obrigatório"
+							label="text" styleClass="form-control" rows="3" cols="30"
+							counter="display" maxlength="250"
+							counterTemplate="{0} caracteres restantes." autoResize="false" />
+						<h:outputText id="display" />
+					</div>
+
+					<div class="pager">
+						<h:commandButton value="Alterar dados"
+							action="#{orientadorBean.atualizarDados(orientadorBean.orientadorSelecionado)}"
+							styleClass="btn btn-primary" type="buttom" />
+						<h:link value="Cancelar" outcome="../paginaInicial.xhtml"
+							styleClass="btn btn-default" type="buttom"
+							style="margin-left:5px;" />
+					</div>
+				</h:form>
+			</div>
+		</div>
+
+	</ui:define>
+</ui:composition>
+
+</html>

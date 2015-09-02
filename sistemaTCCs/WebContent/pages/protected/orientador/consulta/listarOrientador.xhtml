@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/_templateOrientador.xhtml">
+	<ui:define name="pageTitle">Pessoas | TCCs Fucapi</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<h:commandLink value="#{usuarioLogin.user.nome}"
+					action="#{orientadorBean.prepararConta(usuarioLogin.user)}" />
+				|
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+
+	<ui:define name="body">
+
+		<div class="page-header">
+			<h1>
+				<small>Orientador</small>
+			</h1>
+		</div>
+
+		<ul class="breadcrumb">
+			<li><a href="../paginaInicial.xhtml">Página Inicial</a></li>
+			<li><a href="../pessoas.xhtml">Alterar Perfil</a></li>
+			<li class="active">Orientador</li>
+		</ul>
+
+		<h:form id="form">
+
+			<p:messages id="messages" showDetail="true" autoUpdate="true"
+				closable="true" />
+
+			<p:dataTable id="form" var="orientador"
+				value="#{orientadorBean.lista}"
+				style="margin-bottom:20px;"
+				rendered="#{not empty orientadorBean.lista}">
+
+				<p:column style="text-align:center;font-weight:bold">
+					<f:facet name="header">⌕ Consultar orientador</f:facet>
+					<p:commandLink update=":form:orientadorDetail"
+						oncomplete="PF('orientadorDialog').show()"
+						title="Mais informações">
+						<f:setPropertyActionListener value="#{orientador}"
+							target="#{orientadorBean.orientadorSelecionado}" />
+						<h:outputText value="#{orientador.nome}" styleClass="text-info" />
+					</p:commandLink>
+				</p:column>
+
+				<p:column headerText="E-mail" style="text-align: center">
+					<f:facet name="header">E-mail</f:facet>
+					<h:outputText value="#{orientador.email}" styleClass="text-muted"/>
+				</p:column>
+
+				<p:column headerText="Status" style="text-align: center">
+					<f:facet name="header">Status</f:facet>
+					<h:outputText value="#{orientador.status}" />
+				</p:column>
+
+			</p:dataTable>
+
+			<p:dialog header="Orientador" widgetVar="orientadorDialog"
+				showEffect="fade" hideEffect="fade" resizable="false">
+				<div class="pagination-centered">
+					<p:outputPanel id="orientadorDetail">
+						<p:panelGrid columns="2"
+							rendered="#{not empty orientadorBean.orientadorSelecionado}">
+
+							<h:outputText value="Nome:" />
+							<h:outputText
+								value="#{orientadorBean.orientadorSelecionado.nome}" />
+
+							<h:outputText value="Matricula:" />
+							<h:outputText
+								value="#{orientadorBean.orientadorSelecionado.matricula}" />
+
+							<h:outputText value="Email:" />
+							<h:outputText
+								value="#{orientadorBean.orientadorSelecionado.email}" />
+							
+							<h:outputText value="Celular:" />
+							<h:outputText
+								value="#{orientadorBean.orientadorSelecionado.celular}" />
+							
+							<h:outputText value="Status:" />
+							<h:outputText
+								value="#{orientadorBean.orientadorSelecionado.status}" />
+
+						</p:panelGrid>
+
+					</p:outputPanel>
+
+				</div>
+			</p:dialog>
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/_templateAluno.xhtml">
+	<ui:define name="pageTitle">Página Inicial | TCCs Fucapi</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<h:commandLink value="#{usuarioLogin.user.nome}"
+					action="#{alunoBean.prepararConta(usuarioLogin.user)}" />
+				|
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+
+	<ui:define name="body">
+
+		<h:form>
+
+			<div class="page-header">
+				<h1>
+					<small>Defesa do TCC</small>
+				</h1>
+
+			</div>
+
+			<ul class="breadcrumb">
+				<li><h:link value="Página Inicial"
+						outcome="../paginaInicial.xhtml" /></li>
+				<li class="active">Data da apresentação</li>
+			</ul>
+
+			<div class="panel">
+
+				<p:dataTable id="form" var="banca"
+					value="#{bancaBean.bancaSelecionada}" style="margin-bottom:20px;"
+					emptyMessage="Sua defesa do TCC ainda não foi agendada.">
+
+					<p:column headerText="Dia" style="width:32px;text-align: center">
+						<h:outputText value="#{banca.dataApresentacao}"
+							style="font-weight:bold">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Horario"
+						style="width:32px;text-align: center">
+						<h:outputText value="#{banca.dataApresentacao}"
+							style="font-weight:bold">
+							<f:convertDateTime pattern="HH:mm"
+								timeZone="#{initParam.timezone}" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Avaliador"
+						style="width:32px;text-align: center">
+						<h:outputText value="#{banca.primeiroConvidado}"
+							style="font-weight:bold" />
+					</p:column>
+
+					<p:column headerText="Avaliador"
+						style="width:32px;text-align: center">
+						<h:outputText value="#{banca.segundoConvidado}"
+							style="font-weight:bold" />
+					</p:column>
+
+				</p:dataTable>
+			</div>
+		</h:form>
+
+		<script src="http://code.jquery.com/jquery-latest.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+
+	</ui:define>
+</ui:composition>
+
+</html>

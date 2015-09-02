@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+	version="2.0">
+
+	<persistence-unit name="teste" transaction-type="RESOURCE_LOCAL">
+
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+
+		<!-- Aqui são listadas todas as entidades -->
+		<class> com.sistema.usuario.Usuario</class>
+		<class> com.sistema.usuario.orientador.Orientador</class>
+		<class>com.sistema.usuario.aluno.Aluno</class>
+		<class>com.sistema.usuario.coordenador.Coordenador </class>
+		<class>com.sistema.proposta.Proposta</class>
+		<class>com.sistema.periodo.Periodo</class>
+		<class>com.sistema.atividade.Atividade</class>
+		<class>com.sistema.mensagem.Mensagem</class>
+		<class>com.sistema.reuniao.Reuniao</class>
+		<class>com.sistema.quadro.Quadro</class>
+		<class>com.sistema.banca.Banca</class>
+		<class>com.sistema.orientacao.Orientacao</class>
+		<class>com.sistema.manual.Manual</class>
+		<class>com.sistema.imagem.Imagem</class>
+		<class>com.sistema.disciplina.Disciplina</class>
+		<class>com.sistema.curso.Curso</class>
+		<class>com.sistema.coordenacao.Coordenacao</class>
+
+		<properties>
+			<!-- Uma vez que você está usando datasource não é necessário configurar 
+				novamente o acesso ao banco -->
+			<!-- Coloquei aqui apenas como um exemplo -->
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/teste" />
+			<property name="javax.persistence.jdbc.user" value="root" />
+			<property name="javax.persistence.jdbc.password" value="1234" />
+
+			<property name="javax.persistence.validation.mode" value="none" />
+
+			<property name="hibernate.hbm2ddl.auto" value="create-drop" />
+			<property name="hibernate.show_sql" value="true" />
+			<property name="format_sql" value="true"/>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
+		</properties>
+	</persistence-unit>
+</persistence>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/_templateCoordenador.xhtml">
+	<ui:define name="pageTitle">Quadro de Acompanhamento | TCCs Fucapi</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<h:commandLink value="#{usuarioLogin.user.nome}"
+					action="#{coordenadorBean.prepararConta(usuarioLogin.user)}" />
+				|
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+
+		<div class="page-header">
+			<h1>
+				<small>Quadro de Acompanhamento</small>
+			</h1>
+		</div>
+
+		<h:form>
+			<ul class="breadcrumb">
+				<li><h:link value="Página Inicial"
+						outcome="../paginaInicial.xhtml" /></li>
+				<li><h:commandLink value="Selecionar Aluno"
+						action="#{propostaPageNavigation.quadroTCC}" /></li>
+				<li><h:outputText value="#{quadroBean.propostaSelecionada.aluno.nome}" style="font-weight:bold"/></li>
+			</ul>
+		</h:form>
+
+		<h:outputText value="Orientador(a): " /> <br/>
+		<label>#{quadroBean.propostaSelecionada.orientador.nome}</label>
+
+		<p:messages id="messages" showDetail="true" autoUpdate="true"
+			closable="true" />
+
+		<h:form id="form">
+			<p:dataTable id="form" var="quadro" value="#{quadroBean.lista}"
+				styleClass="table table-striped"
+				emptyMessage="Nenhum formulário de acompanhamento foi registrado para este aluno.">
+
+				<p:column style="width:5px; text-align:center" headerText="Reuniões">
+					<p:commandLink actionListener="#{dfView.reunioes}"
+						styleClass="glyphicon glyphicon-search">
+						<f:setPropertyActionListener value="#{quadro}"
+							target="#{reuniaoBean.quadroSelecionado}" />
+						<f:setPropertyActionListener value="#{quadro.proposta}"
+							target="#{reuniaoBean.propostaSelecionada}" />
+					</p:commandLink>
+				</p:column>
+
+				<p:column headerText="Período" style="text-align:center">
+					<f:facet name="header">Mês</f:facet>
+					<h:outputText value="#{quadro.periodo}" styleClass="text-muted" />
+				</p:column>
+
+				<p:column headerText="Avaliação dos resultados alcançados"
+					style="text-align:center">
+					<h:outputText value="#{quadro.avaliacaoResultados}"
+						styleClass="text-muted" />
+				</p:column>
+
+				<p:column style="text-align:center;width:32px"
+					headerText="Formulário">
+					<h:commandLink styleClass="glyphicon glyphicon-download-alt"
+						rendered="#{not empty quadro.file}"
+						actionListener="#{quadroBean.prepararDownload(quadro)}">
+						<p:fileDownload value="#{quadroBean.getFile()}" />
+
+					</h:commandLink>
+					<h:outputText value="Indisponivel" styleClass="text-info"
+						rendered="#{empty quadro.file}" />
+				</p:column>
+
+			</p:dataTable>
+
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/_templateCoordenador.xhtml">
+	<ui:define name="pageTitle">Cadastrar Apresentação | TCCs Fucapi</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<h:commandLink value="#{usuarioLogin.user.nome}"
+					action="#{coordenadorBean.prepararConta(usuarioLogin.user)}" />
+				|
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+
+		<div class="page-header">
+			<h1>
+				<small>Apresentações da Disciplina TCC</small>
+			</h1>
+
+		</div>
+
+		<ul class="breadcrumb">
+			<li><h:link value="Página Inicial"
+					outcome="../paginaInicial.xhtml" /></li>
+			<li><h:link value="Selecionar aluno"
+					outcome="listaCoordenados.xhtml" /></li>
+			<li><h:outputText value="#{bancaBean.propostaSelecionada.aluno.nome}" style="font-weight:bold"/></li>
+
+		</ul>
+
+		<ul class="nav nav-tabs">
+			<li><h:link value="Apresentações" outcome="banca.xhtml" /></li>
+			<li class="active"><h:link value="Agendar Apresentação"
+					outcome="cadastrarBanca.xhtml" /></li>
+		</ul>
+
+		<p:messages autoUpdate="true" closable="true" id="messeges" />
+
+		<div class="panel panel-default" style="margin-top: -1px">
+			<h:form styleClass="text-muted panel-body" acceptcharset="ISO-8859-1">
+
+				<div class="form-group">
+					<h:outputLabel for="datetime" value="Dia:" />
+					<p:calendar id="datetime" required="true"
+						requiredMessage="Dia obrigatório"
+						value="#{bancaBean.bancaSelecionada.dataApresentacao}"
+						pattern="dd/MM/yyyy HH:mm:ss" style="margin-left:5px">
+						<p:ajax event="dateSelect" update="selection" />
+					</p:calendar>
+					<h:outputText value="#{bancaBean.sampleTime}" id="selection"
+						style="margin-left:5px" />
+				</div>
+
+				<div class="form-group">
+					<p:commandLink id="movieBtn" value="Apresentações Agendadas" process="@this"/>
+					<p:overlayPanel id="moviePanel" for="movieBtn" hideEffect="fade"
+						dynamic="true" style="width:600px">
+						<p:dataTable var="apresentacoes"
+							value="#{bancaBean.apresentacoes}" rows="5" paginator="true">
+							<p:column headerText="Aluno">
+								<h:outputText value="#{apresentacoes.proposta.aluno.nome}" />
+							</p:column>
+
+							<p:column headerText="Dia">
+								<h:outputText value="#{apresentacoes.dataApresentacao}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="Horário">
+								<h:outputText value="#{apresentacoes.dataApresentacao}">
+									<f:convertDateTime pattern="HH:mm"
+										timeZone="#{initParam.timezone}" />
+								</h:outputText>
+							</p:column>
+
+						</p:dataTable>
+					</p:overlayPanel>
+
+				</div>
+
+				<div class="form-group">
+					<h5>
+						<strong>Aluno:</strong>
+					</h5>
+					<h:inputText value="#{bancaBean.propostaSelecionada.aluno.nome}"
+						styleClass="form-control" disabled="true" />
+				</div>
+
+				<div class="form-group">
+					<h5>
+						<strong>Avaliador:</strong>
+					</h5>
+					<p:inputText id="av1"
+						value="#{bancaBean.bancaSelecionada.primeiroConvidado}"
+						styleClass="form-control" required="true"
+						requiredMessage="Nome do avaliador obrigatório" />
+					<p:watermark for="av1" value="Nome do avaliador" id="av1mark" />	
+				</div>
+
+				<div class="form-group">
+					<h5>
+						<strong>Avaliador:</strong>
+					</h5>
+					<p:inputText id="av2"
+						value="#{bancaBean.bancaSelecionada.segundoConvidado}"
+						styleClass="form-control" required="true"
+						requiredMessage="Nome do avaliador obrigatório" />
+					<p:watermark for="av2" value="Nome do avaliador" id="av2mark" />
+				</div>
+
+				<div class="form-group">
+					<h5>
+						<strong>Sala:</strong>
+					</h5>
+					<h:inputText id="Sala" value="#{bancaBean.bancaSelecionada.sala}"
+						styleClass="form-control" required="true"
+						requiredMessage="Sala obrigatório" />
+				</div>
+
+				<div class="pager">
+					<h:commandButton action="#{bancaBean.salvarBanca()}"
+						value="Confirmar agendamento" styleClass="btn btn-primary" />
+					<h:link outcome="listaCoordenados.xhtml" value="Cancelar"
+						styleClass="btn btn-default" style="margin-left:5px" />
+				</div>
+			</h:form>
+		</div>
+
+	</ui:define>
+</ui:composition>
+
+</html>

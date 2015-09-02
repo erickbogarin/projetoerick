@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/template.xhtml">
+	<ui:define name="pageTitle">Primeiro Acesso</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<a href="#">#{usuarioLogin.user.nome}</a> |
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+
+		<h:form id="matchGrid" styleClass="col-sm-5 col-md-6 col-md-offset-2"
+			style="margin-top:20px">
+
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title">Alterar senha</h3>
+				</div>
+				
+				<p:messages id="messages" showDetail="false" autoUpdate="true" closable="true"/>
+				
+				<div class="panel-body">
+					<div class="form-group">
+						<p:password id="pwd1" value="#{alunoBean.alunoSelecionado.senha}"
+							match="pwd2" label="Password 1" required="true"
+							styleClass="form-control">
+							<f:validateLength minimum="6" maximum="8" />
+						</p:password>
+						<p:watermark for="pwd1" value="Nova senha" id="waterpwd1" />
+					</div>
+
+					<div class="control-group">
+						<p:password id="pwd2" value="#{alunoBean.alunoSelecionado.senha}"
+							label="Password 2" required="true" styleClass="form-control" />
+						<p:watermark for="pwd2" value="Confirmar senha" id="waterpwd2" />
+					</div>
+
+					<ul class="pager">
+						<li><h:commandButton action="#{alunoBean.atualizarDados}" 
+								value="Salvar" styleClass="form-control" update="matchGrid" /></li>
+					</ul>
+				</div>
+			</div>
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+
+</html>

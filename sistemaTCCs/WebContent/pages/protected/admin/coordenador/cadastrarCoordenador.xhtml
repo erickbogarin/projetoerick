@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/_templateAdmin.xhtml">
+	<ui:define name="pageTitle">Adicionar Coordenador</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<h:commandLink value="#{usuarioLogin.user.nome}"
+					action="#{usuarioBean.prepararConta(usuarioLogin.user)}" />
+				|
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+
+		<div class="page-header">
+			<h1>
+				<small>Coordenadores</small>
+			</h1>
+		</div>
+
+		<h:form>
+			<ul class="breadcrumb">
+				<li><p:commandLink value="Página Inicial"
+						action="#{navigationBean.paginaInicial}" immediate="true" /></li>
+				<li class="active">Manter Coordenador</li>
+			</ul>
+
+			<ul class="nav nav-tabs">
+				<li><a href="listaCoordenadores.xhtml">Coordenadores</a></li>
+				<li class="active"><a href="#">Adicionar Coordenador</a></li>
+			</ul>
+		</h:form>
+
+		<div class="panel panel-default" style="margin-top: -1px">
+
+			<h:form styleClass="text-muted panel-body" acceptcharset="ISO-8859-1">
+
+				<p:messages id="messages" showDetail="true" autoUpdate="true"
+					closable="true" />
+
+				<div class="form-group">
+					<h:selectOneMenu value="#{coordenadorBean.coordenacaoId}"
+						id="coordenacao" styleClass="form-control input-lg">
+						<f:selectItems value="#{coordenadorBean.coordenacoes}"
+							var="coordenacao" itemLabel="#{coordenacao.nome}"
+							itemValue="#{coordenacao.id}" />
+					</h:selectOneMenu>
+				</div>
+
+				<div class="form-group">
+					<h:selectOneMenu value="#{coordenadorBean.disciplinaId}"
+						id="disciplina" styleClass="form-control input-lg">
+						<f:selectItems value="#{coordenadorBean.disciplinas}"
+							var="disciplina" itemLabel="#{disciplina.nome}"
+							itemValue="#{disciplina.id}" />
+					</h:selectOneMenu>
+				</div>
+
+				<div class="form-group">
+					<h:inputText value="#{coordenadorBean.coordenadorSelecionado.nome}"
+						id="keyword" styleClass="form-control" required="true"
+								requiredMessage="Nome obrigatório"/>
+					<p:watermark for="keyword" value="Nome" id="nome" />
+				</div>
+
+				<div class="form-group">
+					<h:inputText
+						value="#{coordenadorBean.coordenadorSelecionado.email}" id="email"
+						styleClass="form-control" required="true"
+								requiredMessage="E-Mail obrigatório"/>
+					<p:watermark for="email" value="Email" id="wateremail" />
+				</div>
+
+				<div class="pager">
+					<p:commandButton value="Salvar"
+						action="#{coordenadorBean.adicionarCoordenador}"
+						styleClass="btn btn-primary" update="@form" />
+					<h:link value="Cancelar"
+						outcome="listaCoordenadores?faces-redirect=true"
+						styleClass="btn btn-default" style="margin-left:5px" />
+				</div>
+
+			</h:form>
+		</div>
+
+	</ui:define>
+</ui:composition>
+
+</html>

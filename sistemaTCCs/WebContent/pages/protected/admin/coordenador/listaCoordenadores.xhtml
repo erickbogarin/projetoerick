@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/_templateAdmin.xhtml">
+	<ui:define name="pageTitle">Coordenadores | TCCs Fucapi</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<h:commandLink value="#{usuarioLogin.user.nome}"
+					action="#{usuarioBean.prepararConta(usuarioLogin.user)}" />
+				|
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+
+	<ui:define name="body">
+		<div class="page-header">
+			<h1>
+				<small>Coordenadores</small>
+			</h1>
+		</div>
+
+		<h:form>
+			<ul class="breadcrumb">
+				<li><p:commandLink value="Página Inicial"
+						action="#{navigationBean.paginaInicial}" immediate="true" /></li>
+				<li class="active">Manter Coordenador</li>
+			</ul>
+
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#">Coordenadores</a></li>
+				<li><p:commandLink value="Adicionar Coordenador"
+						action="cadastrarCoordenador?faces-redirect=true">
+						<f:setPropertyActionListener value="#{coordenadorBean.limpaCoordenador()}" 
+						target="#{coordenadorBean.coordenadorSelecionado}" />
+					</p:commandLink></li>
+			</ul>
+		</h:form>
+
+		<h:form id="form">
+			<p:messages id="messages" autoUpdate="true" closable="true" />
+
+			<p:dataTable id="tabelaCoordenadores" var="coordenador"
+				value="#{coordenadorBean.lista}" styleClass="table table-striped"
+				emptyMessage="Nenhum coordenador cadastrado">
+
+				<p:column style="text-align:center;font-weight:bold">
+					<f:facet name="header">Selecionar Coordenador</f:facet>
+					<p:commandLink update=":form:coordenadorDetail"
+						oncomplete="PF('coordenadorDialog').show()"
+						title="Informações do Coordenador" process="@this">
+						<h:outputText styleClass="text-info" value="#{coordenador.nome}" />
+						<f:setPropertyActionListener value="#{coordenador}"
+							target="#{coordenadorBean.coordenadorSelecionado}" />
+					</p:commandLink>
+				</p:column>
+
+				<p:column headerText="E-mail" style="text-align:center">
+					<f:facet name="header">E-mail</f:facet>
+					<h:outputText value="#{coordenador.email}" styleClass="text-muted" />
+				</p:column>
+
+				<p:column headerText="Celular" style="text-align:center">
+					<f:facet name="header">Celular</f:facet>
+					<h:outputText value="#{coordenador.celular}"
+						styleClass="text-muted" />
+				</p:column>
+
+				<p:column headerText="Status" style="text-align:center">
+					<f:facet name="header">Status</f:facet>
+					<h:outputText value="#{coordenador.status}" styleClass="text-muted" />
+				</p:column>
+
+				<p:column headerText="Conta" style="text-align:center">
+					<h:commandLink action="#{coordenadorBean.excluir}"
+						styleClass="glyphicon glyphicon-trash text-muted" title="Excluir"
+						onclick="if (!confirm('Deseja realmente excluir o cliente #{coordenador.nome}?')) return false;">
+						<f:setPropertyActionListener
+							target="#{coordenadorBean.coordenadorSelecionado}"
+							value="#{coordenador}" />
+					</h:commandLink>
+
+				</p:column>
+
+			</p:dataTable>
+
+			<p:dialog header="Dados do Coordenador" widgetVar="coordenadorDialog"
+				showEffect="fade" hideEffect="fade" resizable="false">
+				<div class="pagination-centered">
+					<p:outputPanel id="coordenadorDetail" styleClass="text-muted">
+
+						<div class="form-group">
+							<label for="inputNome">Nome do Coordenador</label>
+							<h:inputText id="inputNome"
+								value="#{coordenadorBean.coordenadorSelecionado.nome}"
+								styleClass="form-control" disabled="true" />
+						</div>
+
+						<div class="form-group">
+							<label for="dataCadastro">Cadastrado em</label>
+							<h:inputText
+								value="#{coordenadorBean.coordenadorSelecionado.dataCadastro}"
+								disabled="true" styleClass="form-control">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:inputText>
+						</div>
+
+						<div class="form-group">
+							<label for="coordenacao"><h:outputText
+									value="Coordenação: #{coordenadorBean.coordenadorSelecionado.coordenacao.nome}" /></label>
+							<h:selectOneMenu value="#{coordenadorBean.coordenacaoId}"
+								id="coordenacao" styleClass="form-control">
+								<f:selectItem itemLabel="Selecionar coordenação"
+									itemValue="#{null}" />
+								<f:selectItems value="#{coordenadorBean.coordenacoes}"
+									var="coordenacao" itemLabel="#{coordenacao.nome}"
+									itemValue="#{coordenacao.id}" />
+							</h:selectOneMenu>
+						</div>
+
+						<div class="form-group">
+							<label for="disciplina"><h:outputText
+									value="Disciplina: #{coordenadorBean.coordenadorSelecionado.disciplina.nome}" /></label>
+							<h:selectOneMenu value="#{coordenadorBean.disciplinaId}"
+								id="disciplina" styleClass="form-control" required="true"
+								requiredMessage="Disciplina obrigatória">
+								<f:selectItem itemLabel="Selecionar disciplina"
+									itemValue="#{null}" />
+								<f:selectItems value="#{coordenadorBean.disciplinas}"
+									var="disciplina" itemLabel="#{disciplina.nome}"
+									itemValue="#{disciplina.id}" />
+							</h:selectOneMenu>
+						</div>
+
+						<div class="pager">
+							<p:commandButton value="Alterar Dados" update="@all :form"
+								actionListener="#{coordenadorBean.alterar}" />
+							<p:commandButton value="Cancelar" update="@all :form"
+								style="margin-left:5px" />
+						</div>
+
+					</p:outputPanel>
+				</div>
+			</p:dialog>
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+
+</html>

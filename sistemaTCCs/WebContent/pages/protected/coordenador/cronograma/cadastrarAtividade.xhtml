@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/_templateCoordenador.xhtml">
+	<ui:define name="pageTitle">Editar Atividades | TCCs Fucapi</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<h:commandLink value="#{usuarioLogin.user.nome}"
+					action="#{coordenadorBean.prepararConta(usuarioLogin.user)}" />
+				|
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+		<div class="page-header">
+			<h1>
+				<small>Cronograma</small>
+			</h1>
+		</div>
+
+		<ul class="breadcrumb">
+			<li><h:link value="Página Inicial"
+					outcome="../paginaInicial.xhtml" /></li>
+			<li><h:link value="Selecionar Periodo"
+					outcome="selecionarPeriodo.xhtml" /></li>
+			<li class="active">Atividades</li>
+		</ul>
+
+		<ul class="nav nav-tabs">
+			<li><h:link value="Cronograma" outcome="manterAtividades.xhtml" /></li>
+			<li class="active"><a href="#">Nova Atividade</a></li>
+		</ul>
+
+
+		<div class="panel panel-default" style="margin-top: -1px">
+			<h:outputScript name="calendar.js" library="js" target="head" />
+			<h:form styleClass="text-muted panel-body" acceptcharset="ISO-8859-1">
+				<label>Dia: </label>
+				<div class="form-group">
+					<p:calendar id="mask"
+						value="#{atividadeBean.atividadeSelecionada.data}"
+						pattern="dd-MM-yyyy" mask="true" locale="pt_BR" navigator="true" effect="slideDown"/>
+				</div>
+
+				<div class="form-group">
+					<p:inputTextarea id="keyword" styleClass="form-control" type="text"
+						value="#{atividadeBean.atividadeSelecionada.descricao}" rows="3"
+						cols="30" counter="display" maxlength="250"
+						counterTemplate="{0} caracteres restantes." autoResize="false" />
+					<p:watermark for="keyword" value="Descreva a atividadade"
+						id="watermark" />
+					<h:outputText id="display" />
+				</div>
+
+				<div class="pager">
+					<h:commandButton value="Adicionar" action="#{atividadeBean.salvar}"
+						actionListener="#{messagesView.info}" styleClass="btn btn-primary" />
+
+					<h:commandButton action="manterAtividades.xhtml" value="Cancelar"
+						styleClass="btn btn-default" style="margin-left:5px" />
+				</div>
+			</h:form>
+		</div>
+
+	</ui:define>
+</ui:composition>
+
+</html>

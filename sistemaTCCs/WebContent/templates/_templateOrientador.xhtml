@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title><ui:insert name="pageTitle">Page Header</ui:insert></title>
+
+	<h:outputStylesheet library="css" name="estilo.css"></h:outputStylesheet>
+	<h:outputStylesheet library="css" name="reset.css"></h:outputStylesheet>
+	<h:outputStylesheet library="css" name="bootstrap.css" rel="stylesheet"></h:outputStylesheet>
+	<h:outputStylesheet library="css" name="bootstrap-theme.css"
+		rel="stylesheet"></h:outputStylesheet>
+	<h:outputStylesheet library="css" name="bootstrap-timepicker.css"
+		rel="stylesheet"></h:outputStylesheet>
+
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+</h:head>
+
+<h:body>
+
+	<div class="container-fluid" id="wrapper"
+		style="background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(250, 250, 250, 1) 0%, rgba(255, 255, 255, 1) 100%);">
+		<div id="header">
+
+			<h:graphicImage value="/resources/imagens/logo.png" />
+
+			<h1>Sistema de Gerenciamento e Controle de TCCs</h1>
+
+			<div class="menu-opcoes">
+				<h:form>
+					<ul>
+						<li><h:commandLink value="notícias"
+								action="#{navigationBean.noticias}" /></li>
+						<li><h:commandLink value="tccs"
+								action="#{navigationBean.tccs}"
+								actionListener="#{propostaPageNavigation.preparaTCCs}" /></li>
+						<li><h:commandLink value="projetos em andamento"
+								action="#{navigationBean.sugestoes}" /></li>
+						<li><h:link value="banca"
+								outcome="/pages/public/banca.xhtml?faces-redirect=true" /></li>
+						<li><h:link value="sobre" outcome="/pages/public/sobre.xhtml"/></li>
+					</ul>
+				</h:form>
+			</div>
+
+			<ui:insert name="perfilUsuario">
+				<div class="perfil">
+					<a href="#">Visitante</a> | <a href="#">Entrar</a>
+				</div>
+
+			</ui:insert>
+		</div>
+
+		<div class="row">
+			<div class="col-xs-12 col-sm-3 col-md-3 col-lg-2">
+				<h:form>
+					<div class="panel-group" id="accordion">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title">
+									<a data-toggle="collapse" data-parent="#accordion"
+										href="#collapseOne"><span
+										class="glyphicon glyphicon-folder-close text-muted"> </span><label
+										class="text-muted">Navegação</label></a>
+								</h4>
+							</div>
+							<div id="collapseOne" class="panel-collapse collapse in">
+								<div class="panel-body">
+									<table class="table">
+										<tr>
+											<td><span class="glyphicon glyphicon-file text-muted"></span>
+												<h:commandLink value="Projetos de TCC"
+													action="#{propostaPageNavigation.alunosTCC}" /></td>
+										</tr>
+										<tr>
+											<td><span
+												class="glyphicon glyphicon-list-alt text-muted"></span> <h:commandLink
+													value="Quadro de Acompanhamento"
+													action="#{propostaPageNavigation.quadroTCC}" /></td>
+										</tr>
+										<tr>
+											<td><span class="glyphicon glyphicon-tags text-muted"></span>
+												<h:commandLink value="Reuniões"
+													action="#{propostaPageNavigation.reunioesTCC}" /></td>
+										</tr>
+										<tr>
+											<td><span class="glyphicon glyphicon-comment text-muted"></span>
+												<h:commandLink value="Orientações"
+													action="#{propostaPageNavigation.orientacoesTCC}" /></td>
+										</tr>
+
+									</table>
+								</div>
+							</div>
+						</div>
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title">
+									<a data-toggle="collapse" data-parent="#accordion"
+										href="#collapseTwo"><span
+										class="glyphicon glyphicon-search text-muted"> </span><label
+										class="text-muted">Consultar</label></a>
+								</h4>
+							</div>
+							<div id="collapseTwo">
+								<div class="panel-body">
+									<table class="table">
+										<tr>
+											<td><span class="glyphicon glyphicon-user text-muted"></span>
+												<h:link value="Pessoas"
+													outcome="/pages/protected/orientador/pessoas.xhtml" /></td>
+										</tr>
+										<tr>
+											<td><span
+												class="glyphicon glyphicon-th-large text-muted"></span> <h:commandLink
+													value="Apresentações"
+													action="#{bancaBean.prepararOrientados}" /></td>
+										</tr>
+									</table>
+								</div>
+							</div>
+						</div>
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title">
+									<a data-toggle="collapse" data-parent="#accordion"
+										href="#collapseThree"><span
+										class="glyphicon glyphicon-cog text-muted"> </span><label
+										class="text-muted">Configurações</label></a>
+								</h4>
+							</div>
+							<div id="collapseTwo">
+								<div class="panel-body">
+									<table class="table">
+										<tr>
+											<td><span class="glyphicon glyphicon-user text-muted"></span>
+												<h:commandLink value="Minha conta"
+													action="#{orientadorBean.prepararConta(usuarioLogin.user)}" /></td>
+										</tr>
+										<tr>
+											<td><span class="glyphicon glyphicon-log-out text-muted"></span>
+												<h:commandLink action="#{usuarioLogin.doLogout}"
+													value="Sair" /></td>
+										</tr>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</h:form>
+			</div>
+			<div class="col-xs-12 col-sm-9 col-md-9 col-lg-10" id="content">
+				<ui:insert name="pageHeader"></ui:insert>
+				<ui:insert name="body"></ui:insert>
+			</div>
+		</div>
+
+		<div id="rodape">
+			© 2015 FUCAPI Todos os direitos reservados.
+			<ui:insert name="texto">
+			</ui:insert>
+		</div>
+
+	</div>
+
+	<script src="js/jquery-ui.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+
+</h:body>
+
+</html>

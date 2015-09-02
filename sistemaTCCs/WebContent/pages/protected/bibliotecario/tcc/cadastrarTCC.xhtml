@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+<!-- 
+		Replace path to template, title, header and body
+		with actual data.
+	 -->
+<ui:composition template="/templates/template.xhtml">
+	<ui:define name="pageTitle">Sistema Teste</ui:define>
+	<ui:define name="perfilUsuario">
+		<h:form>
+			<p class="perfil">
+				<h:commandLink value="#{usuarioLogin.user.nome}"
+					action="#{usuarioBean.prepararConta(usuarioLogin.user)}" />
+				|
+				<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" />
+			</p>
+		</h:form>
+	</ui:define>
+	<ui:define name="menuLateral">
+		<div class="menu-destaque">
+			<h:form>
+				<div class="panel-group" id="accordion">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								<a data-toggle="collapse" data-parent="#accordion"
+									href="#collapseOne"><span
+									class="glyphicon glyphicon-folder-close"> </span>Navegação</a>
+							</h4>
+						</div>
+						<div id="collapseOne" class="panel-collapse collapse in">
+							<div class="panel-body">
+								<table class="table">
+									<tr>
+										<td><span class="glyphicon glyphicon-file text-muted"></span>
+											<h:link value="Cadastrar TCCs"
+												outcome="tcc/listaAprovados.xhtml" /></td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								<a data-toggle="collapse" data-parent="#accordion"
+									href="#collapseThree"><span class="glyphicon glyphicon-cog">
+								</span>Configurações</a>
+							</h4>
+						</div>
+						<div id="collapseTwo">
+							<div class="panel-body">
+								<table class="table">
+									<tr>
+										<td><span class="glyphicon glyphicon-user text-muted"></span>
+											<h:commandLink value="Minha conta"
+												action="#{usuarioBean.prepararConta(usuarioLogin.user)}" /></td>
+									</tr>
+									<tr>
+										<td><span class="glyphicon glyphicon-log-out text-muted"></span>
+											<h:commandLink action="#{usuarioLogin.doLogout}" value="Sair" /></td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</h:form>
+		</div>
+	</ui:define>
+	<ui:define name="pageHeader"></ui:define>
+	<ui:define name="body">
+
+		<div class="page-header">
+			<h1>
+				<small>Cadastrar TCCs</small>
+			</h1>
+		</div>
+
+		<p:messages id="messages" showDetail="true" autoUpdate="true"
+			closable="true" />
+
+		<ul class="breadcrumb">
+			<li><a href="../paginaInicial.xhtml">Página Inicial</a></li>
+			<li class="active">Cadastrar TCCs</li>
+			<li class="active">Cadastrar Aluno</li>
+			<li class="active">Cadastrar Proposta</li>
+		</ul>
+
+		<ul class="nav nav-tabs">
+			<li><h:link rendered="#{not empty periodoBean.lista}"
+					value="Alunos" outcome="listaAprovados.xhtml" /></li>
+			<li class="active"><a href="#">Novo Cadastro</a></li>
+		</ul>
+
+		<div class="panel-body">
+			<div class="panel panel-default">
+				<p:commandButton value="Upload" onclick="PF('upload').show();"
+					type="button" style="margin-left:5px" icon="ui-icon-folder-open"
+					styleClass="btn btn-default" />
+
+				<p:dialog header="Selecione um arquivo no formato PDF"
+					widgetVar="upload" dynamic="true">
+					<h:form enctype="multipart/form-data">
+						<h:messages></h:messages>
+						<p:fileUpload fileUploadListener="#{propostaBean.uploadTCC}"
+							mode="advanced" update="messages" auto="true" sizeLimit="100000"
+							allowTypes="/(\.|\/)(pdf)$/" />
+
+						<p:growl id="messages" showDetail="true" />
+
+					</h:form>
+				</p:dialog>
+				<h:form styleClass="text-muted panel-body">
+
+					<div class="form-group">
+						<label>Aluno:</label>
+						<h:inputText value="#{usuarioBean.alunoSelecionado.nome}"
+							id="keyword" styleClass="form-control" disabled="true" />
+						<p:watermark for="keyword" value="Nome" id="nome" />
+					</div>
+
+					<div class="form-group">
+						<h:selectOneMenu
+							value="#{propostaBean.propostaSelecionada.modalidade}"
+							styleClass="form-control input-lg">
+							<f:selectItem itemValue="Nenhuma" itemLabel="Modalidade..." />
+							<f:selectItem itemValue="Monografia" itemLabel="Monografia" />
+							<f:selectItem itemValue="Produto Tecnologico"
+								itemLabel="Produto Tecnologico" />
+							<f:selectItem itemValue="Artigo Científico"
+								itemLabel="Artigo Científico" />
+						</h:selectOneMenu>
+					</div>
+
+					<div class="form-group">
+						<h:inputText value="#{propostaBean.propostaSelecionada.tema}"
+							id="tema" styleClass="form-control" />
+						<p:watermark for="tema" value="Tema" id="watertema" />
+					</div>
+					<div class="form-group">
+						<p:inputTextarea
+							value="#{propostaBean.propostaSelecionada.descricao}"
+							id="descricao" styleClass="form-control" />
+						<p:watermark for="descricao" value="Descrição" id="waterdescricao" />
+					</div>
+
+					<div class="pager">
+						<h:commandButton value="Avançar"
+							action="#{propostaBean.cadastrarTCC}"
+							styleClass="btn btn-primary" />
+
+						<h:commandButton value="Cancelar" action="listaAprovados.xhtml"
+							styleClass="btn btn-default" style="margin-left:5px" />
+					</div>
+
+				</h:form>
+
+			</div>
+		</div>
+
+	</ui:define>
+</ui:composition>
+
+</html>
